@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'user_account',
     'educational_content',
-    'school_management'
+    'school_management',
+    'module_assessments'
 ]
 
 MIDDLEWARE = [
