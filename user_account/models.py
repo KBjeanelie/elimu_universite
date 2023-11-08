@@ -1,14 +1,26 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
+class UserType(models.Model):
+    
+    label = models.CharField(max_length=20, unique=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Type d'utilisateur : {self.label}"
+
 # Create your models here.
 class UserManager(BaseUserManager):
-    def create_user(self, username, password=None):
+    def create_user(self, username, user_type, password=None,):
         """
         Creates and saves a User with the given username, password.
         """
         user = self.model(
             username=username,
+            user_type = user_type
         )
 
         user.set_password(password)
@@ -33,6 +45,8 @@ class UserManager(BaseUserManager):
 class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=255, unique=True,)
+    
+    user_type = models.ForeignKey(UserType, on_delete=models.DO_NOTHING, null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     
