@@ -1,6 +1,16 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
+cities = (
+    ('pointe_noire', "Pointe Noire"),
+    ('brazzaville', "Brazzaville")
+)
+
+sexes = (
+    ('masculin', 'Masculin'),
+    ('feminin', 'Féminin')
+)
+
 """
 this class allows you to record the different types of users of the establishment
 """
@@ -107,9 +117,9 @@ class ManagementProfil(models.Model):
     
     tel = models.CharField(max_length=20, blank=True)
     
-    # city = models.CharField(max_length=20, blank=True)
+    city = models.CharField(max_length=17, choices=cities, blank=True)
     
-    # sex = models.CharField(blank=True)
+    sex = models.CharField(max_length=10, choices=sexes, blank=True)
     
     email = models.CharField(max_length=120, unique=True, blank=True)
     
