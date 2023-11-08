@@ -1,9 +1,8 @@
 from django.db import models
 from school_management.models import Career, Sector
-
 from user_account.models import Teacher
 
-# Create your models here.
+# Class representing a Folder
 class Folder(models.Model):
     
     label = models.CharField(max_length=20)
@@ -17,7 +16,7 @@ class Folder(models.Model):
     def __str__(self):
         return f"Dossier : {self.label} crée par {self.owner}"
 
-
+# Class representing a File
 class File(models.Model):
     
     label = models.CharField(max_length=20)
@@ -33,7 +32,7 @@ class File(models.Model):
     def __str__(self):
         return f"file : {self.label}"
 
-
+# Class representing a BookCategory
 class BookCategory(models.Model):
     
     label = models.CharField(max_length=20)
@@ -45,6 +44,7 @@ class BookCategory(models.Model):
     def __str__(self):
         return f"Categorie Livre : {self.label}"
 
+# Class representing a Book
 class Book(models.Model):
     
     label = models.CharField(max_length=120)
@@ -66,7 +66,7 @@ class Book(models.Model):
     def __str__(self):
         return f"file : {self.label}"
     
-
+# Class representing an eBook
 class eBook(models.Model):
     
     title = models.CharField(max_length=120)
