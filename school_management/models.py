@@ -106,7 +106,7 @@ class Sector(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Type Document : {self.title}"
+        return f"Fillière : {self.title}"
 
 class Subject(models.Model):
     
@@ -132,16 +132,24 @@ class Subject(models.Model):
     
     updated_at = models.DateTimeField(auto_now=True)
 
-# class Career(models.Model):
-#     pass
+class Career(models.Model):
+    
+    title = models.CharField(max_length=50)
+    
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Parcours : {self.title}"
 
 
 
 # class SanctionAssessment(models.Model):
 #     pass
 
-# class Cycle(models.Model):
-#     pass
 
 # class StudentCareer(models.Model):
 #     pass
