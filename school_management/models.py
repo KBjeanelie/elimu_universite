@@ -1,6 +1,6 @@
 from django.db import models
-
 from user_account.models import Student, Teacher
+from elimu_universite.constant import days_of_the_weeks, hours_of_the_day
 
 
 class AdemicYear(models.Model):
@@ -71,7 +71,7 @@ class DocumentType(models.Model):
     def __str__(self):
         return f"Type Document : {self.label}"
 
-class SanctionAssessmentType(models.Model):
+class SanctionAppreciationType(models.Model):
     
     title = models.CharField(max_length=50)
     
@@ -158,7 +158,6 @@ class Career(models.Model):
     def __str__(self):
         return f"Parcours : {self.title}"
 
-
 class StudentCareer(models.Model):
     
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -169,6 +168,32 @@ class StudentCareer(models.Model):
     
     semester = models.ForeignKey(Semester, on_delete=models.DO_NOTHING)
 
-# class Classes(models.Model):
-#     pass
+class Schedule(models.Model):
+    
+    start_hours = models.CharField(max_length=15, choices=hours_of_the_day)
+    
+    end_hours = models.CharField(max_length=15, choices=hours_of_the_day)
+    
+    day = models.CharField(max_length=10, choices=days_of_the_weeks)
+    
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    
+    career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    
+    def __str__(self):
+        return f"Emploi du temp de : {self.subject}"
+
+class SanctionAppreciation(models.Model):
+    
+    comment = models.TextField(blank=True)
+    
+    type = models.ForeignKey(SanctionAppreciationType, on_delete=models.CASCADE)
+    
+    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
+    
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    
+    career = models.ForeignKey(Career, on_delete=models.DO_NOTHING)
+    
+    sanction_date = models.DateField()
 
