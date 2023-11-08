@@ -46,18 +46,6 @@ class Program(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
-    
-# class Semestrer(models.Model):
-#     label = models.CharField(max_length=50)
-    
-#     created_at = models.DateTimeField(auto_now_add=True)
-    
-#     updated_at = models.DateTimeField(auto_now=True)
-    
-#     def __str__(self):
-#         return f"Semestre : {self.label}"
-
-
 
 class DocumentType(models.Model):
     
@@ -69,7 +57,6 @@ class DocumentType(models.Model):
     
     def __str__(self):
         return f"Type Document : {self.label}"
-
 
 class SanctionAssessmentType(models.Model):
     
@@ -108,10 +95,42 @@ class GroupSubject(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
-        return f"Type Document : {self.label}"
+        return f"Type Document : {self.title}"
 
-# class Subject(models.Model):
-#     pass
+class Sector(models.Model):
+    
+    title = models.CharField(max_length=50)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Type Document : {self.title}"
+
+class Subject(models.Model):
+    
+    label = models.CharField(max_length=25)
+    
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    
+    teacher_in_charge = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    
+    types = [('obligatoire', 'Obligatoire'), ('secondaire', 'Secondaire')]
+    
+    type = models.CharField(max_length=12, choices=types)
+    
+    subject_group = models.ForeignKey(GroupSubject, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    possible_evaluation = models.BooleanField(default=True)
+    
+    possible_averaging = models.BooleanField(default=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
 
 # class Career(models.Model):
 #     pass
