@@ -1,6 +1,9 @@
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
+"""
+this class allows you to record the different types of users of the establishment
+"""
 class UserType(models.Model):
     
     label = models.CharField(max_length=20, unique=True)
@@ -12,7 +15,7 @@ class UserType(models.Model):
     def __str__(self):
         return f"Type d'utilisateur : {self.label}"
 
-# Create your models here.
+
 class UserManager(BaseUserManager):
     def create_user(self, username, user_type, password=None,):
         """
@@ -79,3 +82,35 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+
+# Represent an objet of Student and his profil info
+class Student(models.Model):
+    
+    registration_number = models.CharField(max_length=255, unique=True)
+    
+    user_account = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+
+# Represent an objet of Teacher and his profil info
+class Teacher(models.Model):
+    pass
+
+# Represent an objet of team manager and his profil info
+class ManagementProfil(models.Model):
+    
+    user_account = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    
+    lastname = models.CharField(max_length=50, blank=True)
+    
+    firstname = models.CharField(max_length=50, blank=True)
+    
+    address = models.CharField(max_length=50, blank=True)
+    
+    tel = models.CharField(max_length=20, blank=True)
+    
+    # city = models.CharField(max_length=20, blank=True)
+    
+    # sex = models.CharField(blank=True)
+    
+    email = models.CharField(max_length=120, unique=True, blank=True)
+    
+    bio = models.TextField(blank=True)
