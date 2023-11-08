@@ -167,6 +167,10 @@ class StudentCareer(models.Model):
     academic_year = models.ForeignKey(AdemicYear, on_delete=models.DO_NOTHING)
     
     semester = models.ForeignKey(Semester, on_delete=models.DO_NOTHING)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
 
 class Schedule(models.Model):
     
@@ -179,6 +183,10 @@ class Schedule(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     
     career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
     
     def __str__(self):
         return f"Emploi du temp de : {self.subject}"
@@ -196,4 +204,8 @@ class SanctionAppreciation(models.Model):
     career = models.ForeignKey(Career, on_delete=models.DO_NOTHING)
     
     sanction_date = models.DateField()
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
 
