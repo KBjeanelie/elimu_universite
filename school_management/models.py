@@ -46,7 +46,7 @@ class DocumentType(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return f"Document Type: {self.label}"
+        return f"Document Type: {self.title}"
 
 # Class representing Sanction Appreciation Type
 class SanctionAppreciationType(models.Model):
@@ -55,7 +55,7 @@ class SanctionAppreciationType(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
-        return f"Sanction Appreciation Type: {self.label}"
+        return f"Sanction Appreciation Type: {self.title}"
 
 # Class representing Document
 class Document(models.Model):
