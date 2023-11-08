@@ -40,7 +40,8 @@ INSTALLED_APPS = [
     'user_account',
     'educational_content',
     'school_management',
-    'module_assessments'
+    'module_assessments',
+    'module_communication'
 ]
 
 MIDDLEWARE = [
