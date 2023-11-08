@@ -1,9 +1,9 @@
 from django.contrib import admin
 
-from school_management.models import AdemicYear, Career, Document, DocumentType, GroupSubject, Level, Program, SanctionAppreciation, SanctionAppreciationType, Schedule, Sector, Semester, StudentCareer, Subject
+from school_management.models import AcademicYear, Career, Document, DocumentType, GroupSubject, Level, Program, SanctionAppreciation, SanctionAppreciationType, Schedule, Sector, Semester, StudentCareer, Subject
 
 # Register your models here.
-admin.site.register(AdemicYear)
+admin.site.register(AcademicYear)
 admin.site.register(Level)
 admin.site.register(DocumentType)
 admin.site.register(Document)
