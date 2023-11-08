@@ -1,6 +1,6 @@
 from django.db import models
 
-from user_account.models import Teacher
+from user_account.models import Student, Teacher
 
 
 class AdemicYear(models.Model):
@@ -30,6 +30,19 @@ class Level(models.Model):
     
     def __str__(self):
         return f"Niveau : {self.label}"
+
+class Semester(models.Model):
+    
+    title = models.CharField(max_length=50)
+    
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL, null=True, blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Semestre : {self.label}"
 
 class Program(models.Model):
     
@@ -146,13 +159,15 @@ class Career(models.Model):
         return f"Parcours : {self.title}"
 
 
-
-# class SanctionAssessment(models.Model):
-#     pass
-
-
-# class StudentCareer(models.Model):
-#     pass
+class StudentCareer(models.Model):
+    
+    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    
+    career = models.ForeignKey(Career, on_delete=models.SET_NULL, null=True)
+    
+    academic_year = models.ForeignKey(AdemicYear, on_delete=models.DO_NOTHING)
+    
+    semester = models.ForeignKey(Semester, on_delete=models.DO_NOTHING)
 
 # class Classes(models.Model):
 #     pass
