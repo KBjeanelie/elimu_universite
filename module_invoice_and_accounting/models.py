@@ -84,6 +84,8 @@ class Item(models.Model):
     
 class Invoice(models.Model):
     
+    invoice_number = models.CharField(max_length=50, unique=True)
+    
     invoice_date = models.DateField()
     
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
@@ -105,6 +107,8 @@ class Invoice(models.Model):
 
 class Payment(models.Model):
     
+    payment_number = models.CharField(max_length=50, unique=True)
+    
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     
     payment_method = models.CharField(max_length=20)
@@ -121,6 +125,8 @@ class Payment(models.Model):
 
 
 class Estimate(models.Model):
+    
+    estimate_number = models.CharField(max_length=50, unique=True)
     
     date_estimate = models.DateField()
     
