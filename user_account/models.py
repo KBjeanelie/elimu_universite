@@ -93,16 +93,79 @@ class User(AbstractBaseUser, PermissionsMixin):
         # Simplest possible answer: All admins are staff
         return self.is_admin
 
+
 # Represent an objet of Student and his profil info
 class Student(models.Model):
     
     registration_number = models.CharField(max_length=255, unique=True)
     
-    user_account = models.ForeignKey(User, on_delete=models.DO_NOTHING)
+    lastname = models.CharField(max_length=50, null=True, blank=True)
+    
+    firstname = models.CharField(max_length=50, null=True, blank=True)
+    
+    address = models.CharField(max_length=50, null=True, blank=True)
+    
+    tel = models.CharField(max_length=20, blank=True)
+    
+    city = models.CharField(max_length=17, choices=cities, blank=True)
+    
+    sex = models.CharField(max_length=10, choices=sexes, blank=True)
+    
+    email = models.CharField(max_length=120, unique=True, blank=True)
+    
+    bithday = models.DateField(null=True, blank=True)
+    
+    nationality = models.CharField(max_length=20, blank=True)
+    
+    picture = models.ImageField(upload_to="student_pics", blank=True, null=True)
+    
+    user_account = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
 
 # Represent an objet of Teacher and his profil info
 class Teacher(models.Model):
-    pass
+    
+    lastname = models.CharField(max_length=50, blank=True)
+    
+    firstname = models.CharField(max_length=50, blank=True)
+    
+    address = models.CharField(max_length=50, blank=True)
+    
+    tel = models.CharField(max_length=20, blank=True)
+    
+    city = models.CharField(max_length=17, choices=cities, blank=True)
+    
+    sex = models.CharField(max_length=10, choices=sexes, blank=True)
+    
+    bithday = models.DateField(blank=True, null=True)
+    
+    nationality = models.CharField(max_length=20, blank=True)
+    
+    email = models.CharField(max_length=120, unique=True, blank=True)
+    
+    status = models.CharField(max_length=20, blank=True)
+    
+    last_diploma = models.CharField(max_length=20, blank=True)
+    
+    picture = models.ImageField(upload_to="teacher_pics", blank=True, null=True)
+    
+    type_of_counter = models.CharField(max_length=20, blank=True)
+    
+    start_of_contrat = models.DateField(blank=True, null=True)
+    
+    end_of_contrat = models.DateField(blank=True, null=True)
+    
+    user_account = models.ForeignKey(User, on_delete=models.DO_NOTHING, blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+
+
 
 # Represent an objet of team manager and his profil info
 class ManagementProfil(models.Model):
@@ -124,3 +187,7 @@ class ManagementProfil(models.Model):
     email = models.CharField(max_length=120, unique=True, blank=True)
     
     bio = models.TextField(blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now=True, null=True)
