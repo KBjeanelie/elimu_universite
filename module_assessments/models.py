@@ -23,6 +23,9 @@ class Assessment(models.Model):
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Evaluation {self.subject} de {self.student}, note {self.note}"
 
 
 class ReportCard(models.Model):
@@ -34,3 +37,6 @@ class ReportCard(models.Model):
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"bulletin de {self.student} en {self.career}"

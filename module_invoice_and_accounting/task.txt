@@ -1,0 +1,7 @@
+LIST OF TASKS FOR THIS MODULE:
+
+ - Design serializers for each model.
+ - Create a viewset for the Donation model
+ - Create a viewset for the BillingBracket model
+ - Create a viewset for the TimeLine model
+ - Create a viewset for the model Item

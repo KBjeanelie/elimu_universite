@@ -37,6 +37,9 @@ class Donation(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Don : {self.donor_name}"
 
     
 class BillingBracket(models.Model):
@@ -46,6 +49,9 @@ class BillingBracket(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Tranche de facturation : {self.label}"
 
 
 class TimeLine(models.Model):
@@ -59,6 +65,9 @@ class TimeLine(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Echéancier : {self.label}"
     
     
 class Item(models.Model):
@@ -80,6 +89,9 @@ class Item(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Article : {self.name}"
     
     
 class Invoice(models.Model):

@@ -39,6 +39,9 @@ class Program(models.Model):
     file = models.FileField(upload_to='programmes', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Programme : {self.title} par {self.person_in_charge}"
 
 # Class representing Document Type
 class DocumentType(models.Model):
@@ -96,6 +99,9 @@ class Subject(models.Model):
     possible_averaging = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Matiere : {self.label}"
 
 # Class representing Career (Educational Program/Path)
 class Career(models.Model):
@@ -114,6 +120,9 @@ class StudentCareer(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.DO_NOTHING)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Parcours : {self.student} en {self.career}"
 
 # Class representing Schedule (Class Timetable)
 class Schedule(models.Model):
@@ -137,3 +146,6 @@ class SanctionAppreciation(models.Model):
     sanction_date = models.DateField()
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Sanction de {self.student} pour {self.comment}"

@@ -124,6 +124,9 @@ class Student(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    
+    def __str__(self):
+        return f"Etudiant : {self.lastname}"
 
 
 # Represent an objet of Teacher and his profil info
@@ -164,6 +167,9 @@ class Teacher(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    
+    def __str__(self):
+        return f"Enseignant : {self.lastname}"
 
 
 

@@ -1,0 +1,6 @@
+LIST OF TASKS TO BE PERFORMED FOR THIS MODULE:
+
+  - Design the serializers for each model.
+  - Create a viewset for the Information model
+  - Create a viewset for the Events model
+  - Create a viewset for the Group model

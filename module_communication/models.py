@@ -18,6 +18,9 @@ class Information(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Information : {self.title}"
 
 
 class Event(models.Model):
@@ -37,6 +40,9 @@ class Event(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"Evenement : {self.title}"
 
 
 class EventParticipate(models.Model):
