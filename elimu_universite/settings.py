@@ -39,11 +39,16 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'user_account',
+    #------------ module of application
     'educational_content',
     'school_management',
     'module_assessments',
     'module_communication',
-    'module_invoice_and_accounting'
+    'module_invoice_and_accounting',
+    #------------ app for restframework and others
+    'corsheaders',
+    'rest_framework',
+    'rest_framework_simplejwt',
 ]
 
 MIDDLEWARE = [
