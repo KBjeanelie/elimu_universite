@@ -1,10 +1,14 @@
 """elimu_universite URL Configuration """
 from django.contrib import admin
-from django.urls import include, path
+from django.urls import include, path, re_path
 from django.conf.urls.static import static
 from elimu_universite import settings
+from rest_framework_swagger.views import get_swagger_view
+
+schema_view = get_swagger_view(title='ELIMU API')
 
 urlpatterns = [
+    re_path(r'^$', schema_view),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
     path('user_account/', include('user_account.urls')),
