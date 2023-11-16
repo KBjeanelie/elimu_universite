@@ -13,4 +13,5 @@ urlpatterns = [
     path('api-auth/', include('rest_framework.urls')),
     path('user_account/', include('user_account.urls')),
     path('educational_content/', include('educational_content.urls')),
+    path('school_management/', include('school_management.urls')),
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
