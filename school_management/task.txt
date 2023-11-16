@@ -1,10 +1,10 @@
 LIST OF TASKS FOR THIS MODULE:
 
- - Design serializers for each model.
- - Create a viewset for the A model
- - Create a viewset for the AcademicYear model
- - Create a viewset for the Level model
- - Create a viewset for the DocumentType Item
- - Create a viewset for the SanctionAppreciationType model
- - Create a viewset for the GroupSubject model
- - Create a viewset for the Sector Item
+ - Design serializers for each model. (done)
+ - Create a viewset for the A model (done)
+ - Create a viewset for the AcademicYear model (done)
+ - Create a viewset for the Level model (done)
+ - Create a viewset for the DocumentType Item (done)
+ - Create a viewset for the SanctionAppreciationType model (done)
+ - Create a viewset for the GroupSubject model (done)
+ - Create a viewset for the Sector Item (done)
