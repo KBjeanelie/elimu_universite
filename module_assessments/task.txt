@@ -1,4 +1,4 @@
 LIST OF TASKS FOR THIS MODULE:
 
- - Design serializers for each model.
- - Create a viewset for the TypeOfEvaluation model
+ - Design serializers for each model. (Done)
+ - Create a viewset for the TypeOfEvaluation model (Done)
