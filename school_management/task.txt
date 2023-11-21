@@ -8,3 +8,13 @@ LIST OF TASKS FOR THIS MODULE:
  - Create a viewset for the SanctionAppreciationType model (done)
  - Create a viewset for the GroupSubject model (done)
  - Create a viewset for the Sector Item (done)
+
+
+
+MODULE GESTION ETABLISSEMENT:
+	
+	Faire une vue qui affiche l'emploi du temps d'un enseignant par rapport au matière qu'il enseigne. (NB: cette emplois du temps sont lister en fonction du parcours qu'il enseigne)
+	Faire une vue qui liste tous les document que possède un enseignant.
+	Faire une vue qui affiche le nombre total de sanction
+	Faire une vue qui affiche toutes les emplois du temps de chaque parcours
+	Faire une vue qui affiche tous les etudiant ainsi que leur parcours au cours d'une année scolaire
