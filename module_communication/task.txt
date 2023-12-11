@@ -7,13 +7,13 @@ LIST OF TASKS TO BE PERFORMED FOR THIS MODULE:
 
 
 MODULE COMMUNICATION
-	Faire une vue qui permet de renvoyer le nombre de personne qui participe à un évenement.
-	Faire une vue qui enregistre un étudiant qui veut participer à un envement.
-	Faire une vue qui recupère le dernier message de discussion entre deux étudiant.
-	Faire une vue qui récupère le dernier message d'un group de discussion où l'étudiant est membre.
+	Faire une vue qui permet de renvoyer le nombre de personne qui participe à un évenement.(Done)
+	Faire une vue qui enregistre un étudiant qui veut participer à un envement.(Done)
+	Faire une vue qui recupère le dernier message de discussion entre deux étudiant.(Done)
+	Faire une vue qui récupère le dernier message d'un group de discussion où l'étudiant est membre.(Done)
 	Faire une vue qui liste toutes les message de discussion du group où il fait partie (noter que le group qu'il fait partie depends de son parcours sur l'année actuel. ex: s'il est en Lic info 1 alors il fait automatiquement partie du group de discussion Lic info 1)
-	Faire une vue qui liste toutes les message de discussion entre deux étudiant.
+	Faire une vue qui liste toutes les message de discussion entre deux étudiant.(Done)
 	
 NB : ces messages peuvent être des media tout comme des messages normales.
 	
-	Faire une vue qui liste toute les utilisateur de la plateforme.
+	Faire une vue qui liste toute les utilisateur de la plateforme.(Done)

@@ -1,4 +1,4 @@
-#!/home/walter/PycharmProjects/elimu_universite/env/bin/python
+#!/home/walter/PycharmProjects/elimu_universite_backend/env/bin/python
 # -*- coding: utf-8 -*-
 import re
 import sys
