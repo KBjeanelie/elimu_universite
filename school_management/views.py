@@ -107,6 +107,4 @@ def all_career_schedules(request):
 def students_and_careers(request, academic_year_id):
     student_careers = StudentCareer.objects.filter(academic_year_id=academic_year_id)
     
-    context = {'student_careers': student_careers}
-    
-    return render(request, 'students_and_careers.html', context)
+    return JsonResponse({'student_careers': student_careers})
