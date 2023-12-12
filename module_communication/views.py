@@ -74,9 +74,9 @@ def all_student_messages(request, sender_id, receiver_id):
 
 
 
-def all_users(request):
-    all_users = Student.objects.all()
+# def all_users(request):
+#     all_users = Student.objects.all()
     
-    users_list = [{'username': user.username, 'email': user.email} for user in all_users]
+#     users_list = [{'username': user.username, 'email': user.email} for user in all_users]
     
-    return JsonResponse({'users': users_list})
+#     return JsonResponse({'users': users_list})

@@ -14,4 +14,7 @@ urlpatterns = [
     path('user_account/', include('user_account.urls')),
     path('educational_content/', include('educational_content.urls')),
     path('school_management/', include('school_management.urls')),
+    path('module_communication/', include('module_communication.urls')),
+    path('module_assessments/', include('module_assessments.urls')),
+    path('module_invoice_and_accounting/', include('module_invoice_and_accounting.urls'))
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
