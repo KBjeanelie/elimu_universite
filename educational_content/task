@@ -1,8 +1,0 @@
-MODULE CONTENUE PÉDAGOGIQUE:
- 	faire une vue où on affiche la liste des membre de la bibliothèque. (les membre de la bibliothèque sont des étudiant qui ont un numero de matricule au seint de bibliothèque).
- 	Faire une vue qui permet de lister les livre qui ont été emprunter par les étudiant.
- 	faire une vue qui enregistre et modifie un emprunt de livre et quivalide lorsque le livre a été remis par l'étudiant.
- Faire une vue qui liste les dossier créer par un enseignant, qui liste les fichier d'un dossier
- 	faire une vue qui liste les dossier par rapport à un parcours.
- faire une vue qui liste les ebook par rapport à un parcours et faire aussi sa vue de détails
-d
