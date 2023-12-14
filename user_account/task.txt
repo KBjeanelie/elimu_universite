@@ -1,7 +1,0 @@
-LIST OF TASKS FOR THIS MODULE:
-
- - Design serializers for each model. (Done)
- - Create a viewset for the User model (Done)
- - Create a viewset for the Student model (Done)
- - Create a viewset for the Teacher model (Done)
- - Create a viewset for the ManagementProfil Item (Done)
