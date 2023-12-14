@@ -54,6 +54,26 @@ class FinancialCommitmentUpdateView(UpdateAPIView):
 class RegulationsViewSet(viewsets.ModelViewSet):
     queryset = Regulations.objects.all()
     serializer_class = RegulationsSerializer
+    
+    def generate_payment_number(self):
+        now = datetime.datetime.now()
+        year = now.year
+        total_regulations = Regulations.objects.count()
+
+        return f"REGL{year}{total_regulations}"
+    
+    def create(self, request, *args, **kwargs):
+        payment_number = self.generate_payment_number()
+        request['payment_number'] = payment_number
+        
+        serializer = self.get_serializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)
+
 
 class InvoiceViewSet(viewsets.ModelViewSet):
     queryset = Invoice.objects.all()
