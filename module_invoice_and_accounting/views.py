@@ -3,6 +3,7 @@ from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.generics import UpdateAPIView
 from django.utils import timezone
+from django.core.cache import cache
 
 from module_invoice_and_accounting.models import *
 from module_invoice_and_accounting.serializers import *
@@ -78,3 +79,25 @@ class RegulationsViewSet(viewsets.ModelViewSet):
 class InvoiceViewSet(viewsets.ModelViewSet):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
+    
+    def generate_invoice_number(self):
+        now = datetime.datetime.now()
+        year = now.year
+        # Utilisation du cache pour stocker le compteur
+        invoice_counter = cache.get('invoice_counter') or 0
+        invoice_counter += 1
+        cache.set('invoice_counter', invoice_counter)
+        
+        return f"FA{year}{invoice_counter}"
+    
+    def create(self, request, *args, **kwargs):
+        invoice_number = self.generate_invoice_number()
+        request.data['invoice_number'] = invoice_number
+        
+        serializer = self.get_serializer(data=request.data)
+        
+        if serializer.is_valid():
+            serializer.save()
+            return Response(serializer.data, status=status.HTTP_201_CREATED)
+        
+        return Response(serializer.errors, status=status.HTTP_400_BAD_REQUEST)

@@ -25,6 +25,7 @@ class ItemSerializer(serializers.ModelSerializer):
 
 
 class InvoiceSerializer(serializers.ModelSerializer):
+    invoice_number = serializers.CharField(required=False)
     class Meta:
         model = Invoice
         fields = '__all__'

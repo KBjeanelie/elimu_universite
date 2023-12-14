@@ -3,21 +3,22 @@ import json
 
 # Les données à envoyer dans la requête PUT
 data = {
-    "send_date": None,  # Mettre à null pour la date actuelle
-    "is_send": True  # Mettre à True pour is_send
+     "invoice_date": "2023-11-12",
+    "payment_status": "Payé entièrement",
+    "comment": 'Bon etudiant',  # Mettre à null pour la date actuelle
 }
 
 # ID de l'engagement financier à mettre à jour
-financial_commitment_id = 3  # Remplacez par l'ID de l'engagement financier spécifique
+invoice_id = 1  # Remplacez par l'ID de l'engagement financier spécifique
 
 # L'URL pour la mise à jour de l'engagement financier
-url = f"http://localhost:8000/module_invoice_and_accounting/send-financial-commitment/{financial_commitment_id}/"
+url = f"http://localhost:8000/module_invoice_and_accounting/invoices/{invoice_id}/"
 
 # Envoi de la requête PUT avec les données
 response = requests.patch(url, json=data)
 
 # Vérification de la réponse
 if response.status_code == 200:
-    print("L'engagement financier a été mis à jour avec succès !")
+    print("La facture a été mis à jour avec succès !")
 else:
     print("Échec de la mise à jour de l'engagement financier :", response.text)
