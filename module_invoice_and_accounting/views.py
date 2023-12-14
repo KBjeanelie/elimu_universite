@@ -59,13 +59,16 @@ class RegulationsViewSet(viewsets.ModelViewSet):
     def generate_payment_number(self):
         now = datetime.datetime.now()
         year = now.year
-        total_regulations = Regulations.objects.count()
+        # Utilisation du cache pour stocker le compteur
+        regulation_counter = cache.get('regulation_counter') or 0
+        regulation_counter += 1
+        cache.set('regulation_counter', regulation_counter)
 
-        return f"REGL{year}{total_regulations}"
+        return f"REGL{year}{regulation_counter}"
     
     def create(self, request, *args, **kwargs):
         payment_number = self.generate_payment_number()
-        request['payment_number'] = payment_number
+        request.data['payment_number'] = payment_number
         
         serializer = self.get_serializer(data=request.data)
         

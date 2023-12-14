@@ -31,6 +31,7 @@ class InvoiceSerializer(serializers.ModelSerializer):
         fields = '__all__'
 
 class RegulationsSerializer(serializers.ModelSerializer):
+    payment_number = serializers.CharField(required=False)
     class Meta:
         model = Regulations
         fields = '__all__'
