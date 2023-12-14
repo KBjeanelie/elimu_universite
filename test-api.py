@@ -1,18 +1,23 @@
 import requests
+import json
 
-# URL de l'API
-url = 'http://localhost:8000/educational_content/ebooks/1/'
+# Les données à envoyer dans la requête PUT
+data = {
+    "send_date": None,  # Mettre à null pour la date actuelle
+    "is_send": True  # Mettre à True pour is_send
+}
 
+# ID de l'engagement financier à mettre à jour
+financial_commitment_id = 3  # Remplacez par l'ID de l'engagement financier spécifique
 
-# Envoi de la requête GET
-response = requests.get(url)
+# L'URL pour la mise à jour de l'engagement financier
+url = f"http://localhost:8000/module_invoice_and_accounting/send-financial-commitment/{financial_commitment_id}/"
 
-# Vérification du statut de la réponse
+# Envoi de la requête PUT avec les données
+response = requests.patch(url, json=data)
+
+# Vérification de la réponse
 if response.status_code == 200:
-    # Affichage des fichiers récupérés
-    files = response.json()
-    print("Fichiers récupérés :")
-    for file in files:
-        print(file)
+    print("L'engagement financier a été mis à jour avec succès !")
 else:
-    print("La requête n'a pas abouti. Code de statut :", response.status_code)
+    print("Échec de la mise à jour de l'engagement financier :", response.text)
