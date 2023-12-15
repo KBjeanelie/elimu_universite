@@ -2,7 +2,7 @@ from rest_framework import generics
 from rest_framework import viewsets
 from educational_content.models import Book, BookCategory, File, Folder, eBook
 from educational_content.serializers import BookCategorySerializer, BookSerializer, FileSerializer, FolderSerializer, eBookSerializer
-
+from rest_framework.permissions import IsAuthenticated
 
 class FolderViewSet(viewsets.ModelViewSet):
     queryset = Folder.objects.all()
@@ -17,6 +17,7 @@ class FileViewSet(viewsets.ModelViewSet):
 class BookCategoryViewSet(viewsets.ModelViewSet):
     queryset = BookCategory.objects.all()
     serializer_class = BookCategorySerializer
+    permission_classes = [IsAuthenticated]
 
 
 class BookViewSet(viewsets.ModelViewSet):

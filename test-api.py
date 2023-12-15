@@ -1,7 +1,7 @@
 import requests
 import json
 
-url = 'http://localhost:8000/user_account/create-student-user/'
+url = 'http://localhost:8000/educational_content/book_categories/'
 response = requests.get(url)
 
 if response.status_code == 204:
