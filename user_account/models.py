@@ -188,7 +188,7 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     teacher = models.OneToOneField(Teacher, unique=True, on_delete=models.DO_NOTHING, null=True, blank=True)
     
-    management_profil = models.OneToOneField(ManagementProfil, unique=True, on_delete=models.DO_NOTHING, null=True, blank=True)
+    management_profil = models.OneToOneField(ManagementProfil, unique=True, on_delete=models.CASCADE, null=True, blank=True)
 
     is_active = models.BooleanField(default=True)
     

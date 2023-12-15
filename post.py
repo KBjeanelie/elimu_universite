@@ -1,10 +1,10 @@
 import requests
 
-url = 'http://localhost:8000/user_account/teacher-account-view/'
+url = 'http://localhost:8000/user_account/manager-account-view/'
 data = {
-    'username': 'Oyere.morel',
+    'username': 'gestionnaire',
     'password': 'azerty',
-    'teacher_id': 1,
+    'manager_id': 5, 
     'is_active': True
 }
 
