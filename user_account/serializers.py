@@ -1,18 +1,22 @@
 from rest_framework import serializers
 
-from user_account.models import ManagementProfil, Student, Teacher, User, UserType
-
-class UserTypeSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = UserType
-        fields = '__all__'
+from user_account.models import ManagementProfil, Student, Teacher, User
 
 
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ('id', 'username', 'password', 'user_type')
-        #extra_kwargs = {'password': {'write_only': True}}
+        fields = '__all__'
+
+class StudentUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'student', 'is_student', 'is_active','created_at', 'updated_at')
+
+class UserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'password', '')
 
 
 class StudentSerializer(serializers.ModelSerializer):
