@@ -141,6 +141,7 @@ class UserManager(BaseUserManager):
         user = self.model(username=username, teacher=teacher)
 
         user.set_password(password)
+        user.is_teacher = True
         user.save(using=self._db)
         return user
     

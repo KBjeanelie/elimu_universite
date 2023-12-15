@@ -1,14 +1,14 @@
 import requests
 
-url = 'http://localhost:8000/user_account/create-student-user/'
-# data = {
-#     'username': 'kbjeanelie',
-#     'password': 'azerty',
-#     'student': 'MTG2002RT',
-#     'is_active': True
-# }
+url = 'http://localhost:8000/user_account/teacher-account-view/'
+data = {
+    'username': 'Oyere.morel',
+    'password': 'azerty',
+    'teacher_id': 1,
+    'is_active': True
+}
 
-data = {'student_id': 1}
+#data = {'student_id': 1}
 response = requests.delete(url, data=data)
 
 if response.status_code == 204:  # Code HTTP 201 : Création réussie

@@ -12,5 +12,6 @@ router.register(r'management_profil', ManagementProfilViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('student-account-view/', views.StudentAccountView.as_view(), name="student-account-view")
+    path('student-account-view/', views.StudentAccountView.as_view(), name="student-account-view"),
+    path('teacher-account-view/', views.TeacherAccountView.as_view(), name="teacher-account-view")
 ]

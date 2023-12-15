@@ -13,6 +13,12 @@ class StudentUserSerializer(serializers.ModelSerializer):
         model = User
         fields = ('id', 'username', 'student', 'is_student', 'is_active','created_at', 'updated_at')
 
+class TeacherUserSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ('id', 'username', 'teacher', 'is_teacher', 'is_active','created_at', 'updated_at')
+
+
 class UserSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
