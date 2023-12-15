@@ -9,7 +9,7 @@ django-filter
 django-jazzmin
 django-rest-swagger
 djangorestframework
-djangorestframework-jwt
+djangorestframework-simplejwt
 ez-setup
 idna
 importlib-metadata
