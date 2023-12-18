@@ -1,18 +1,15 @@
 import requests
 
-url = 'http://localhost:8000/user_account/manager-account-view/'
+url = 'http://localhost:8000/api/login/'
 data = {
-    'username': 'gestionnaire',
-    'password': 'azerty',
-    'manager_id': 5, 
-    'is_active': True
+    'username': 'admin',
+    'password': 'azerty123',
 }
 
 #data = {'student_id': 1}
-response = requests.delete(url, data=data)
+response = requests.post(url, data=data)
 
-if response.status_code == 204:  # Code HTTP 201 : Création réussie
-    print('Suppression reussi !')
+if response.status_code == 201:  # Code HTTP 201 : Création réussie
     print(response.json())  # Affiche les données de l'objet créé
 else:
     print('Erreur lors de la création de l\'objet :', response.status_code)

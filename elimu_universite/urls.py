@@ -5,7 +5,13 @@ from django.conf.urls.static import static
 from elimu_universite import settings
 from rest_framework_swagger.views import get_swagger_view
 
+from user_account.views import LoginAPIView, LogoutAPIView
+
 schema_view = get_swagger_view(title='ELIMU API')
+from rest_framework_simplejwt.views import (
+    TokenObtainPairView,
+    TokenRefreshView,
+)
 
 urlpatterns = [
     re_path(r'^$', schema_view),
@@ -16,5 +22,9 @@ urlpatterns = [
     path('school_management/', include('school_management.urls')),
     path('module_communication/', include('module_communication.urls')),
     path('module_assessments/', include('module_assessments.urls')),
-    path('module_invoice_and_accounting/', include('module_invoice_and_accounting.urls'))
+    path('module_invoice_and_accounting/', include('module_invoice_and_accounting.urls')),
+    path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('api/login/', LoginAPIView.as_view(), name='api-login'),
+    path('api/logout/', LogoutAPIView.as_view(), name='api-logout')
 ] + static(settings.MEDIA_URL, document_root = settings.MEDIA_ROOT)
