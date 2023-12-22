@@ -24,5 +24,5 @@ router.register(r'sanction_appreciations', SanctionAppreciationViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
-    path('teacher-schedule/<int:teacher_id/', TeacherScheduleListView.as_view(), name='teacher_schedule')
+    path('teacher-schedule/<int:teacher_id>/', TeacherScheduleListView.as_view(), name='teacher_schedule')
 ]
