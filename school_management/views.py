@@ -1,4 +1,4 @@
-from rest_framework import viewsets
+from rest_framework import viewsets, views, response, status
 from school_management.models import AcademicYear, Career, Document, DocumentType, GroupSubject, Level, Program, SanctionAppreciation, SanctionAppreciationType, Schedule, Sector, Semester, StudentCareer, Subject
 from school_management.serializers import AcademicYearSerializer, CareerSerializer, DocumentSerializer, DocumentTypeSerializer, GroupSubjectSerializer, LevelSerializer, ProgramSerializer, SanctionAppreciationSerializer, SanctionAppreciationTypeSerializer, ScheduleSerializer, SectorSerializer, SemesterSerializer, StudentCareerSerializer, SubjectSerializer
 from django.shortcuts import get_object_or_404, render
@@ -62,6 +62,16 @@ class ScheduleViewSet(viewsets.ModelViewSet):
 class SanctionAppreciationViewSet(viewsets.ModelViewSet):
     queryset = SanctionAppreciation.objects.all()
     serializer_class = SanctionAppreciationSerializer
+
+
+class TeacherScheduleListView(views.APIView):
+
+    def get(self, request, format=None):
+        teacher_id = request.data['teacher_id']
+        print(teacher_id)
+        schedules = Schedule.objects.filter(subject__teacher_in_charge=teacher_id)
+        serializer = ScheduleSerializer(data=schedules, many=True)
+        return response.Response(serializer.data, status=status.HTTP_200_OK)
 
 
 def teacher_schedule(request, teacher_id):

@@ -1,7 +1,7 @@
 from django.urls import path, include
 from rest_framework import routers
 
-from school_management.views import AcademicYearViewSet, CareerViewSet, DocumentTypeViewSet, DocumentViewSet, GroupSubjectViewSet, LevelViewSet, ProgramViewSet, SanctionAppreciationTypeViewSet, SanctionAppreciationViewSet, ScheduleViewSet, SectorViewSet, SemesterViewSet, StudentCareerViewSet, SubjectViewSet
+from school_management.views import AcademicYearViewSet, CareerViewSet, DocumentTypeViewSet, DocumentViewSet, GroupSubjectViewSet, LevelViewSet, ProgramViewSet, SanctionAppreciationTypeViewSet, SanctionAppreciationViewSet, ScheduleViewSet, SectorViewSet, SemesterViewSet, StudentCareerViewSet, SubjectViewSet, TeacherScheduleListView
 
 
 router = routers.DefaultRouter()
@@ -24,4 +24,5 @@ router.register(r'sanction_appreciations', SanctionAppreciationViewSet)
 
 urlpatterns = [
     path('', include(router.urls)),
+    path('teacher-schedule/<int:teacher_id/', TeacherScheduleListView.as_view(), name='teacher_schedule')
 ]
