@@ -1,6 +1,6 @@
 from django.db import models
 
-from school_management.models import AcademicYear, Career
+from school_management.models import Career
 from user_account.models import Student
 
 # Create your models here.
