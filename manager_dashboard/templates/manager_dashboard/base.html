@@ -185,13 +185,13 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href="administration/type_evaluations.html">Type d'Évaluations</a></li>
-                    <li><a href="administration/type_documents.html">Type de document</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_evaluation' %}">Type d'Évaluations</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_documents' %}">Type de document</a></li>
                     <!-- <li><a href="">Type de présence</a></li> -->
-                    <li><a href="administration/type_sanctions.html">Type de sanction</a></li>
-                    <li><a href="administration/type_comptes.html">Type de comptes</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Type de sanction</a></li>
+                    {% comment %} <li><a href="administration/type_comptes.html">Type de comptes</a></li> {% endcomment %}
                     <!-- <li><a href="administration/types_conges.html">Type de congé</a></li> -->
-                    <li><a href="administration/reglage_generale.html">Réglages généraux</a></li>
+                    <li><a href="{% url 'manager_dashboard:reglage_general' %}">Réglages généraux</a></li>
                     
                 </ul>
             </li>

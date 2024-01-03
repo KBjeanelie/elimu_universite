@@ -40,6 +40,18 @@ class DocumentTypeForm(forms.ModelForm):
     class Meta:
         model = DocumentType
         fields = ['title']
+        labels = {'title': 'Titre'}
+        widgets = {
+            'title' : forms.TextInput(
+                attrs={
+                    'id': 'title',
+                    'class': 'form-control',
+                    'name': 'title',
+                    'placeholder': 'cv',
+                    'required': True
+                }
+            )
+        }
 
 class SanctionAppreciationTypeForm(forms.ModelForm):
     class Meta:
