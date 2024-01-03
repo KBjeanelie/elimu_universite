@@ -66,11 +66,11 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form method="post">
+                        <form method="post" id="form_id">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Type de document</label>
-                                {{ form.title }}
+                                <input type="text" id="title" class='form-control' name="title", placeholder="Acte de naissance..." required>
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
@@ -83,7 +83,7 @@
 
 <script>
 
-    // Supprimer un élément
+// Supprimer un élément
 function deleteDocumentType(documentTypeId) {
     var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
     $.ajax({
@@ -117,5 +117,46 @@ function getCookie(name) {
     }
     return cookieValue;
 }
+
+
+$('#form_id').submit(function(event) {
+    event.preventDefault();
+    var title = $('#title').val();
+    $.ajax({
+        type: "POST",
+        url: "{% url 'manager_dashboard:type_documents' %}",
+        data: { title: title, csrfmiddlewaretoken: '{{ csrf_token }}' },
+        success: function(response) {
+            console.log('Type de document ajouté avec succès');
+            // Récupérer l'objet créé
+            $.ajax({
+                type: "GET",
+                url: `/administration/type_documents/last/`,
+                success: function(data) {
+                    var newRow = `<tr data-id="${data.id}">
+                        <td>${data.title}</td>
+                        <td>
+                            <div class="action_btns d-flex">
+                                <a href="#" onclick="deleteDocumentType(${data.id})" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                            </div>
+                        </td>
+                      </tr>`;
+                      
+                    $('.QA_table tbody').append(newRow);
+                    // Clear form fields
+                    $('#form_id')[0].reset();
+                },
+                error: function(error) {
+                    console.error('Erreur lors de la récupération de l\'objet créé', error);
+                }
+            });
+            
+        },
+        error: function(error) {
+            console.error('Erreur lors de la création du document', error);
+        }
+    });
+});
+
 </script>
 {% endblock content %}

@@ -28,7 +28,7 @@ class TypeDocumentView(View):
         form = DocumentTypeForm(request.POST)  # Formulaire pour la création
         if form.is_valid():
             form.save()  # Sauvegarde du nouvel objet
-            return redirect('manager_dashboard:type_documents')  # Redirection vers la vue de lecture (GET)
+            return redirect('manager_dashboard:type_documents')
         
         type_documents = DocumentType.objects.all().order_by('-created_at')
         context = {'type_documents': type_documents, 'form': form}
@@ -47,6 +47,16 @@ class TypeDocumentDeleteView(View):
         instance = get_object_or_404(DocumentType, pk=pk)
         instance.delete()
         return JsonResponse({'message': 'Élément supprimé avec succès'})
+
+def get_last_document_type(request):
+    last_object = DocumentType.objects.last()
+    document_type = {
+        'id': last_object.id,
+        'title': last_object.title
+    }
+    
+    return JsonResponse(document_type)
+
 
 
 class TypeSanctionView(View):
