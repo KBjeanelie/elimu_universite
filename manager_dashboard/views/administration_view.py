@@ -1,7 +1,7 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import DocumentTypeForm
+from school_management.forms import DocumentTypeForm, SanctionAppreciationTypeForm
 
 from school_management.models import DocumentType, SanctionAppreciationType
 
@@ -40,7 +40,7 @@ class TypeDocumentView(View):
         form = DocumentTypeForm(request.POST or None, instance=instance)
         if form.is_valid():
             form.save()  # Sauvegarde de l'objet mis à jour
-            return redirect('manager_dashboard:type_documents')  # Redirection vers la vue de lecture (GET)
+            return redirect('manager_dashboard:type_documents') 
 
 class TypeDocumentDeleteView(View):
     def delete(self, request, pk, *args, **kwargs):
@@ -61,9 +61,50 @@ def get_last_document_type(request):
 
 class TypeSanctionView(View):
     template_name = "manager_dashboard/administration/type_sanctions.html"
+    typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
+    context_object = {'type_sanctions': typeSanctions}
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template_name)
+        typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
+        form = SanctionAppreciationTypeForm()  # Formulaire pour la création
+        context = {'type_sanctions': typeSanctions, 'form': form}
+        return render(request, template_name=self.template_name, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = SanctionAppreciationTypeForm(request.POST)  # Formulaire pour la création
+        if form.is_valid():
+            form.save()  # Sauvegarde du nouvel objet
+            return redirect('manager_dashboard:type_sanctions')
+        
+        typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
+        context = {'type_sanctions': typeSanctions, 'form': form}
+        return render(request, template_name=self.template_name, context=context)
+
+    def put(self, request, *args, **kwargs):
+        sanction_type_id = kwargs.get('id')
+        instance = get_object_or_404(SanctionAppreciationType, id=sanction_type_id)
+        form = SanctionAppreciationTypeForm(request.POST or None, instance=instance)
+        if form.is_valid():
+            form.save()  # Sauvegarde de l'objet mis à jour
+            return redirect('manager_dashboard:type_sanctions')
+
+
+class TypeSanctionDeleteView(View):
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(SanctionAppreciationType, pk=pk)
+        instance.delete()
+        return JsonResponse({'message': 'Élément supprimé avec succès'})
+
+def get_last_sanction_type(request):
+    last_object = SanctionAppreciationType.objects.last()
+    sanction_type = {
+        'id': last_object.id,
+        'title': last_object.title,
+        'description': last_object.description
+    }
+    
+    return JsonResponse(sanction_type)
+
 
 class SettingAppView(View):
     template_name = "manager_dashboard/administration/reglage_generale.html"

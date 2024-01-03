@@ -70,7 +70,7 @@
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Type de document</label>
-                                <input type="text" id="title" class='form-control' name="title", placeholder="Acte de naissance..." required>
+                                <input type="text" id="title" class='form-control' name="title", placeholder="Acte de naissance..." maxLength="50" required>
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
@@ -141,7 +141,7 @@ $('#form_id').submit(function(event) {
                             </div>
                         </td>
                       </tr>`;
-                      
+
                     $('.QA_table tbody').append(newRow);
                     // Clear form fields
                     $('#form_id')[0].reset();
