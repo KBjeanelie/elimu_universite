@@ -2,14 +2,22 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from elimu_universite import settings
-from manager_dashboard.views.administration_view import TypeDocumentDeleteView, TypeEvaluationView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
+from manager_dashboard.views.administration_view import TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
+from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookDeleteView, eBookView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
 app_name = 'manager_dashboard'
 urlpatterns = [
     path(route='', view=ManagerIndexView.as_view(), name='index'),
+    path(route='contenue_pedagogique/ebooks/', view=eBookView.as_view(), name="ebooks"),
+    path(route='contenue_pedagogique/ebooks/ajouter/', view=AddeBook.as_view(), name='add_ebook'),
+    path(route='contenue_pedagogique/ebooks/<int:pk>/delete/', view=eBookDeleteView.as_view(), name="delete_ebook"),
+    path(route='contenue_pedagogique/dossiers/', view=FolderViews.as_view(), name='folders'),
+    path(route='contenue_pedagogique/dossiers/<int:folder_id>', view=FilesView.as_view(), name='content_folder'),
+    path(route='contenue_pedagogique/fichier/ajouter/', view=FilesView.as_view(), name='add_file'),
+    #=================== THIS ROUTE IS FOR Compte MODULE ========================
     path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
     path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
     path(route='comptes/compte_enseignants/<int:pk>/delete/', view=TeacherAccountDeleteView.as_view(), name='delete_teacher_account'),
