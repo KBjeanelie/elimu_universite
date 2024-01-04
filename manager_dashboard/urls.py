@@ -3,23 +3,29 @@ from django.urls import path
 
 from elimu_universite import settings
 from manager_dashboard.views.administration_view import TypeDocumentDeleteView, TypeEvaluationView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
+from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
 app_name = 'manager_dashboard'
 urlpatterns = [
     path(route='', view=ManagerIndexView.as_view(), name='index'),
-    path(route='administration/type_evaluation/', view=TypeEvaluationView.as_view(), name='type_evaluation'),
+    path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
+    path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
+    path(route='comptes/compte_enseignants/<int:pk>/delete/', view=TeacherAccountDeleteView.as_view(), name='delete_teacher_account'),
+    path(route='comptes/compte_etudiants/', view=ListAllStudentAccount.as_view(), name='students_account'),
+    path(route='comptes/compte_etudiants/ajouter/', view=AddStudentAccount.as_view(), name='add_student_account'),
+    path(route='comptes/compte_etudiants/<int:pk>/delete/', view=StudentAccountDeleteView.as_view(), name='delete_student_account'),
     
+    
+    #=================== THIS ROUTE IS FOR ADMINISTRATION MODULE ========================
+    # path(route='administration/type_evaluation/', view=TypeEvaluationView.as_view(), name='type_evaluation'),
     path(route='administration/type_documents/', view=TypeDocumentView.as_view(), name='type_documents'),
     path(route='administration/type_documents/<int:pk>/delete/', view=TypeDocumentDeleteView.as_view(), name='delete_type_document'),
     path(route='administration/type_documents/last/', view=get_last_document_type),
-    
     path(route='administration/type_sanctions/', view=TypeSanctionView.as_view(), name='type_sanctions'),
     path(route='administration/type_sanctions/<int:pk>/delete/', view=TypeSanctionDeleteView.as_view(), name='delete_type_sanction'),
     path(route='administration/type_sanctions/last/', view=get_last_sanction_type),
-    
-    
     path(route='administration/reglage-general/', view=SettingAppView.as_view(), name='reglage_general'),
 ]
 

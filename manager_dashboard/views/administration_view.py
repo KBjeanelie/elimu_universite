@@ -95,6 +95,7 @@ class TypeSanctionDeleteView(View):
         instance.delete()
         return JsonResponse({'message': 'Élément supprimé avec succès'})
 
+
 def get_last_sanction_type(request):
     last_object = SanctionAppreciationType.objects.last()
     sanction_type = {

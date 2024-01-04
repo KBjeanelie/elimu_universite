@@ -42,7 +42,7 @@ class Student(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     
     def __str__(self):
-        return f"Etudiant : {self.lastname}"
+        return f"Matricule : {self.registration_number} - {self.lastname} {self.firstname}"
 
 
 # Represent an objet of Teacher and his profil info
@@ -83,7 +83,7 @@ class Teacher(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     
     def __str__(self):
-        return f"Enseignant : {self.lastname}"
+        return f"Enseignant : {self.lastname} - {self.firstname}"
 
 
 
