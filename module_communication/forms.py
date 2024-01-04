@@ -20,6 +20,26 @@ class GroupForm(forms.ModelForm):
     class Meta:
         model = Group
         fields = ['title', 'career']
+        
+        widgets = {
+            'title': forms.TextInput(
+                attrs={
+                    'type': 'text',
+                    'id': 'title',
+                    'class': 'form-control',
+                    'name': 'title',
+                    'placeholder': 'nom du group',
+                    'required': True
+
+                }
+            ),
+            'career': forms.Select(
+                attrs={
+                    "class": "form-control",
+                    "required": True
+                }
+            ),
+        }
 
 class GroupMediaForm(forms.ModelForm):
     class Meta:

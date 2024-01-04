@@ -136,11 +136,11 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href="communication/messages.html">Messages</a></li>
+                    {% comment %} <li><a href="communication/messages.html">Messages</a></li> {% endcomment %}
                     <!-- <li><a href="communication/notifications.html">Notifications</a></li> -->
-                    <li><a href="communication/informations.html">Informations</a></li>
-                    <li><a href="communication/evenements.html">Évenements</a></li>
-                    <li><a href="communication/group-discussions.html">Groupe de discussion</a></li>
+                    <li><a href='{% url "manager_dashboard:informations" %}'>Informations</a></li>
+                    <li><a href='{% url "manager_dashboard:events" %}'>Évenements</a></li>
+                    <li><a href='{% url "manager_dashboard:discussion_group" %}'>Groupe de discussion</a></li>
                 </ul>
             </li>
 
