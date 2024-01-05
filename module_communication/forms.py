@@ -1,15 +1,79 @@
 from django import forms
 from .models import Information, Event, EventParticipate, Group, GroupMedia
+from ckeditor.widgets import CKEditorWidget
 
 class InformationForm(forms.ModelForm):
     class Meta:
         model = Information
         fields = ['title', 'date_info', 'content', 'file']
+        widgets = {
+            'content': CKEditorWidget(),
+            'title': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Titre',
+                    'required': True
+                }
+            ),
+            'date_info':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                    "required": True
+                }
+            ),
+            'file': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                }
+            ),
+        }
 
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
         fields = ['title', 'start_date', 'end_date', 'content', 'file', 'photo']
+        widgets = {
+            'content': CKEditorWidget(),
+            'title': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Titre',
+                    'required': True
+                }
+            ),
+            'start_date':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                    "required": True
+                }
+            ),
+            'end_date':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                    "required": True
+                }
+            ),
+            'file': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                    "required": True
+                }
+            ),
+            'photo': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                    "required": True
+                }
+            ),
+        }
 
 class EventParticipateForm(forms.ModelForm):
     class Meta:

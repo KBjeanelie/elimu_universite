@@ -16,7 +16,7 @@
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href="ajouter_information.html" class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter une information</a>
+                            <a href='{% url "manager_dashboard:add_information" %}' class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter une information</a>
                         </div>
                     </div>
                 </div>
@@ -56,20 +56,32 @@
                                             <th scope="col">Pièce jointe</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Reunion des enseignants</td>
-                                            <td>15/08/2023</td>
-                                            <td>Reunion</td>
-                                            <td><a href="#" target="_blank">programme_math.pdf</a></td>
-                                            <td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="elementList">
+                                        {% for information in informations %}
+                                            <tr data-id="{{ information.id }}">
+                                                <td><h6> {{ information.title }} </h6></td>
+                                                <td><h6> {{ information.date_info }} </h6></td>
+                                                <td> {{ information.content | slice:":100" | safe }}... </td>
+                                                <td>
+                                                    {% if event.file_exists %}
+                                                        <a href="{{ information.file.url }}" target="_blank">{{ information.file.name }}</a>
+                                                    {% else %}
+                                                        <p>Aucun fichier disponible</p>
+                                                    {% endif %}
+                                                </td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        <a href="#" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
+                                                        {% if event.file_exists %}
+                                                            <a href="{{ information.file.url }}" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
+                                                        {% else %}
+                                                            <a href="#" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
+                                                        {% endif %}
+                                                        <a href="#"onclick="deleteInformation({{ information.id }})" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -80,4 +92,44 @@
         </div>
     </div>
 </div>
+
+
+<script>
+
+    // Supprimer un élément
+    function deleteInformation(info_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/communication/informations/${info_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${info_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
 {% endblock content %}

@@ -53,6 +53,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     #--------------- app for manager interface
     'manager_dashboard',
+    
+    'ckeditor'
 ]
 
 MIDDLEWARE = [
@@ -102,6 +104,13 @@ REST_FRAMEWORK = {
     ),
   'DEFAULT_SCHEMA_CLASS': 'rest_framework.schemas.coreapi.AutoSchema'
 }
+
+CKEDITOR_CONFIGS = {
+    'default': {
+        'language': 'fr',  # Remplacez 'fr' par la langue de votre choix
+    },
+}
+
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators

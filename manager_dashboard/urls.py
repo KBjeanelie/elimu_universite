@@ -3,7 +3,7 @@ from django.urls import path
 
 from elimu_universite import settings
 from manager_dashboard.views.administration_view import TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
-from manager_dashboard.views.communication_view import EventView, GroupDiscussionView, InformationView
+from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EventView, GroupDiscussionView, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookDeleteView, eBookView
 from manager_dashboard.views.home_view import ManagerIndexView
@@ -16,7 +16,12 @@ urlpatterns = [
     path(route='communication/group-discussions/', view=GroupDiscussionView.as_view(), name='discussion_group'),
     path(route='communication/group-discussions/<int:pk>/delete/', view=GroupDiscussionView.as_view(), name='delete_discussion_group'),
     path(route='communication/informations/', view=InformationView.as_view(), name='informations'),
+    path(route='communication/informations/<int:pk>/delete/', view=InformationView.as_view(), name='delete_information'),
+    path(route='communication/informations/ajouter/', view=AddInformationView.as_view(), name='add_information'),
     path(route='communication/events/', view=EventView.as_view(), name='events'),
+    path(route='communication/events/<int:pk>/edit/', view=EditEventView.as_view(), name='edit_event'),
+    path(route='communication/events/<int:pk>/delete/', view=EventView.as_view(), name='delete_events'),
+    path(route='communication/events/ajouter/', view=AddEventView.as_view(), name='add_event'),
     
     
     path(route='contenue_pedagogique/ebooks/', view=eBookView.as_view(), name="ebooks"),

@@ -1,5 +1,8 @@
+import os
 from django.db import models
+from elimu_universite import settings
 from school_management.models import Career
+from ckeditor.fields import RichTextField
 
 from user_account.models import Student
 from elimu_universite.constant import hours_of_the_day
@@ -11,7 +14,7 @@ class Information(models.Model):
     
     date_info = models.DateField()
     
-    content = models.TextField(blank=True)
+    content = RichTextField(blank=True, null=True)
     
     file = models.FileField(upload_to='information_doc', blank=True)
     
@@ -21,6 +24,11 @@ class Information(models.Model):
     
     def __str__(self):
         return f"Information : {self.title}"
+    
+    def file_exists(self):
+        if self.file:
+            return os.path.exists(settings.MEDIA_ROOT + str(self.file))
+        return False
 
 
 class Event(models.Model):
@@ -31,7 +39,7 @@ class Event(models.Model):
     
     end_date = models.DateField()
     
-    content = models.TextField(blank=True)
+    content =  RichTextField(blank=True, null=True)
     
     file = models.FileField(upload_to='information_doc', blank=True)
     
@@ -43,6 +51,11 @@ class Event(models.Model):
     
     def __str__(self):
         return f"Evenement : {self.title}"
+    
+    def file_exists(self):
+        if self.file:
+            return os.path.exists(settings.MEDIA_ROOT / str(self.file))
+        return False
 
 
 class EventParticipate(models.Model):
@@ -60,6 +73,7 @@ class EventParticipate(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+
 
 
 class Group(models.Model):
