@@ -43,6 +43,9 @@ class Student(models.Model):
     
     def __str__(self):
         return f"Matricule : {self.registration_number} - {self.lastname} {self.firstname}"
+    
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"
 
 
 # Represent an objet of Teacher and his profil info

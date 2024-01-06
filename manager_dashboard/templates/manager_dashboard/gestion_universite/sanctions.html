@@ -1,4 +1,6 @@
-
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -14,7 +16,7 @@
                     </div>
                     <div class="page_title_right">  
                         <div class="page_date_button d-flex align-items-center">
-                            <a href="ajout_sanction.html" class="white_btn3">Ajouter</a>
+                            <a href='{% url "manager_dashboard:add_sanction" %}' class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter</a>
                         </div>
                     </div>
                 </div>
@@ -55,20 +57,22 @@
                                             <th scope="col">Commentaire</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Elijah Walter</td>
-                                            <td>Mathématique</td>
-                                            <td>15/08/2023</td>
-                                            <td>Heure de colle</td>
-                                            <td>Bavardage</td>
-                                            <td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="elementList">
+                                        {% for sanction in sanctions %}
+                                            <tr data-id="{{ sanction.id }}">
+                                                <td> {{ sanction.student.fullname }} </td>
+                                                <td> {{sanction.subject.label }} </td>
+                                                <td> {{ sanction.sanction_date }} </td>
+                                                <td> {{ sanction.type.title }} </td>
+                                                <td> {{ sanction.comment }} </td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        <a href='{% url "manager_dashboard:edit_sanction" sanction.id %}' class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
+                                                        <a href="#" onclick='deleteSanction({{ sanction.id }})' class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -79,4 +83,44 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // Supprimer un élément
+    function deleteSanction(sanction_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/gestion_universite/sanctions-&-appreciations/${sanction_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${sanction_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
+{% endblock content %}
 

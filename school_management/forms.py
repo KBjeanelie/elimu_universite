@@ -97,3 +97,44 @@ class SanctionAppreciationForm(forms.ModelForm):
     class Meta:
         model = SanctionAppreciation
         fields = ['comment', 'type', 'subject', 'student', 'career', 'sanction_date']
+        widgets = {
+            'comment': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'placeholder': 'description',
+                    'cols':"10",
+                    'rows':'5'
+                }
+            ),
+            'type': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'subject': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'student': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'career': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'sanction_date': forms.DateInput(
+                attrs={
+                    'type':'date',
+                    'class': 'form-control',
+                    'required': True,
+                }
+            )
+        }
