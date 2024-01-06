@@ -1,9 +1,50 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import ProgramForm, SanctionAppreciationForm
-from school_management.models import Program, SanctionAppreciation
+from school_management.forms import ProgramForm, SanctionAppreciationForm, SubjectForm
+from school_management.models import Program, SanctionAppreciation, Subject
 
 from user_account.models import Student, Teacher
+
+#=============================== PARTIE CONCERNANT LES MATIÈRES ==========================
+class EditSubjectView(View):
+    template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    def get(self, request, pk, *args, **kwargs):
+        subject = get_object_or_404(Subject, pk=pk)
+        form = SubjectForm(instance=subject)
+        context = {'form':form, 'subject':subject}
+        return render(request, template_name=self.template, context=context)
+    
+class AddSubjectView(View):
+    template = "manager_dashboard/gestion_universite/ajout_matiere.html"
+    def get(self, request, *args, **kwargs):
+        form = SubjectForm()
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = SubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect("manager_dashboard:subjects")
+        form = SubjectForm()
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+
+class SubjectView(View):
+    template = "manager_dashboard/gestion_universite/matieres.html"
+
+    def get(self, request, *args, **kwargs):
+        subjects = Subject.objects.all().order_by('-created_at')
+        context = {'subjects':subjects}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Subject, pk=pk)
+        instance.delete()
+        subjects = Subject.objects.all().order_by('-created_at')
+        context = {'subject':subjects}
+        return render(request, template_name=self.template, context=context)
+#===END
 
 #=============================== PARTIE CONCERNANT LES PROGRAMMES ==========================
 class EditProgramView(View):

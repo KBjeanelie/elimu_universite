@@ -209,7 +209,7 @@ class SubjectForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'label',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'Nom de la matière',
                     'required': True
                 }
             ),
