@@ -173,7 +173,7 @@ class GroupSubjectForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'title',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'ex: Matière scientifique',
                     'required': True
                 }
             ),

@@ -1,9 +1,38 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import ProgramForm, SanctionAppreciationForm, SubjectForm
-from school_management.models import Program, SanctionAppreciation, Subject
+from school_management.forms import GroupSubjectForm, ProgramForm, SanctionAppreciationForm, SubjectForm
+from school_management.models import GroupSubject, Program, SanctionAppreciation, Subject
 
 from user_account.models import Student, Teacher
+
+#=============================== PARTIE CONCERNANT LES GROUPES DE MATIÈRES ==========================
+class GroupSubjectView(View):
+    template = "manager_dashboard/gestion_universite/groupe_matieres.html"
+    
+    def get(self, request, *args, **kwargs):
+        form = GroupSubjectForm()
+        context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = GroupSubjectForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = GroupSubjectForm()
+            context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+            return render(request, template_name=self.template, context=context)
+    
+        form = GroupSubjectForm()
+        context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(GroupSubject, pk=pk)
+        instance.delete()
+        form = GroupSubjectForm()
+        context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+#===END
 
 #=============================== PARTIE CONCERNANT LES MATIÈRES ==========================
 class EditSubjectView(View):
