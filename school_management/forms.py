@@ -191,7 +191,7 @@ class SectorForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'title',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'Nom de la filière',
                     'required': True
                 }
             ),

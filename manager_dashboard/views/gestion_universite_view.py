@@ -1,10 +1,38 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import CareerForm, GroupSubjectForm, ProgramForm, SanctionAppreciationForm, SubjectForm
-from school_management.models import Career, GroupSubject, Program, SanctionAppreciation, Subject
+from school_management.forms import CareerForm, GroupSubjectForm, ProgramForm, SanctionAppreciationForm, SectorForm, SubjectForm
+from school_management.models import Career, GroupSubject, Program, SanctionAppreciation, Sector, Subject
 
 from user_account.models import Student, Teacher
 
+#=============================== PARTIE CONCERNANT LES FILIÈRE ==========================
+class SectorView(View):
+    template = "manager_dashboard/gestion_universite/filieres.html"
+    
+    def get(self, request, *args, **kwargs):
+        form = SectorForm()
+        context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = SectorForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = SectorForm()
+            context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+            return render(request, template_name=self.template, context=context)
+    
+        form = SectorForm()
+        context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Sector, pk=pk)
+        instance.delete()
+        form = SectorForm()
+        context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+#===END
 
 #=============================== PARTIE CONCERNANT LES PARCOURS ==========================
 class CareerView(View):

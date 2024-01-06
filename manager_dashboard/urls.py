@@ -6,13 +6,16 @@ from manager_dashboard.views.administration_view import TypeDocumentDeleteView, 
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EventView, GroupDiscussionView, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookDeleteView, eBookView
-from manager_dashboard.views.gestion_universite_view import AddProgramView, AddSanctionView, AddSubjectView, CareerView, EditProgramView, EditSanctionView, EditSubjectView, GroupSubjectView, ProgramView, SanctionAppreciationView, StudentDetailView, SubjectView, TeacherDetailView, TrombinoscopeView
+from manager_dashboard.views.gestion_universite_view import AddProgramView, AddSanctionView, AddSubjectView, CareerView, EditProgramView, EditSanctionView, EditSubjectView, GroupSubjectView, ProgramView, SanctionAppreciationView, SectorView, StudentDetailView, SubjectView, TeacherDetailView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
 app_name = 'manager_dashboard'
 urlpatterns = [
     path(route='', view=ManagerIndexView.as_view(), name='index'),
+    path(route='gestion_universite/filières/', view=SectorView.as_view(), name='sectors'),
+    path(route='gestion_universite/filières/<int:pk>/delete/', view=SectorView.as_view(), name='delete_sector'),
+    
     path(route='gestion_universite/parcours/', view=CareerView.as_view(), name='careers'),
     path(route='gestion_universite/parcours/<int:pk>/delete/', view=CareerView.as_view(), name='delete_career'),
     
