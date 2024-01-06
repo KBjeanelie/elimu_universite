@@ -269,7 +269,7 @@ class CareerForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'title',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'Licence Informatique 1',
                     'required': True
                 }
             ),

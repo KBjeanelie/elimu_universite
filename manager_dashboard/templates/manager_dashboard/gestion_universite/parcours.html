@@ -1,3 +1,6 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -8,7 +11,7 @@
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Parcours</a></li>
+                            <li class="breadcrumb-item"><a href="">Parcours</a></li>
                         </ol>
                     </div>
                 </div>
@@ -31,17 +34,19 @@
                                             <th>Filière</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Lic info 1</td>
-                                            <td>Informatique</td>
-                                            <td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="elementList">
+                                        {% for career in careers %}
+                                            <tr data-id="{{ career.id }}">
+                                                <td> <h6> {{career.title }} <h6></td>
+                                                <td> <h6> {{career.sector.title }} <h6> </td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
+                                                        <a href="#" onclick='deleteCareer({{ career.id }})' class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -59,18 +64,15 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form>
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Titre</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="Linc info 1">
+                                {{ form.title }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="level">Filière</label>
-                                <select id="level" class="form-control">
-                                    <option selected>Choisir...</option>
-                                    <option>Informatique</option>
-                                    <option>Administration publique</option>
-                                </select>
+                                {{ form.sector }}
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
@@ -80,3 +82,43 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // Supprimer un élément
+    function deleteCareer(career_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/gestion_universite/parcours/${career_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${career_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
+{% endblock content %}
