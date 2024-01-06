@@ -1,3 +1,6 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -8,7 +11,7 @@
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="programmes.html">Programmes</a></li>
+                            <li class="breadcrumb-item"><a href='{% url "manager_dashboard:programs" %}'>Programmes</a></li>
                             <li class="breadcrumb-item"><a>Ajouter</a></li>
                         </ol>
                     </div>
@@ -27,33 +30,31 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form>
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Titre</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="programme de...">
+                                {{ form.title }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Description</label>
-                                <textarea name="" id="" class="form-control" cols="10" rows="5" placeholder="description..."></textarea>
+                                {{ form.description }}
                             </div>
                             <div class="row mb-3">
                                 <div class="col-md-6">
                                     <label class="form-label" for="date">Date</label>
-                                    <input type="date" class="form-control">
+                                    {{ form.program_date}}
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="level">Responsable</label>
-                                    <select id="level" class="form-control">
-                                        <option selected>Choisir...</option>
-                                        <option>OYERE Morel</option>
-                                        <option>...</option>
-                                    </select>
+                                    {{ form.person_in_charge}}
                                 </div>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="level">Fichier</label>
-                                <input type="file" class="form-control">
+                                {{ form.file }}
                             </div>
+                            <a href='{% url "manager_dashboard:programs" %}' class="btn btn-danger"> <i class="ti-save"></i> Enregistrer</a>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
                     </div>
@@ -62,3 +63,4 @@
         </div>
     </div>
 </div>
+{% endblock content %}

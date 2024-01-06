@@ -111,7 +111,6 @@ class ProgramForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     'class': 'form-control',
-                    'required': True,
                 }
             ),
             'description' : forms.Textarea(
@@ -131,7 +130,6 @@ class ProgramForm(forms.ModelForm):
             'file': forms.FileInput(
                 attrs={
                     'class': 'form-control',
-                    'required': True,
                 }
             ),
         }

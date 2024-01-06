@@ -1,3 +1,6 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -13,7 +16,7 @@
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href="ajout_programme.html" class="white_btn3">Ajouter</a>
+                            <a href='{% url "manager_dashboard:add_program" %}' class="white_btn3"> <i class="fas fa-plus-square"></i> Ajouter</a>
                         </div>
                     </div>
                 </div>
@@ -54,21 +57,33 @@
                                             <th scope="col">Fichier</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Programme de Mathématique</td>
-                                            <td>4 objets de programmes mathématique</td>
-                                            <td><span class="badge rounded-pill bg-primary">Dieudonné AMPINI</span></td>
-                                            <td>15/08/2023</td>
-                                            <td><a href="#" target="_blank">programme_math.pdf</a></td>
+                                    <tbody id="elementList">
+                                        {% for program in programs %}
+                                        <tr data-id='{{ program.id }}'>
+                                            <td><h6> {{ program.title }} </h6></td>
+                                            <td><h6> {{ program.description|slice:':10' }}... </h6></td>
+                                            <td><h6> <span class="badge rounded-pill bg-primary"> {{ program.person_in_charge }} </span></h6></td>
+                                            <td><h6> {{ program.program_date }} </h6></td>
+                                            <td>
+                                                
+                                                {% if program.file_exists %}
+                                                    <a href="{{ program.file.url }}" target="_blank"> {{ program.file.name }} </a>
+                                                {% else %}
+                                                    <p> Aucun fichier </p>
+                                                {% endif %}
+                                                    
+                                            </td>
                                             <td>
                                                 <div class="action_btns d-flex">
                                                     <a href="#" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    {% if program.file_exists %}
+                                                        <a href="{{ program.file.url }}" target="_blank" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
+                                                    {% endif %}
+                                                    <a href="#" onclick='deleteProgram({{program.id}})' class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                 </div>
                                             </td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -79,3 +94,43 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // Supprimer un élément
+    function deleteProgram(program_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/gestion_universite/programmes/${program_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${program_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
+{% endblock content %}

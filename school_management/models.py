@@ -1,4 +1,6 @@
+import os
 from django.db import models
+from elimu_universite import settings
 from user_account.models import Student, Teacher
 from elimu_universite.constant import days_of_the_weeks, hours_of_the_day
 
@@ -42,6 +44,11 @@ class Program(models.Model):
     
     def __str__(self):
         return f"Programme : {self.title} par {self.person_in_charge}"
+    
+    def file_exists(self):
+        if self.file:
+            return os.path.exists(settings.MEDIA_ROOT / str(self.file))
+        return False
 
 # Class representing Document Type
 class DocumentType(models.Model):

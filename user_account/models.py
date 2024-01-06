@@ -87,6 +87,9 @@ class Teacher(models.Model):
     
     def __str__(self):
         return f"Enseignant : {self.lastname} - {self.firstname}"
+    
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"
 
 
 
