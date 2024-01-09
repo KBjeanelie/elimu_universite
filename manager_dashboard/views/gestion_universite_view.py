@@ -1,9 +1,67 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import CareerForm, GroupSubjectForm, ProgramForm, SanctionAppreciationForm, SectorForm, SubjectForm
-from school_management.models import Career, GroupSubject, Program, SanctionAppreciation, Sector, Subject
+from school_management.forms import CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
+from school_management.models import Career, GroupSubject, Level, Program, SanctionAppreciation, Sector, Semester, Subject
 
 from user_account.models import Student, Teacher
+
+#=============================== PARTIE CONCERNANT LES NIVEAUX ==========================
+class LevelView(View):
+    template = "manager_dashboard/gestion_universite/niveaux.html"
+    
+    def get(self, request, *args, **kwargs):
+        form = LevelForm()
+        context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = LevelForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = LevelForm()
+            context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+            return render(request, template_name=self.template, context=context)
+    
+        form = LevelForm()
+        context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Level, pk=pk)
+        instance.delete()
+        form = LevelForm()
+        context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+#===END
+
+#=============================== PARTIE CONCERNANT LES SEMESTRE ==========================
+class SemesterView(View):
+    template = "manager_dashboard/gestion_universite/semestres.html"
+    
+    def get(self, request, *args, **kwargs):
+        form = SemesterForm()
+        context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+
+    def post(self, request, *args, **kwargs):
+        form = SemesterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            form = SemesterForm()
+            context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+            return render(request, template_name=self.template, context=context)
+    
+        form = SemesterForm()
+        context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Semester, pk=pk)
+        instance.delete()
+        form = SemesterForm()
+        context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+        return render(request, template_name=self.template, context=context)
+#===END
 
 #=============================== PARTIE CONCERNANT LES FILIÈRE ==========================
 class SectorView(View):

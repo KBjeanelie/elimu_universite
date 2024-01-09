@@ -81,7 +81,7 @@ class SemesterForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'title',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'ex: Semestre 1',
                     'required': True
                 }
             ),

@@ -1,4 +1,6 @@
-
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -9,7 +11,7 @@
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">Semestres</a></li>
+                            <li class="breadcrumb-item"><a href="">Semestres</a></li>
                         </ol>
                     </div>
                 </div>
@@ -32,17 +34,19 @@
                                             <th>Niveau</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Semestre 1</td>
-                                            <td>Première année</td>
-                                            <td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="elementList">
+                                        {% for semester in semesters %}
+                                            <tr data-id="{{ semester.id }}">
+                                                <td><h6> {{ semester.title }} <h6></td>
+                                                <td><h6> {{ semester.level.label }} <h6></td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
+                                                        <a href="#" onclick='deleteSemester({{ semester.id }})' class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -60,18 +64,15 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form>
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Titre</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="ex: première année">
+                                {{ form.title }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="level">Niveau</label>
-                                <select id="level" class="form-control">
-                                    <option selected>Choisir...</option>
-                                    <option>Première année</option>
-                                    <option>Deuxième année</option>
-                                </select>
+                                {{ form.level }}
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
@@ -81,3 +82,45 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+
+    // Supprimer un élément
+    function deleteSemester(semester_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/gestion_universite/semestres/${semester_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${semester_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
+{% endblock content %}
