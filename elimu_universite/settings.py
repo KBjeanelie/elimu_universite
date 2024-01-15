@@ -53,6 +53,7 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     #--------------- app for manager interface
     'manager_dashboard',
+    'accountant_dashboard',
     
     'ckeditor'
 ]
