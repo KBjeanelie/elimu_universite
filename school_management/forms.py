@@ -27,7 +27,7 @@ class AcademicYearForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'label',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'ex: 2020 - 2021',
                     'required': True
                 }
             ),
@@ -48,7 +48,6 @@ class AcademicYearForm(forms.ModelForm):
             'status':forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',
-                    'required': True,
                 }
             )
         }

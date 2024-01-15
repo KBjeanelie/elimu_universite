@@ -6,13 +6,18 @@ from manager_dashboard.views.administration_view import TypeDocumentDeleteView, 
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EventView, GroupDiscussionView, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookDeleteView, eBookView
-from manager_dashboard.views.gestion_universite_view import AddProgramView, AddSanctionView, AddSubjectView, CareerView, EditProgramView, EditSanctionView, EditSubjectView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, SubjectView, TeacherDetailView, TrombinoscopeView
+from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddSubjectView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, SubjectView, TeacherDetailView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
 app_name = 'manager_dashboard'
 urlpatterns = [
     path(route='', view=ManagerIndexView.as_view(), name='index'),
+    
+    path(route='gestion_universite/année-academiques/', view=AcademicYearView.as_view(), name='years'),
+    path(route='gestion_universite/année-academiques/ajouter/', view=AddAcademicYearView.as_view(), name='add_year'),
+    path(route='gestion_universite/année-academiques/<int:pk>/editer/', view=EditAcademicYearView.as_view(), name='edit_year'),
+    path(route='gestion_universite/année-academiques/<int:pk>/delete/', view=AcademicYearView.as_view(), name='delete_year'),
     
     path(route='gestion_universite/semestres/', view=SemesterView.as_view(), name='semesters'),
     path(route='gestion_universite/semestres/<int:pk>/delete/', view=SemesterView.as_view(), name='delete_semester'),
