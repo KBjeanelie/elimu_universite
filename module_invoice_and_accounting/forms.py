@@ -1,22 +1,46 @@
 from django import forms
-from .models import Item, Invoice, Regulations, FinancialCommitment
+from .models import Item
 
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
         fields = ['name', 'default_amount', 'defaut_quantity', 'is_active', 'analytic_code']
+        
+        widgets = {
+            'name' : forms.TextInput(
+                attrs={
+                    'type': 'text',
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'placeholder': 'ex: Frais scolaire',
+                    'required': True
 
-class InvoiceForm(forms.ModelForm):
-    class Meta:
-        model = Invoice
-        fields = ['invoice_number', 'invoice_date', 'student', 'career', 'item', 'payment_status', 'comment']
+                }
+            ),
+            'default_amount' : forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
 
-class RegulationsForm(forms.ModelForm):
-    class Meta:
-        model = Regulations
-        fields = ['payment_number', 'invoice', 'student', 'payment_method', 'date_payment', 'amount_payment', 'comment']
+                }
+            ),
+            'defaut_quantity' : forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
 
-class FinancialCommitmentForm(forms.ModelForm):
-    class Meta:
-        model = FinancialCommitment
-        fields = ['student', 'school_fees', 'send_date', 'is_send']
+                }
+            ),
+            'is_active': forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                }
+            ),
+            'analytic_code': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                }
+            )
+        }
+
