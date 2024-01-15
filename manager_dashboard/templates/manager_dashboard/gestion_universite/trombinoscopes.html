@@ -75,7 +75,13 @@
                                                 <div class="card custom-card">
                                                     <div class="card-header"><img class="img-fluid" src="{% static 'img/profilebox/2.jpg' %}" alt data-original-title title></div>
                                                     <div class="card-profile">
-                                                        <a href='{% url "manager_dashboard:teacher_detail" teacher.id %}'> <img class="rounded-circle" src="{{ teacher.picture.url }}" alt data-original-title title> </a>
+                                                        <a href='{% url "manager_dashboard:teacher_detail" teacher.id %}'> 
+                                                            {% if teacher.file_exists %}
+                                                                <img class="rounded-circle" src="{{ teacher.picture.url }}" alt data-original-title title>
+                                                            {% else %}
+                                                                <img src="{% static 'img/profilebox/3.jpg' %}" alt height="52" alt="No Picture">
+                                                            {% endif %}
+                                                        </a>
                                                     </div>
                                                     <div class="text-center profile-details">
                                                         <h4> <a href='{% url "manager_dashboard:teacher_detail" teacher.id %}' >{{ teacher.firstname }} {{ teacher.lastname | upper}}</a> </h4>
