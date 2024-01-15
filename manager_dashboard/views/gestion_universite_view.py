@@ -2,8 +2,9 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
 from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Sector, Semester, Subject
+from user_account.forms import TeacherForm
 
-from user_account.models import Student, Teacher
+from user_account.models import Student, Teacher, User
 
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
 class EditAcademicYearView(View):
@@ -332,10 +333,54 @@ class StudentDetailView(View):
         context = {'student': student}
         return render(request, template_name=self.template, context=context)
 
+
+
+#=============================== PARTIE CONCERNANT LES Année academique ==========================
+class EditTeacherView(View):
+    template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    def get(self, request, pk, *args, **kwargs):
+        teacher = get_object_or_404(Teacher, pk=pk)
+        form = TeacherForm(instance=teacher)
+        context = {'form':form, 'teacher': teacher}
+        return render(request, template_name=self.template, context=context)
+    
+class AddTeacherView(View):
+    template = "manager_dashboard/gestion_universite/ajout_enseignant.html"
+    def get(self, request, *args, **kwargs):
+        form = TeacherForm()
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = TeacherForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("manager_dashboard:teachers")
+        form = TeacherForm()
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+
+class TeacherView(View):
+    template = "manager_dashboard/gestion_universite/enseignants.html"
+
+    def get(self, request, *args, **kwargs):
+        teachers = Teacher.objects.all().order_by('-created_at')
+        context = {'teachers': teachers}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Teacher, pk=pk)
+        instance.delete()
+        teachers = Teacher.objects.all().order_by('-created_at')
+        context = {'teachers': teachers}
+        return render(request, template_name=self.template, context=context)
+
 class TeacherDetailView(View):
     template = "manager_dashboard/gestion_universite/enseignant_detail.html"
     
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
-        context = {'teacher':teacher}
+        account = get_object_or_404(User, teacher=teacher)
+        context = {'teacher':teacher, 'account': account}
         return render(request, template_name=self.template, context=context)
+#===END

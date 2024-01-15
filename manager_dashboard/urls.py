@@ -6,7 +6,7 @@ from manager_dashboard.views.administration_view import TypeDocumentDeleteView, 
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EventView, GroupDiscussionView, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookDeleteView, eBookView
-from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddSubjectView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, SubjectView, TeacherDetailView, TrombinoscopeView
+from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
@@ -51,6 +51,11 @@ urlpatterns = [
     
     path(route='gestion_universite/trombinoscopes/', view=TrombinoscopeView.as_view(), name='trombinoscopes'),
     path(route='gestion_universite/students/<int:pk>/detail/', view=StudentDetailView.as_view(), name='student_detail'),
+    
+    path(route='gestion_universite/teachers/', view=TeacherView.as_view(), name='teachers'),
+    path(route='gestion_universite/teachers/ajouter/', view=AddTeacherView.as_view(), name='add_teacher'),
+    path(route='gestion_universite/teachers/<int:pk>/editer/', view=EditTeacherView.as_view(), name='edit_teacher'),
+    path(route='gestion_universite/teachers/<int:pk>/delete/', view=TeacherView.as_view(), name='delete_teacher'),
     path(route='gestion_universite/teachers/<int:pk>/detail/', view=TeacherDetailView.as_view(), name='teacher_detail'),
     #===END
     

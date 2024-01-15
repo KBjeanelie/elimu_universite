@@ -11,8 +11,8 @@
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="../index.html">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="enseignants.html">Enseignants</a></li>
-                            <li class="breadcrumb-item"><a>Détail</a></li>
+                            <li class="breadcrumb-item"><a href='{% url "manager_dashboard:teachers" %}'>Enseignants</a></li>
+                            <li class="breadcrumb-item"><a> {{ teacher.fullname }} </a></li>
                         </ol>
                     </div>
                 </div>
@@ -25,16 +25,20 @@
                     <div class="card-body">
                         <div class="row">
                             <div class="col-lg-6 align-self-center">
-                                <img src="../img/staf/1.png" alt class="mx-auto d-block" height="300" />
+                                {% if teacher.file_exists %}
+                                    <img src="{{ teacher.picture.url }}" alt class="mx-auto d-block" height="300" />
+                                {% else %}
+                                    <img src="#" alt height="52" alt="No Picture">
+                                {% endif %}
                             </div>
                             <div class="col-lg-6 align-self-center">
                                 <div class="single-pro-detail">
                                     <p class="mb-1">Enseignant</p>
                                     <div class="custom-border mb-3"></div>
-                                    <h3 class="pro-title">Jean Élie KUBEMBULA</h3><br>
-                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Sexe : Masculin</h6>
-                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Email : jeaneliekubembula@gmail.com</h6>
-                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Téléphone : +242 06 483 8870</h6>
+                                    <h3 class="pro-title"> {{ teacher.firstname}} {{ teacher.lastname | upper}} </h3><br>
+                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Sexe : {{ teacher.sex }} </h6>
+                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Email :  {{ teacher.email}} </h6>
+                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Téléphone : +242 {{ teacher.tel }} </h6>
                                     <div class="quantity mt-3">
                                         <a href class="btn theme_bg_6 text-white px-4 d-inline-block "><i class="fa fa-edit me-2"></i>Modifier</a>
                                     </div>
@@ -73,23 +77,23 @@
                                         <div class="col-md-4">
                                             <h4 class="text-center">Information d'identification</h4>
                                             <hr>
-                                            <h6>Nom : </h6><br>
-                                            <h6>Prénom : </h6><br>
-                                            <h6>Date de naissance : </h6><br>
-                                            <h6>Genre : </h6><br>
+                                            <h6>Nom : {{ teacher.lastname | upper }} </h6><br>
+                                            <h6>Prénom : {{ teacher.firstname }} </h6><br>
+                                            <h6>Date de naissance : {{ teacher.bithday }} </h6><br>
+                                            <h6>Genre : {{ teacher.sex }} </h6><br>
                                         </div>
                                         <div class="col-md-4">
                                             <h4 class="text-center">Coordonnées</h4>
                                             <hr>
-                                            <h6>Adresse de résidence : </h6><br>
-                                            <h6>Numéro de téléphone : </h6><br>
-                                            <h6>Adresse email : </h6><br>
+                                            <h6>Adresse de résidence : {{ teacher.address }} </h6><br>
+                                            <h6>Numéro de téléphone : +242 {{ teacher.tel}} </h6><br>
+                                            <h6>Adresse email : {{ teacher.email }} </h6><br>
                                         </div>
                                         <div class="col-md-4">
                                             <h4 class="text-center">Information d'identification</h4>
                                             <hr>
-                                            <h6>Civilité : </h6><br>
-                                            <h6>Nom Utilisateurs : </h6><br>
+                                            <h6>Civilité : {{ teacher.nationality}} </h6><br>
+                                            <h6>Nom Utilisateurs : {{ account.username }} </h6><br>
                                             <h6>Mot de passe : *************</h6><br>
                                         </div>
                                     </div>

@@ -1,3 +1,6 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -7,8 +10,8 @@
                     <div class="page_title_left d-flex align-items-center">
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
-                            <li class="breadcrumb-item"><a href="../index.html">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="enseignants.html">Enseignants</a></li>
+                            <li class="breadcrumb-item"><a href="#">Accueil</a></li>
+                            <li class="breadcrumb-item"><a href='{% url "manager_dashboard:teachers" %}'>Enseignants</a></li>
                             <li class="breadcrumb-item"><a>Ajouter</a></li>
                         </ol>
                     </div>
@@ -27,58 +30,52 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form>
+                        <form method="post" enctype="multipart/form-data">
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Nom</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="nom">
+                                {{ form.lastname }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Prénom</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="nom">
+                                {{ form.firstname }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Date de naissance</label>
-                                <input type="date" class="form-control">
+                                {{ form.bithday }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Email</label>
-                                <input type="email" class="form-control">
+                                {{ form.email }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Téléphone</label>
-                                <input type="tel" class="form-control">
+                                {{ form.tel }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Adrèsse</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Département de naissance</label>
-                                <input type="text" class="form-control">
+                                {{ form.address }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Ville</label>
-                                <input type="text" class="form-control">
+                                {{ form.city }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="level">Sexe</label>
-                                <select id="level" class="form-control">
-                                    <option selected>Choisir...</option>
-                                    <option>Masculin</option>
-                                    <option>Féminin</option>
-                                </select>
+                                {{ form.sex }}
                             </div>
+
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Date d'entrée dans l'établissement</label>
-                                <input type="date" class="form-control">
+                                {{ form.start_of_contrat }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Photo</label>
-                                <input type="file" class="form-control">
+                                {{ form.picture }}
                             </div>
                             <div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                                    {{ form.status }}
                                     <label class="form-label form-check-label" for="gridCheck"> Accès en ligne ?</label>
                                 </div>
                             </div>
@@ -90,3 +87,4 @@
         </div>
     </div>
 </div>
+{% endblock content %}

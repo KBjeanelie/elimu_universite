@@ -1,5 +1,8 @@
+import os
 from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
+
+from elimu_universite import settings
 
 cities = (
     ('pointe_noire', "Pointe Noire"),
@@ -90,6 +93,11 @@ class Teacher(models.Model):
     
     def fullname(self):
         return f"{self.firstname} {self.lastname}"
+    
+    def file_exists(self):
+        if self.picture:
+            return os.path.exists(settings.MEDIA_ROOT / str(self.picture))
+        return False
 
 
 
