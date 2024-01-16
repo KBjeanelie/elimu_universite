@@ -78,10 +78,10 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href="facture_comp/engagement_financier.html"> Engagements financier </a></li>
-                    <li><a href="facture_comp/reglements.html"> Les règlement </a></li>
-                    <li><a href="facture_comp/factures.html"> Factures étudiants </a></li>
-                    <li><a href="facture_comp/comptabilite.html"> Comptabilité étudiants </a></li>
+                    <li><a href='{% url "accountant_dashboard:financials" %}'> Engagements financiers </a></li>
+                    <li><a href='{% url "accountant_dashboard:regulations" %}'> Les règlements </a></li>
+                    <li><a href='{% url "accountant_dashboard:invoices" %}'> Factures étudiants </a></li>
+                    {% comment %} <li><a href="facture_comp/comptabilite.html"> Comptabilité étudiants </a></li> {% endcomment %}
                 </ul>
             </li>
 
@@ -141,7 +141,7 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href='{% url "accountant_dashboard:items" %}'>Catalogue des article</a></li>
+                    <li><a href='{% url "accountant_dashboard:items" %}'>Catalogue des articles</a></li>
                     
                 </ul>
             </li>

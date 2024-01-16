@@ -1,5 +1,6 @@
 from django.urls import path
 from accountant_dashboard.views.administration_view import AddItemView, EditItemView, ItemView
+from accountant_dashboard.views.facture_comptable_view import FinancialCommitmentView, InvoiceView, RegulationView
 from accountant_dashboard.views.home_view import AccountantIndexView
 
 
@@ -11,5 +12,12 @@ urlpatterns = [
     path(route='administration/articles/ajouter/', view=AddItemView.as_view(), name='add_item'),
     path(route='administration/articles/<int:pk>/editer/', view=EditItemView.as_view(), name='edit_item'),
     path(route='administration/articles/<int:pk>/delete/', view=ItemView.as_view(), name='delete_item'),
+    
+    path(route='factures-&-comptable/factures/', view=InvoiceView.as_view(), name='invoices'),
+    
+    
+    path(route='factures-&-comptable/reglements/', view=RegulationView.as_view(), name='regulations'),
+    
+    path(route='factures-&-comptable/engagement-financier/', view=FinancialCommitmentView.as_view(), name='financials'),
     
 ]
