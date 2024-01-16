@@ -1,5 +1,5 @@
 from django import forms
-from .models import Item
+from .models import Invoice, Item
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -44,3 +44,39 @@ class ItemForm(forms.ModelForm):
             )
         }
 
+class InvoiceForm(forms.ModelForm):
+    class Meta:
+        model = Invoice
+        fields = ['student', 'career', 'item', 'payment_status', 'comment']
+        widgets = {
+            'student': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
+                }
+            ),
+            'career': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
+                }
+            ),
+            'item': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
+                }
+            ),
+            'payment_status': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'comment': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'cols':'5',
+                    'rows':'5'
+                }
+            )
+        }

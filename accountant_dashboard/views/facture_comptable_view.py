@@ -1,12 +1,57 @@
-from django.shortcuts import render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from module_invoice_and_accounting.forms import InvoiceForm
+
+from module_invoice_and_accounting.models import Invoice, Regulations
+from module_invoice_and_accounting.views import generate_invoice_number
 
 
 class InvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/factures.html"
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template_name)
+        invoices = Invoice.objects.all()
+        form = InvoiceForm()
+        context = {'invoices':invoices, 'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = InvoiceForm(request.POST)
+        if form.is_valid():
+            invoice_number = generate_invoice_number()
+            career = form.cleaned_data['career']
+            item = form.cleaned_data['item']
+            student = form.cleaned_data['student']
+            comment = form.cleaned_data['comment']
+            
+            # Utilisation des valeurs récupérées pour créer une nouvelle instance de la facture
+            invoice = Invoice(
+                invoice_number=invoice_number,
+                career=career,
+                item=item,
+                student=student,
+                comment=comment
+            )
+            invoice.save()
+            return redirect("accountant_dashboard:invoices")
+        
+        return redirect("accountant_dashboard:invoices")
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Invoice, pk=pk)
+        instance.delete()
+        invoices = Invoice.objects.all().order_by('-created_at')
+        context = {'invoices':invoices}
+        return render(request, template_name=self.template_name, context=context)
+
+class InvoiceDetailView(View):
+    template_name = "accountant_dashboard/facture_comp/facture-info.html"
+    
+    def get(self, request,pk, *args, **kwargs):
+        invoice = get_object_or_404(Invoice, pk=pk)
+        regulation = get_object_or_404(Regulations, invoice=invoice)
+        context = {'invoice':invoice, 'regulation':regulation}
+        return render(request, template_name=self.template_name, context=context)
 
 
 

@@ -108,7 +108,9 @@ class Invoice(models.Model):
     
     #timeline = models.ForeignKey(TimeLine, on_delete=models.DO_NOTHING)
     
-    payment_status = models.CharField(max_length=20)
+    choices = [('Entièrement payé', 'Entièrement payé'), ('Non payé', 'Non payé'), ('Avance', 'Avance')]
+    
+    payment_status = models.CharField(max_length=20, choices=choices, blank=True)
     
     comment = models.TextField(blank=True)
     

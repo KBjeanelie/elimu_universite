@@ -8,6 +8,16 @@ from django.core.cache import cache
 from module_invoice_and_accounting.models import *
 from module_invoice_and_accounting.serializers import *
 
+def generate_invoice_number():
+        now = datetime.datetime.now()
+        year = now.year
+        # Utilisation du cache pour stocker le compteur
+        invoice_counter = cache.get('invoice_counter') or 0
+        invoice_counter += 1
+        cache.set('invoice_counter', invoice_counter)
+        
+        return f"FA{year}{invoice_counter}"
+
 # class DonationViewSet(viewsets.ModelViewSet):
 #     queryset = Donation.objects.all()
 #     serializer_class = DonationSerializer
@@ -83,18 +93,8 @@ class InvoiceViewSet(viewsets.ModelViewSet):
     queryset = Invoice.objects.all()
     serializer_class = InvoiceSerializer
     
-    def generate_invoice_number(self):
-        now = datetime.datetime.now()
-        year = now.year
-        # Utilisation du cache pour stocker le compteur
-        invoice_counter = cache.get('invoice_counter') or 0
-        invoice_counter += 1
-        cache.set('invoice_counter', invoice_counter)
-        
-        return f"FA{year}{invoice_counter}"
-    
     def create(self, request, *args, **kwargs):
-        invoice_number = self.generate_invoice_number()
+        invoice_number = generate_invoice_number()
         request.data['invoice_number'] = invoice_number
         
         serializer = self.get_serializer(data=request.data)
