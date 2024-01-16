@@ -5,9 +5,14 @@ from ckeditor.widgets import CKEditorWidget
 class InformationForm(forms.ModelForm):
     class Meta:
         model = Information
-        fields = ['title', 'date_info', 'content', 'file']
+        fields = ['title', 'date_info', 'content', 'file', 'status']
         widgets = {
             'content': CKEditorWidget(),
+            'status': forms.CheckboxInput(
+                attrs={
+                    'class':'form-check-input'
+                }
+            ),
             'title': forms.TextInput(
                 attrs={
                     'type':'text',
@@ -34,9 +39,14 @@ class InformationForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['title', 'start_date', 'end_date', 'content', 'file', 'photo']
+        fields = ['title', 'start_date', 'end_date', 'content', 'file', 'status', 'photo']
         widgets = {
             'content': CKEditorWidget(),
+            'status': forms.CheckboxInput(
+                attrs={
+                    'class':'form-check-input'
+                }
+            ),
             'title': forms.TextInput(
                 attrs={
                     'type':'text',

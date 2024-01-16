@@ -18,6 +18,8 @@ class Information(models.Model):
     
     file = models.FileField(upload_to='information_doc', blank=True)
     
+    status = models.BooleanField(default=True)
+    
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
@@ -40,6 +42,8 @@ class Event(models.Model):
     end_date = models.DateField()
     
     content =  RichTextField(blank=True, null=True)
+    
+    status = models.BooleanField(default=True)
     
     file = models.FileField(upload_to='information_doc', blank=True)
     
