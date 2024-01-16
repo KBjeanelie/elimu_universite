@@ -1,9 +1,9 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from module_invoice_and_accounting.forms import InvoiceForm
+from module_invoice_and_accounting.forms import InvoiceForm, RegulationsForm
 
 from module_invoice_and_accounting.models import Invoice, Regulations
-from module_invoice_and_accounting.views import generate_invoice_number
+from module_invoice_and_accounting.views import generate_invoice_number, generate_payment_number
 
 
 class InvoiceView(View):
@@ -59,6 +59,39 @@ class RegulationView(View):
     template_name = "accountant_dashboard/facture_comp/reglements.html"
     
     def get(self, request, *args, **kwargs):
+        regulations = Regulations.objects.all()
+        form = RegulationsForm()
+        context = {'regulations':regulations, 'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = RegulationsForm(request.POST)
+        
+        if form.is_valid():
+            payment_number = generate_payment_number()
+            invoice = form.cleaned_data['invoice']
+            student = form.cleaned_data['student']
+            payment_method = form.cleaned_data['payment_method']
+            amount_payment = form.cleaned_data['amount_payment']
+            comment = form.cleaned_data['comment']
+            
+            regulation = Regulations(
+                payment_number=payment_number,
+                invoice=invoice,
+                student=student,
+                payment_method=payment_method,
+                amount_payment=amount_payment,
+                comment=comment
+            )
+            
+            regulation.save()
+            return redirect("accountant_dashboard:regulations")
+        
+        return redirect("accountant_dashboard:invoices")
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Regulations, pk=pk)
+        instance.delete()
         return render(request, template_name=self.template_name)
 
 

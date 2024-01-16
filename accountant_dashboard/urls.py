@@ -19,6 +19,7 @@ urlpatterns = [
     
     
     path(route='factures-&-comptable/reglements/', view=RegulationView.as_view(), name='regulations'),
+    path(route='factures-&-comptable/reglements/<int:pk>/delete/', view=RegulationView.as_view(), name='delete_regulation'),
     
     path(route='factures-&-comptable/engagement-financier/', view=FinancialCommitmentView.as_view(), name='financials'),
     

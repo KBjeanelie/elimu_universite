@@ -59,22 +59,24 @@
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>REGL-01</td>
-                                            <td>FA2002394</td>
-                                            <td>29/11/2023</td>
-                                            <td><span class="badge rounded-pill bg-info">KUBEMBULA Jean Elie</span></td>
-                                            <td>En espece</td>
-                                            <td>30000</td>
-                                            <td>29/11/2023</td>
-                                            <td></td>
-                                            <td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="ti-trash"></i> </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="elementList">
+                                        {% for regulation in regulations %}
+                                            <tr data-id='{{regulation.id}}'>
+                                                <td><h6> {{regulation.payment_number}} </h6></td>
+                                                <td><h6> {{regulation.invoice.invoice_number}} </h6></td>
+                                                <td><h6> {{regulation.date_payment}} </h6></td>
+                                                <td><h6><span class="badge rounded-pill bg-info"> {{regulation.student.fullname}} </span></h6></td>
+                                                <td><h6> {{regulation.payment_method}} </h6></td>
+                                                <td><h6> {{regulation.amount_payment}} XAF</h6></td>
+                                                <td><h6> {{regulation.comment}} </h6></td>
+                                                <td></td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        <a href="#" onclick='deleteRegulation({{regulation.id}})' class="action_btn mr_10"> <i class="ti-trash"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
@@ -90,7 +92,8 @@
 
 <div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
     <div class="modal-dialog" role="document">
-        <form action="">
+        <form method="post">
+            {% csrf_token %}
             <div class="modal-content">
                 <div class="modal-header">
                     <h5 class="modal-title" id="exampleModalLongTitle">Ajouter un reglement</h5>
@@ -101,35 +104,23 @@
                 <div class="modal-body">
                     <div class="mb-3">
                         <label class="form-label" for="libelle">Etudiant</label>
-                        <input type="text" class="form-control" id="libelle" placeholder="sauvegarde">
+                        {{form.student}}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="level">N°Facture</label>
-                        <select id="level" class="form-control">
-                            <option selected>Choisir...</option>
-                            <option>OYERE Morel</option>
-                            <option>Administration publique</option>
-                        </select>
+                        {{form.invoice}}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="level">Moyen de paiement</label>
-                        <select id="level" class="form-control">
-                            <option selected>Choisir...</option>
-                            <option>OYERE Morel</option>
-                            <option>Administration publique</option>
-                        </select>
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="libelle">Date</label>
-                        <input type="date" class="form-control" id="libelle" placeholder="sauvegarde">
+                        {{form.payment_method}}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="libelle">Montant</label>
-                        <input type="number" class="form-control" id="libelle" placeholder="sauvegarde">
+                        {{form.amount_payment}}
                     </div>
                     <div class="mb-3">
                         <label class="form-label" for="libelle">Commentaire</label>
-                        <textarea name="" class="form-control" id="" cols="30" rows="3"></textarea>
+                        {{form.comment}}
                     </div>
                 </div>
                 <div class="modal-footer">
@@ -140,4 +131,44 @@
         </form>
     </div>
 </div>
+
+
+<script>
+
+    // Supprimer un élément
+    function deleteRegulation(id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `${id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+</script>
 {% endblock content %}

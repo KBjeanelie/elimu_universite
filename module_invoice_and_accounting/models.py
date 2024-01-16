@@ -117,6 +117,9 @@ class Invoice(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+    
+    def __str__(self):
+        return f"N°{self.invoice_number}"
 
 
 class Regulations(models.Model):
@@ -127,7 +130,8 @@ class Regulations(models.Model):
     
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     
-    payment_method = models.CharField(max_length=20)
+    choices = [('Espèce', 'Espèce'), ('Chèque', 'Chèque')]
+    payment_method = models.CharField(max_length=20, choices=choices, blank=True)
     
     date_payment = models.DateField(auto_now=True)
     
