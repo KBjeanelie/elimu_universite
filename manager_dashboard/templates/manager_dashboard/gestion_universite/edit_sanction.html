@@ -59,6 +59,7 @@
                             <div class="mb-3">
                                 <label class="form-label" for="level">Date émise de la sanction</label>
                                 {{ form.sanction_date }}
+                                <i>date actuelle: {{form.sanction_date.value}} </i>
                             </div>
                             <a href='{% url "manager_dashboard:sanction_appreciations" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                             <button type="submit" class="btn btn-dark"> <i class="ti-pencil"></i> Modifier</button>

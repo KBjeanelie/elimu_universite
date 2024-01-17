@@ -75,7 +75,7 @@
                                             </td>
                                             <td>
                                                 <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
+                                                    <a href='{% url "manager_dashboard:edit_program" program.id %}' class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
                                                     {% if program.file_exists %}
                                                         <a href="{{ program.file.url }}" target="_blank" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
                                                     {% endif %}

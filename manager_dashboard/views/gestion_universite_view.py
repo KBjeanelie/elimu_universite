@@ -246,11 +246,22 @@ class SubjectView(View):
 
 #=============================== PARTIE CONCERNANT LES PROGRAMMES ==========================
 class EditProgramView(View):
-    template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    template = "manager_dashboard/gestion_universite/editer_programme.html"
     def get(self, request, pk, *args, **kwargs):
         program = get_object_or_404(Program, pk=pk)
         form = ProgramForm(instance=program)
         context = {'form':form, 'program':program}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        subject = get_object_or_404(Program, pk=pk)
+        form = ProgramForm(request.POST, instance=subject)
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:programs')  # Redirigez vers la page appropriée après la mise à jour réussie
+        
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'subject': subject}
         return render(request, template_name=self.template, context=context)
     
 class AddProgramView(View):
@@ -288,9 +299,28 @@ class ProgramView(View):
 #================================= PARTIE CONCERNANT LES SANCTIONS ====================
 class EditSanctionView(View):
     template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    
     def get(self, request, pk, *args, **kwargs):
         sanction = get_object_or_404(SanctionAppreciation, pk=pk)
         form = SanctionAppreciationForm(instance=sanction)
+        context = {'form':form, 'sanction':sanction}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        sanction = get_object_or_404(SanctionAppreciation, pk=pk)
+        old_date = sanction.sanction_date
+        
+        mutable_data = request.POST.copy()
+        if 'sanction_date' not in request.POST or not request.POST['sanction_date']:
+            mutable_data['sanction_date'] = old_date
+        
+        form = SanctionAppreciationForm(mutable_data, instance=sanction)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:sanction_appreciations')  # Redirigez vers la page appropriée après la mise à jour réussie
+        
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
         context = {'form':form, 'sanction':sanction}
         return render(request, template_name=self.template, context=context)
     

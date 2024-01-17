@@ -1,3 +1,4 @@
+from datetime import date
 from django import forms
 from .models import (
     AcademicYear,
@@ -330,7 +331,6 @@ class SanctionAppreciationForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     'class': 'form-control',
-                    'required': True,
                 }
             )
         }

@@ -150,7 +150,7 @@ class SanctionAppreciation(models.Model):
     subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
     student = models.ForeignKey(Student, on_delete=models.CASCADE)
     career = models.ForeignKey(Career, on_delete=models.DO_NOTHING)
-    sanction_date = models.DateField()
+    sanction_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
