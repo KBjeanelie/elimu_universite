@@ -245,13 +245,11 @@ class SubjectForm(forms.ModelForm):
             'possible_evaluation':forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',
-                    'required': True,
                 }
             ),
             'possible_averaging':forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',
-                    'required': True,
                 }
             )
         }

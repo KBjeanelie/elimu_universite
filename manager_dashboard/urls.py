@@ -39,6 +39,7 @@ urlpatterns = [
     path(route='gestion_universite/matières/<int:pk>/editer/', view=EditSubjectView.as_view(), name='edit_subject'),
     path(route='gestion_universite/matières/<int:pk>/delete/', view=SubjectView.as_view(), name='delete_subject'),
     
+    
     path(route='gestion_universite/programmes/', view=ProgramView.as_view(), name='programs'),
     path(route='gestion_universite/programmes/ajouter/', view=AddProgramView.as_view(), name='add_program'),
     path(route='gestion_universite/programmes/<int:pk>/editer/', view=EditProgramView.as_view(), name='edit_program'),

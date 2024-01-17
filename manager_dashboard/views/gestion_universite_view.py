@@ -194,11 +194,22 @@ class GroupSubjectView(View):
 
 #=============================== PARTIE CONCERNANT LES MATIÈRES ==========================
 class EditSubjectView(View):
-    template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    template = "manager_dashboard/gestion_universite/editer_matiere.html"
     def get(self, request, pk, *args, **kwargs):
         subject = get_object_or_404(Subject, pk=pk)
         form = SubjectForm(instance=subject)
         context = {'form':form, 'subject':subject}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        subject = get_object_or_404(Subject, pk=pk)
+        form = SubjectForm(request.POST, instance=subject)
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:subjects')  # Redirigez vers la page appropriée après la mise à jour réussie
+        
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'subject': subject}
         return render(request, template_name=self.template, context=context)
     
 class AddSubjectView(View):
