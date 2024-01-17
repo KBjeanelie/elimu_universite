@@ -6,6 +6,28 @@ from user_account.forms import UserStudentForm, UserTeacherForm
 from user_account.models import User
 
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ENSEIGNANT
+class EditTeacherAccountView(View):
+    template = "manager_dashboard/comptes/editer_compte_enseignant.html"
+    def get(self, request, pk, *args, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        print(user.password)
+        form = UserTeacherForm(instance=user)
+        context = {'form':form, 'account':user}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        form = UserTeacherForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            user.set_password(form.cleaned_data['password'])
+            user.is_teacher = True
+            user.save()
+            return redirect('manager_dashboard:teachers_account')  # Redirigez vers la page appropriée après la mise à jour réussie
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'user': user}
+        return render(request, template_name=self.template, context=context)
+    
 class AddTeacherAccount(View):
     template = "manager_dashboard/comptes/ajout_compte_enseignant.html"
     form = UserTeacherForm()
@@ -39,6 +61,28 @@ class ListAllTeacherAccount(View):
 #===END
 
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ETUDIANT
+class EditStudentAccountView(View):
+    template = "manager_dashboard/comptes/editer_compte_etudiant.html"
+    def get(self, request, pk, *args, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        print(user.password)
+        form = UserStudentForm(instance=user)
+        context = {'form':form, 'account':user}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        form = UserStudentForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            user.set_password(form.cleaned_data['password'])
+            user.is_student = True
+            user.save()
+            return redirect('manager_dashboard:students_account')  # Redirigez vers la page appropriée après la mise à jour réussie
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'user': user}
+        return render(request, template_name=self.template, context=context)
+
 class AddStudentAccount(View):
     template = "manager_dashboard/comptes/ajout_compte_etudiant.html"
     form = UserStudentForm()

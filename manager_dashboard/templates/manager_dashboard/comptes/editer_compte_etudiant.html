@@ -12,7 +12,7 @@
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="../index.html">Accueil</a></li>
                             <li class="breadcrumb-item"><a href="{% url 'manager_dashboard:students_account' %}">Comptes Etudiants</a></li>
-                            <li class="breadcrumb-item"><a>Ajouter</a></li>
+                            <li class="breadcrumb-item"><a> {{account.username}} </a></li>
                         </ol>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <div class="white_card_header">
                         <div class="box_header m-0">
                             <div class="main-title">
-                                <h3 class="m-0">Ajouter un Compte Etudiant</h3>
+                                <h3 class="m-0">Modifier un compte</h3>
                             </div>
                         </div>
                     </div>
@@ -41,7 +41,7 @@
                                 {{ form.username}}
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="libelle">Mot de passe</label>
+                                <label class="form-label" for="libelle">Nouveau mot de passe</label>
                                 {{ form.password }}
                             </div>
                             <div>
@@ -51,7 +51,10 @@
                                 </div>
                                 
                             </div>
-                            <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
+                            <div>
+                                <a href='{% url "manager_dashboard:students_account" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
+                                <button type="submit" class="btn btn-dark"> <i class="ti-save"></i> Modifer</button>
+                            </div>
                         </form>
                     </div>
                 </div>

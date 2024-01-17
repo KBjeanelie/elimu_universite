@@ -11,8 +11,8 @@
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="../index.html">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="{% url 'manager_dashboard:students_account' %}">Comptes Etudiants</a></li>
-                            <li class="breadcrumb-item"><a>Ajouter</a></li>
+                            <li class="breadcrumb-item"><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes Enseignants</a></li>
+                            <li class="breadcrumb-item"><a> {{account.username}} </a></li>
                         </ol>
                     </div>
                 </div>
@@ -25,7 +25,7 @@
                     <div class="white_card_header">
                         <div class="box_header m-0">
                             <div class="main-title">
-                                <h3 class="m-0">Ajouter un Compte Etudiant</h3>
+                                <h3 class="m-0">Modifier Compte Enseignant</h3>
                             </div>
                         </div>
                     </div>
@@ -33,8 +33,8 @@
                         <form method="post">
                             {% csrf_token %}
                             <div class="mb-3">
-                                <label class="form-label" for="level">Matricule Etudiant</label>
-                                {{ form.student }}
+                                <label class="form-label" for="level">Nom Enseignant</label>
+                                {{ form.teacher }}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Nom Utilisateur</label>
@@ -51,7 +51,10 @@
                                 </div>
                                 
                             </div>
-                            <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
+                            <div>
+                                <button type="submit" class="btn btn-danger"> <i class="ti-close"></i> Annuler</button>
+                                <button type="submit" class="btn btn-dark"> <i class="ti-save"></i> Modifer</button>
+                            </div>
                         </form>
                     </div>
                 </div>

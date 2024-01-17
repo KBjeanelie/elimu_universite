@@ -153,13 +153,11 @@ class UserTeacherForm(forms.ModelForm):
             'is_active': forms.CheckboxInput(
                 attrs={
                     "class": "form-check-input",
-                    "required": True
                 }
             ),
             'is_teacher': forms.CheckboxInput(
                 attrs={
                     "class": "form-check-input",
-                    "required": True
                 }
             ),
         }
@@ -204,13 +202,11 @@ class UserStudentForm(forms.ModelForm):
             'is_active': forms.CheckboxInput(
                 attrs={
                     "class": "form-check-input",
-                    "required": True
                 }
             ),
             'is_student': forms.CheckboxInput(
                 attrs={
                     "class": "form-check-input",
-                    "required": True
                 }
             ),
         }

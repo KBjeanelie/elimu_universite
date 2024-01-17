@@ -73,7 +73,7 @@
                                                 <td>le 25 janvier 2023 à 20h50:30</td>
                                                 <td>
                                                     <div class="action_btns d-flex">
-                                                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                        <a href='{% url "manager_dashboard:edit_student_account" student_account.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
                                                         <a href="#" onclick="deleteStudentAccount({{student_account.id}})" class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                     </div>
                                                 </td>
