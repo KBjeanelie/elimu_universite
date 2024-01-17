@@ -18,7 +18,19 @@ class EditInformationView(View):
     
     def post(self, request, pk, *args, **kwargs):
         info = get_object_or_404(Information, pk=pk)
-        form = InformationForm(request.POST, instance=info)
+        old_date = info.date_info
+        
+        mutable_data = request.POST.copy()
+        mutable_files = request.FILES.copy()
+    
+        if 'file' not in mutable_files or not mutable_files['file']:
+            mutable_files['file'] = None
+            
+        if 'date_info' not in request.POST or not request.POST['date_info']:
+            mutable_data['date_info'] = old_date
+            
+        form = InformationForm(mutable_data, mutable_files, instance=info)
+        
         if form.is_valid():
             form.save()
             return redirect('manager_dashboard:informations')  # Redirigez vers la page appropriée après la mise à jour réussie

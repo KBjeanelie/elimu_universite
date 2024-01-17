@@ -54,6 +54,7 @@
                             <div class="mb-3">
                                 <label class="form-label" for="level">Fichier</label>
                                 {{ form.file }}
+                                <i>fichier actuelle: {{ program.file.name }} </i>
                             </div>
                             <a href='{% url "manager_dashboard:programs" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>

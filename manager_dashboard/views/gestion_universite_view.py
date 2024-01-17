@@ -247,6 +247,7 @@ class SubjectView(View):
 #=============================== PARTIE CONCERNANT LES PROGRAMMES ==========================
 class EditProgramView(View):
     template = "manager_dashboard/gestion_universite/editer_programme.html"
+    
     def get(self, request, pk, *args, **kwargs):
         program = get_object_or_404(Program, pk=pk)
         form = ProgramForm(instance=program)

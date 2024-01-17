@@ -12,7 +12,7 @@ class Information(models.Model):
     
     title = models.CharField(max_length=50)
     
-    date_info = models.DateField()
+    date_info = models.DateField(blank=True, null=True)
     
     content = RichTextField(blank=True, null=True)
     
