@@ -37,7 +37,7 @@
                                     <div class="col"><span class="badge_btn_3  mb-1"> {{ ebook.career.title }} </span></div>
                                 </div>
                                 <div class="action_btns d-flex align-items-center">
-                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                    <a href='{% url "manager_dashboard:edit_ebook" ebook.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
                                     <a href="{{ ebook.attachement.url }}" target="blank" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
                                     <a href="#" onclick="deleteEbook({{ebook.id}})" class="action_btn"> <i class="fas fa-trash"></i> </a>
                                 </div>

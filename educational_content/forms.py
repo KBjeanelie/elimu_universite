@@ -103,13 +103,11 @@ class eBookForm(forms.ModelForm):
             'photo_cover': forms.FileInput(
                 attrs={
                     "class": "form-control",
-                    "required": True
                 }
             ),
             'attachement': forms.FileInput(
                 attrs={
                     "class": "form-control",
-                    "required": True
                 }
             ),
         }

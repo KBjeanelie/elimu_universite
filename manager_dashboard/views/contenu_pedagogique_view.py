@@ -20,7 +20,36 @@ class AddeBook(View):
             return redirect('manager_dashboard:ebooks')
         
         return render(request, template_name=self.template, context=self.context_object)
+
+class EditEbook(View):
+    template = "manager_dashboard/contenue_pedagogique/editer_ebook.html"
+    def get(self, request, pk, *args, **kwargs):
+        ebook = get_object_or_404(eBook, pk=pk)
+        form = eBookForm(instance=ebook)
+        context = {'form':form, 'ebook':ebook}
+        return render(request, template_name=self.template, context=context)
     
+    def post(self, request, pk, *args, **kwargs):
+        ebook = get_object_or_404(eBook, pk=pk)
+        
+        mutable_data = request.POST.copy()
+        mutable_files = request.FILES.copy()
+    
+        if 'photo_cover' not in mutable_files or not mutable_files['photo_cover']:
+            mutable_files['photo_cover'] = None
+        if 'attachement' not in mutable_files or not mutable_files['attachement']:
+            mutable_files['attachement'] = None
+
+            
+        form = eBookForm(mutable_data, mutable_files, instance=ebook)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:ebooks')
+        
+        context = {'form':form, 'ebook':ebook}
+        return render(request, template_name=self.template, context=context)
+
 class eBookView(View):
     template = 'manager_dashboard/contenue_pedagogique/ebooks.html'
     
