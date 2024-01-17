@@ -9,13 +9,6 @@ class AddeBook(View):
     template = "manager_dashboard/contenue_pedagogique/ajout_ebook.html"
     form = eBookForm()
     context_object = {'form': form}
-    def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template, context=self.context_object)
-    
-class eBookView(View):
-    template = 'manager_dashboard/contenue_pedagogique/ebooks.html'
-    ebooks = eBook.objects.all().order_by('-created_at')
-    context_object = {'ebooks': ebooks}
     
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context_object)
@@ -27,12 +20,20 @@ class eBookView(View):
             return redirect('manager_dashboard:ebooks')
         
         return render(request, template_name=self.template, context=self.context_object)
-
-class eBookDeleteView(View):
+    
+class eBookView(View):
+    template = 'manager_dashboard/contenue_pedagogique/ebooks.html'
+    
+    def get(self, request, *args, **kwargs):
+        ebooks = eBook.objects.all().order_by('-created_at')
+        context_object = {'ebooks': ebooks}
+        return render(request, template_name=self.template, context=context_object)
+    
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(eBook, pk=pk)
         instance.delete()
         return JsonResponse({'message': 'Élément supprimé avec succès'})
+
 
 class FolderViews(View):
     template = 'manager_dashboard/contenue_pedagogique/dossiers.html'

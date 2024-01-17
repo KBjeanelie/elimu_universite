@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form method='post' action='{% url "manager_dashboard:ebooks" %}' enctype="multipart/form-data">
+                        <form method='post' enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Titre</label>

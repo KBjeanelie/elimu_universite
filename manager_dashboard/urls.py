@@ -5,7 +5,7 @@ from elimu_universite import settings
 from manager_dashboard.views.administration_view import TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EventView, GroupDiscussionView, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
-from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookDeleteView, eBookView
+from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
 
@@ -74,7 +74,7 @@ urlpatterns = [
     #=========================== THIS ROUTE IS FOR CONTENUE PEDAGOGIQUE MODULE ======================#
     path(route='contenue_pedagogique/ebooks/', view=eBookView.as_view(), name="ebooks"),
     path(route='contenue_pedagogique/ebooks/ajouter/', view=AddeBook.as_view(), name='add_ebook'),
-    path(route='contenue_pedagogique/ebooks/<int:pk>/delete/', view=eBookDeleteView.as_view(), name="delete_ebook"),
+    path(route='contenue_pedagogique/ebooks/<int:pk>/delete/', view=eBookView.as_view(), name="delete_ebook"),
     path(route='contenue_pedagogique/dossiers/', view=FolderViews.as_view(), name='folders'),
     path(route='contenue_pedagogique/dossiers/<int:folder_id>', view=FilesView.as_view(), name='content_folder'),
     path(route='contenue_pedagogique/fichier/ajouter/', view=FilesView.as_view(), name='add_file'),
