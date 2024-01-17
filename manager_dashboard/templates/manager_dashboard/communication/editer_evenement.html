@@ -31,7 +31,7 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form method="post" action='{% url "manager_dashboard:events" %}' enctype="multipart/form-data">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Titre</label>
@@ -40,25 +40,32 @@
                             <div class="mb-3">
                                 <label class="form-label" for="date">Date de début</label>
                                 {{ form.start_date }}
+                                <i>date actuelle: {{event.start_date}}</i>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="date">Date de fin</label>
                                 {{ form.end_date }}
+                                <i>date actuelle: {{event.end_date}}</i>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="date">Photo de couverture / Flyer</label>
                                 {{ form.photo}}
+                                <i>fichier actuelle: {{event.photo.name}}</i>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="date">Pièce jointe</label>
                                 {{form.file }}
+                                <i>fichier actuelle: {{event.file.name}}</i>
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Évenements</label>
                                 {{ form.content | safe }}
                                 {{form.media}}
                             </div>
-                            <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
+                            <div>
+                                <a href='{% url "manager_dashboard:events" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
+                                <button type="submit" class="btn btn-dark"> <i class="ti-save"></i> Modifer</button>
+                            </div>
                         </form>
                     </div>
                 </div>

@@ -94,6 +94,33 @@ class EditEventView(View):
         form = EventForm(instance=event)
         context = {'form':form, 'event':event}
         return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        event = get_object_or_404(Event, pk=pk)
+        old_date1 = event.start_date
+        old_date2 = event.end_date
+        
+        mutable_data = request.POST.copy()
+        mutable_files = request.FILES.copy()
+    
+        if 'file' not in mutable_files or not mutable_files['file']:
+            mutable_files['file'] = None
+        if 'photo' not in mutable_files or not mutable_files['photo']:
+            mutable_files['photo'] = None
+
+        if 'start_date' not in request.POST or not request.POST['start_date']:
+            mutable_data['start_date'] = old_date1
+        if 'end_date' not in request.POST or not request.POST['end_date']:
+            mutable_data['end_date'] = old_date2
+            
+        form = EventForm(mutable_data, mutable_files, instance=event)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:events')
+        
+        context = {'form':form, 'event':event}
+        return render(request, template_name=self.template, context=context)
 
 class EventView(View):
     template = "manager_dashboard/communication/evenements.html"

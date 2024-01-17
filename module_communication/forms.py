@@ -58,36 +58,28 @@ class EventForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     "class": "form-control",
-                    "required": True
                 }
             ),
             'end_date':forms.DateInput(
                 attrs={
                     'type':'date',
                     "class": "form-control",
-                    "required": True
                 }
             ),
             'file': forms.FileInput(
                 attrs={
                     'type':'file',
                     "class": "form-control",
-                    "required": True
                 }
             ),
             'photo': forms.FileInput(
                 attrs={
                     'type':'file',
                     "class": "form-control",
-                    "required": True
                 }
             ),
         }
 
-class EventParticipateForm(forms.ModelForm):
-    class Meta:
-        model = EventParticipate
-        fields = ['student', 'event', 'start_hours', 'end_hours', 'amount']
 
 class GroupForm(forms.ModelForm):
     class Meta:

@@ -37,9 +37,9 @@ class Event(models.Model):
     
     title = models.CharField(max_length=50)
     
-    start_date = models.DateField()
+    start_date = models.DateField(blank=True, null=True)
     
-    end_date = models.DateField()
+    end_date = models.DateField(blank=True, null=True)
     
     content =  RichTextField(blank=True, null=True)
     
