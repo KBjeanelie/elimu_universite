@@ -4,7 +4,7 @@ from django.urls import path
 from elimu_universite import settings
 from manager_dashboard.views.administration_view import TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EventView, GroupDiscussionView, InformationView
-from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount, StudentAccountDeleteView, TeacherAccountDeleteView
+from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, FilesView, FolderViews, eBookView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
@@ -83,11 +83,12 @@ urlpatterns = [
     #=================== THIS ROUTE IS FOR Compte MODULE ===============================#
     path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
     path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
-    path(route='comptes/compte_enseignants/<int:pk>/delete/', view=TeacherAccountDeleteView.as_view(), name='delete_teacher_account'),
+    path(route='comptes/compte_enseignants/<int:pk>/delete/', view=AddTeacherAccount.as_view(), name='delete_teacher_account'),
     path(route='comptes/compte_etudiants/', view=ListAllStudentAccount.as_view(), name='students_account'),
     path(route='comptes/compte_etudiants/ajouter/', view=AddStudentAccount.as_view(), name='add_student_account'),
-    path(route='comptes/compte_etudiants/<int:pk>/delete/', view=StudentAccountDeleteView.as_view(), name='delete_student_account'),
+    path(route='comptes/compte_etudiants/<int:pk>/delete/', view=ListAllStudentAccount.as_view(), name='delete_student_account'),
     #===END
+    
     #=================== THIS ROUTE IS FOR ADMINISTRATION MODULE ========================
     # path(route='administration/type_evaluation/', view=TypeEvaluationView.as_view(), name='type_evaluation'),
     path(route='administration/type_documents/', view=TypeDocumentView.as_view(), name='type_documents'),

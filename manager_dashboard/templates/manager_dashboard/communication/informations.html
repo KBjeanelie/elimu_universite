@@ -52,7 +52,6 @@
                                         <tr>
                                             <th scope="col">Titre</th>
                                             <th scope="col">Date</th>
-                                            <th scope="col">Informations</th>
                                             <th scope="col">Pièce jointe</th>
                                         </tr>
                                     </thead>
@@ -61,7 +60,6 @@
                                             <tr data-id="{{ information.id }}">
                                                 <td><h6> {{ information.title }} </h6></td>
                                                 <td><h6> {{ information.date_info }} </h6></td>
-                                                <td> {{ information.content | slice:":100" | safe }}... </td>
                                                 <td>
                                                     {% if event.file_exists %}
                                                         <a href="{{ information.file.url }}" target="_blank">{{ information.file.name }}</a>
@@ -71,6 +69,7 @@
                                                 </td>
                                                 <td>
                                                     <div class="action_btns d-flex">
+                                                        <a href="#" class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
                                                         <a href="#" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
                                                         {% if event.file_exists %}
                                                             <a href="{{ information.file.url }}" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
