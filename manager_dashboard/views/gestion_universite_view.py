@@ -254,16 +254,31 @@ class EditProgramView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, pk, *args, **kwargs):
-        subject = get_object_or_404(Program, pk=pk)
-        form = ProgramForm(request.POST, instance=subject)
+        program = get_object_or_404(Program, pk=pk)
+        
+        old_date = program.program_date
+        
+        mutable_data = request.POST.copy()
+        mutable_files = request.FILES.copy()
+        
+        print(mutable_files)
+        
+        if 'file' not in mutable_files or not mutable_files['file']:
+            mutable_files['file'] = None
+            
+        if 'program_date' not in request.POST or not request.POST['program_date']:
+            mutable_data['program_date'] = old_date
+            
+        form = ProgramForm(mutable_data, mutable_files, instance=program)
+        
         if form.is_valid():
             form.save()
-            return redirect('manager_dashboard:programs')  # Redirigez vers la page appropriée après la mise à jour réussie
+            return redirect('manager_dashboard:programs')  
         
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
-        context = {'form': form, 'subject': subject}
+        context = {'form':form, 'program':program}
         return render(request, template_name=self.template, context=context)
-    
+
+
 class AddProgramView(View):
     template = "manager_dashboard/gestion_universite/ajout_programme.html"
     def get(self, request, *args, **kwargs):

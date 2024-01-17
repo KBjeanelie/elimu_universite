@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form method="post">
+                        <form method="post" enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Titre</label>
@@ -44,6 +44,7 @@
                                 <div class="col-md-6">
                                     <label class="form-label" for="date">Date</label>
                                     {{ form.program_date}}
+                                    <i>date actuelle: {{form.program_date.value}} </i>
                                 </div>
                                 <div class="col-md-6">
                                     <label class="form-label" for="level">Responsable</label>
@@ -54,7 +55,7 @@
                                 <label class="form-label" for="level">Fichier</label>
                                 {{ form.file }}
                             </div>
-                            <a href='{% url "manager_dashboard:programs" %}' class="btn btn-danger"> <i class="ti-save"></i> Enregistrer</a>
+                            <a href='{% url "manager_dashboard:programs" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
                     </div>
