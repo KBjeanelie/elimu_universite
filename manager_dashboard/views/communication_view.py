@@ -37,6 +37,15 @@ class InformationView(View):
         return render(request, template_name=self.template, context=context)
 
 
+class InformationDetail(View):
+    template = "manager_dashboard/communication/information_detail.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        info = get_object_or_404(Information, pk=pk)
+        object = {'info':info}
+        return render(request, template_name=self.template, context=object)
+
+
 
 class AddEventView(View):
     template = "manager_dashboard/communication/ajouter_evenement.html"
@@ -76,6 +85,15 @@ class EventView(View):
         instance.delete()
         context = {'events': Event.objects.all().order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
+
+
+class EventDetail(View):
+    template = "manager_dashboard/communication/evenement_detail.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        event = get_object_or_404(Event, pk=pk)
+        object = {'event':event}
+        return render(request, template_name=self.template, context=object)
 
 
 class GroupDiscussionView(View):
