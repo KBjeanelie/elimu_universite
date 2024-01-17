@@ -29,7 +29,7 @@ class Information(models.Model):
     
     def file_exists(self):
         if self.file:
-            return os.path.exists(settings.MEDIA_ROOT + str(self.file))
+            return os.path.exists(settings.MEDIA_ROOT / str(self.file))
         return False
 
 

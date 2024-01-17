@@ -1,10 +1,30 @@
 
+from datetime import date
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from module_communication.forms import EventForm, GroupForm, InformationForm
 
 from module_communication.models import Event, Group, Information
+
+class EditInformationView(View):
+    template = "manager_dashboard/communication/editer_information.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        info = get_object_or_404(Information, pk=pk)
+        form = InformationForm(instance=info)
+        context = {'form':form, 'info':info}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        info = get_object_or_404(Information, pk=pk)
+        form = InformationForm(request.POST, instance=info)
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:informations')  # Redirigez vers la page appropriée après la mise à jour réussie
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'info': info}
+        return render(request, template_name=self.template, context=context)
 
 class AddInformationView(View):
     template = "manager_dashboard/communication/ajouter_information.html"

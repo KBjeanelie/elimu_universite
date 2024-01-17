@@ -25,7 +25,6 @@ class InformationForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     "class": "form-control",
-                    "required": True
                 }
             ),
             'file': forms.FileInput(
