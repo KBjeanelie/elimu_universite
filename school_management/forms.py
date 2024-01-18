@@ -36,14 +36,12 @@ class AcademicYearForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     'class': 'form-control',
-                    'required': True,
                 }
             ),
             'end_date': forms.DateInput(
                 attrs={
                     'type':'date',
                     'class': 'form-control',
-                    'required': True,
                 }
             ),
             'status':forms.CheckboxInput(

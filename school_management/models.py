@@ -7,8 +7,8 @@ from elimu_universite.constant import days_of_the_weeks, hours_of_the_day
 # Class representing Academic Year
 class AcademicYear(models.Model):
     label = models.CharField(max_length=50)
-    start_date = models.DateField()
-    end_date = models.DateField()
+    start_date = models.DateField(blank=True, null=True)
+    end_date = models.DateField(blank=True, null=True)
     status = models.BooleanField(default=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

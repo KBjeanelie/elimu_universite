@@ -8,10 +8,34 @@ from user_account.models import Student, Teacher, User
 
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
 class EditAcademicYearView(View):
-    template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    template = "manager_dashboard/gestion_universite/editer_annee_academique.html"
+    
     def get(self, request, pk, *args, **kwargs):
         academique_year = get_object_or_404(AcademicYear, pk=pk)
         form = AcademicYearForm(instance=academique_year)
+        context = {'form':form, 'academique_year':academique_year}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        academique_year = get_object_or_404(AcademicYear, pk=pk)
+        
+        old_date1 = academique_year.start_date
+        old_date2 = academique_year.end_date
+        
+        mutable_data = request.POST.copy()
+        print(old_date1, old_date2, mutable_data)
+        if 'start_date' not in request.POST or not request.POST['start_date']:
+            mutable_data['start_date'] = old_date1
+        if 'end_date' not in request.POST or not request.POST['end_date']:
+            mutable_data['end_date'] = old_date2
+        print(mutable_data)
+        
+        form = AcademicYearForm(mutable_data, instance=academique_year)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:years')
+        
         context = {'form':form, 'academique_year':academique_year}
         return render(request, template_name=self.template, context=context)
     

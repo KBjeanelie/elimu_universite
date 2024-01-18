@@ -71,7 +71,7 @@
                                                     
                                                 <td>
                                                     <div class="action_btns d-flex">
-                                                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                        <a href='{% url "manager_dashboard:edit_year" year.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
                                                         <a href="#" onclick='deleteYear({{ year.id }})' class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                     </div>
                                                 </td>
