@@ -406,22 +406,41 @@ class TrombinoscopeView(View):
         return render(request, template_name=self.template, context=context)
 
 
-class StudentDetailView(View):
-    template = "manager_dashboard/gestion_universite/etudiant_detail.html"
-    
-    def get(self, request, pk, *args, **kwargs):
-        student = get_object_or_404(Student, pk=pk)
-        context = {'student': student}
-        return render(request, template_name=self.template, context=context)
-
-
-
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
 class EditTeacherView(View):
-    template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    template = "manager_dashboard/gestion_universite/editer_enseignant.html"
+    
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
         form = TeacherForm(instance=teacher)
+        context = {'form':form, 'teacher': teacher}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        teacher = get_object_or_404(Teacher, pk=pk)
+        bithday = teacher.bithday
+        start_of_contrat = teacher.start_of_contrat
+        end_of_contrat = teacher.end_of_contrat
+        
+        mutable_data = request.POST.copy()
+        mutable_files = request.FILES.copy()
+        
+        if 'picture' not in mutable_files or not mutable_files['picture']:
+            mutable_files['picture'] = None
+        
+        if 'bithday' not in request.POST or not request.POST['bithday']:
+            mutable_data['bithday'] = bithday
+        if 'start_of_contrat' not in request.POST or not request.POST['start_of_contrat']:
+            mutable_data['start_of_contrat'] = start_of_contrat
+        if 'end_of_contrat' not in request.POST or not request.POST['end_of_contrat']:
+            mutable_data['end_of_contrat'] = end_of_contrat
+        
+        form = TeacherForm(mutable_data, mutable_files, instance=teacher)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:teachers')
+        
         context = {'form':form, 'teacher': teacher}
         return render(request, template_name=self.template, context=context)
     
@@ -465,3 +484,12 @@ class TeacherDetailView(View):
         context = {'teacher':teacher, 'account': account}
         return render(request, template_name=self.template, context=context)
 #===END
+
+
+class StudentDetailView(View):
+    template = "manager_dashboard/gestion_universite/etudiant_detail.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(Student, pk=pk)
+        context = {'student': student}
+        return render(request, template_name=self.template, context=context)

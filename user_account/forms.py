@@ -34,11 +34,9 @@ class TeacherForm(forms.ModelForm):
                     'placeholder': 'adresse',
                 }
             ),
-            'last_diploma': forms.TextInput(
+            'last_diploma': forms.Select(
                 attrs={
-                    'type':'text',
                     'class': 'form-control',
-                    'placeholder': 'dernier diplôme obtenu',
                 }
             ),
             'nationality': forms.TextInput(
@@ -84,7 +82,6 @@ class TeacherForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     "class": "form-control",
-                    "required": True
                 }
             ),
             'end_of_contrat':forms.DateInput(

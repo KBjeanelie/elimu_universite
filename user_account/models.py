@@ -3,7 +3,13 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 from elimu_universite import settings
-
+last_diploma = (
+    ('Doctorat', 'Doctorat'),
+    ('Master', 'Master'),
+    ('Licence', 'Licence'),
+    ('DUT', 'DUT'),
+    ('Baccalauréat', 'Baccalauréat')
+)
 cities = (
     ('pointe_noire', "Pointe Noire"),
     ('brazzaville', "Brazzaville")
@@ -74,7 +80,7 @@ class Teacher(models.Model):
     
     status = models.CharField(max_length=20, blank=True)
     
-    last_diploma = models.CharField(max_length=20, blank=True)
+    last_diploma = models.CharField(max_length=20, choices=last_diploma, blank=True,)
     
     picture = models.ImageField(upload_to="teacher_pics", blank=True, null=True)
     

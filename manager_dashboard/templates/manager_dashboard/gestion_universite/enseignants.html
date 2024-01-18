@@ -60,7 +60,7 @@
                                             <td>
                                                 <div class="action_btns d-flex">
                                                     <a href='{% url "manager_dashboard:teacher_detail" teacher.id %}' class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
-                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                    <a href='{% url "manager_dashboard:edit_teacher" teacher.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
                                                     <a href="#" onclick='deleteTeacher({{ teacher.id}})' class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                 </div>
                                             </td>
