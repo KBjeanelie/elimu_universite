@@ -1,17 +1,17 @@
 from rest_framework import serializers
 
-from educational_content.models import Book, BookCategory, File, Folder, eBook
+from educational_content.models import Book, BookCategory, eBook
 
 
-class FolderSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = Folder
-        fields = '__all__'
+# class FolderSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = Folder
+#         fields = '__all__'
 
-class FileSerializer(serializers.ModelSerializer):
-    class Meta:
-        model = File
-        fields = '__all__'
+# class FileSerializer(serializers.ModelSerializer):
+#     class Meta:
+#         model = File
+#         fields = '__all__'
 
 
 class BookCategorySerializer(serializers.ModelSerializer):

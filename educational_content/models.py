@@ -2,35 +2,35 @@ from django.db import models
 from school_management.models import Career, Sector
 from user_account.models import Teacher
 
-# Class representing a Folder
-class Folder(models.Model):
+# # Class representing a Folder
+# class Folder(models.Model):
     
-    label = models.CharField(max_length=20)
+#     label = models.CharField(max_length=20)
     
-    owner = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+#     owner = models.ForeignKey(Teacher, on_delete=models.SET_NULL, blank=True, null=True)
     
-    created_at = models.DateTimeField(auto_now_add=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
     
-    updated_at = models.DateTimeField(auto_now=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return f"Dossier : {self.label} crée par {self.owner}"
+#     def __str__(self):
+#         return f"Dossier : {self.label} crée par {self.owner}"
 
-# Class representing a File
-class File(models.Model):
+# # Class representing a File
+# class File(models.Model):
     
-    label = models.CharField(max_length=20)
+#     label = models.CharField(max_length=20)
     
-    inFolder = models.ForeignKey(Folder, on_delete=models.CASCADE)
+#     inFolder = models.ForeignKey(Folder, on_delete=models.CASCADE)
     
-    attachement = models.FileField(upload_to='public_folder')
+#     attachement = models.FileField(upload_to='public_folder')
     
-    created_at = models.DateTimeField(auto_now_add=True)
+#     created_at = models.DateTimeField(auto_now_add=True)
     
-    updated_at = models.DateTimeField(auto_now=True)
+#     updated_at = models.DateTimeField(auto_now=True)
     
-    def __str__(self):
-        return f"file : {self.label}"
+#     def __str__(self):
+#         return f"file : {self.label}"
 
 # Class representing a BookCategory
 class BookCategory(models.Model):

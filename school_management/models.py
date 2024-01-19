@@ -96,9 +96,9 @@ class Sector(models.Model):
 # Class representing Subject
 class Subject(models.Model):
     label = models.CharField(max_length=25)
-    sector = models.ForeignKey(Sector, on_delete=models.SET_NULL)
+    sector = models.ForeignKey(Sector, on_delete=models.SET_NULL, blank=True, null=True)
     teacher_in_charge = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
-    level = models.ForeignKey(Level, on_delete=models.SET_NULL)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL, blank=True, null=True)
     types = [('obligatory', 'Obligatory'), ('secondary', 'Secondary')]
     type = models.CharField(max_length=12, choices=types)
     subject_group = models.ForeignKey(GroupSubject, on_delete=models.SET_NULL, null=True, blank=True)
