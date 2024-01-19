@@ -62,7 +62,7 @@
                                     </thead>
                                     <tbody id="elementList">
                                         {% for evaluation in evaluations %}
-                                            <tr data-id="{{ evaluation }}">
+                                            <tr data-id="{{ evaluation.id }}">
                                                 <td>
                                                     <h6> {{evaluation.student.registration_number}} </h6>
                                                 </td>
@@ -75,8 +75,8 @@
                                                 <!--<td><h6> <a class="status_btn">Active</a> </h6></td>-->
                                                 <td>
                                                     <div class="action_btns d-flex">
-                                                        <a href='' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                        <a href="#" onclick='' class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                        <a href='{% url "manager_dashboard:edit_evaluation" evaluation.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                        <a href="#" onclick='deleteEvaluation({{evaluation.id}})' class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -96,16 +96,16 @@
 <script>
 
     // Supprimer un élément
-    function deleteStudentAccount(account_id) {
+    function deleteEvaluation(id) {
         var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
         $.ajax({
-            url: `/comptes/compte_etudiants/${account_id}/delete/`,
+            url: `${id}/delete/`,
             type: 'DELETE',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
             },
             success: function(response) {
-                $('#elementList').find(`tr[data-id="${account_id}"]`).remove();
+                $('#elementList').find(`tr[data-id="${id}"]`).remove();
                 console.log('Élément supprimé avec succès');
             },
             error: function(error) {

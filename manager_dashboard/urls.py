@@ -6,7 +6,7 @@ from manager_dashboard.views.administration_view import TypeDocumentDeleteView, 
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EditInformationView, EventDetail, EventView, GroupDiscussionView, InformationDetail, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, EditStudentAccountView, EditTeacherAccountView, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
-from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView
+from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, EditAssessmentView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
@@ -98,6 +98,8 @@ urlpatterns = [
     #============================ THIS ROUTE SI FOR BULLETIN & EVALUATIONS ==================================
     path(route='bulletins-&-évaluations/evaluations/', view=AssessmentView.as_view(), name='evaluations'),
     path(route='bulletins-&-évaluations/evaluations/ajouter/', view=AddAssessmentView.as_view(), name='add_evaluation'),
+    path(route='bulletins-&-évaluations/evaluations/<int:pk>/edit/', view=EditAssessmentView.as_view(), name='edit_evaluation'),
+    path(route='bulletins-&-évaluations/evaluations/<int:pk>/delete/', view=AssessmentView.as_view(), name='delete_evaluation'),
     #===END
     
     #=================== THIS ROUTE IS FOR Compte MODULE ===============================#
