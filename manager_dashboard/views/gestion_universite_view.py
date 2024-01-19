@@ -245,6 +245,7 @@ class AddSubjectView(View):
     
     def post(self, request, *args, **kwargs):
         form = SubjectForm(request.POST)
+        print(request.POST)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:subjects")

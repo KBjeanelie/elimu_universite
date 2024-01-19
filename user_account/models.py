@@ -51,7 +51,7 @@ class Student(models.Model):
     updated_at = models.DateTimeField(auto_now=True, null=True)
     
     def __str__(self):
-        return f"Matricule : {self.registration_number} - {self.lastname} {self.firstname}"
+        return f"{self.registration_number} - {self.lastname} {self.firstname}"
     
     def fullname(self):
         return f"{self.firstname} {self.lastname}"
