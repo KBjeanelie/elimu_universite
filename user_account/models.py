@@ -204,9 +204,9 @@ class User(AbstractBaseUser, PermissionsMixin):
     
     username = models.CharField(max_length=255, unique=True,)
     
-    student = models.OneToOneField(Student, unique=True, on_delete=models.DO_NOTHING, null=True, blank=True)
+    student = models.OneToOneField(Student, unique=True, on_delete=models.SET_NULL, null=True, blank=True)
     
-    teacher = models.OneToOneField(Teacher, unique=True, on_delete=models.DO_NOTHING, null=True, blank=True)
+    teacher = models.OneToOneField(Teacher, unique=True, on_delete=models.SET_NULL, null=True, blank=True)
     
     management_profil = models.OneToOneField(ManagementProfil, unique=True, on_delete=models.CASCADE, null=True, blank=True)
 

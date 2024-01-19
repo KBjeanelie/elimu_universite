@@ -37,7 +37,7 @@ class Program(models.Model):
     title = models.CharField(max_length=50)
     description = models.TextField(blank=True)
     program_date = models.DateField(blank=True)
-    person_in_charge = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    person_in_charge = models.ForeignKey(Teacher, on_delete=models.SET_NULL, blank=True, null=True)
     file = models.FileField(upload_to='programmes', blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -70,7 +70,7 @@ class SanctionAppreciationType(models.Model):
 # Class representing Document
 class Document(models.Model):
     title = models.CharField(max_length=50)
-    document_type = models.ForeignKey(DocumentType, on_delete=models.DO_NOTHING)
+    document_type = models.ForeignKey(DocumentType, on_delete=models.SET_NULL, blank=True, null=True)
     file = models.FileField(upload_to='documents')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -96,9 +96,9 @@ class Sector(models.Model):
 # Class representing Subject
 class Subject(models.Model):
     label = models.CharField(max_length=25)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.SET_NULL)
     teacher_in_charge = models.ForeignKey(Teacher, on_delete=models.SET_NULL, null=True, blank=True)
-    level = models.ForeignKey(Level, on_delete=models.CASCADE)
+    level = models.ForeignKey(Level, on_delete=models.SET_NULL)
     types = [('obligatory', 'Obligatory'), ('secondary', 'Secondary')]
     type = models.CharField(max_length=12, choices=types)
     subject_group = models.ForeignKey(GroupSubject, on_delete=models.SET_NULL, null=True, blank=True)
@@ -113,7 +113,7 @@ class Subject(models.Model):
 # Class representing Career (Educational Program/Path)
 class Career(models.Model):
     title = models.CharField(max_length=50)
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -121,10 +121,10 @@ class Career(models.Model):
 
 # Class representing Student Career (Association between students and careers)
 class StudentCareer(models.Model):
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    career = models.ForeignKey(Career, on_delete=models.SET_NULL, null=True)
-    academic_year = models.ForeignKey(AcademicYear, on_delete=models.DO_NOTHING)
-    semester = models.ForeignKey(Semester, on_delete=models.DO_NOTHING)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+    career = models.ForeignKey(Career, on_delete=models.SET_NULL, blank=True, null=True)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.SET_NULL, blank=True, null=True)
+    semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -136,8 +136,8 @@ class Schedule(models.Model):
     start_hours = models.CharField(max_length=15, choices=hours_of_the_day)
     end_hours = models.CharField(max_length=15, choices=hours_of_the_day)
     day = models.CharField(max_length=10, choices=days_of_the_weeks)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, blank=True, null=True)
+    career = models.ForeignKey(Career, on_delete=models.SET_NULL, blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -146,10 +146,10 @@ class Schedule(models.Model):
 # Class representing Sanction Appreciation (Student Discipline)
 class SanctionAppreciation(models.Model):
     comment = models.TextField(blank=True)
-    type = models.ForeignKey(SanctionAppreciationType, on_delete=models.CASCADE)
-    subject = models.ForeignKey(Subject, on_delete=models.CASCADE)
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
-    career = models.ForeignKey(Career, on_delete=models.DO_NOTHING)
+    type = models.ForeignKey(SanctionAppreciationType, on_delete=models.SET_NULL, blank=True, null=True)
+    subject = models.ForeignKey(Subject, on_delete=models.SET_NULL, blank=True, null=True)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+    career = models.ForeignKey(Career, on_delete=models.SET_NULL, blank=True, null=True)
     sanction_date = models.DateField(blank=True, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

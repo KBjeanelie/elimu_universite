@@ -66,7 +66,7 @@ class EventParticipate(models.Model):
     
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
     
-    event = models.ForeignKey(Event, on_delete=models.CASCADE)
+    event = models.ForeignKey(Event, on_delete=models.CASCADE, blank=True, null=True)
     
     start_hours = models.CharField(max_length=20, choices=hours_of_the_day)
     
@@ -93,9 +93,9 @@ class Group(models.Model):
 
 class DiscussionGroup(models.Model):
     
-    group = models.ForeignKey(Group, on_delete=models.CASCADE)
+    group = models.ForeignKey(Group, on_delete=models.CASCADE, blank=True, null=True)
     
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, null=True)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -104,7 +104,7 @@ class DiscussionGroup(models.Model):
 
 class GroupMessage(models.Model):
     
-    discussion_group = models.ForeignKey(DiscussionGroup, on_delete=models.CASCADE)
+    discussion_group = models.ForeignKey(DiscussionGroup, on_delete=models.CASCADE, blank=True, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -113,7 +113,7 @@ class GroupMessage(models.Model):
 
 class GroupMedia(models.Model):
     
-    discussion_group = models.ForeignKey(DiscussionGroup, on_delete=models.CASCADE)
+    discussion_group = models.ForeignKey(DiscussionGroup, on_delete=models.CASCADE, blank=True, null=True)
     
     legend = models.CharField(max_length=60, blank=True)
     
@@ -126,9 +126,9 @@ class GroupMedia(models.Model):
 
 class Contact(models.Model):
     
-    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="contacts")
+    student = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="contacts", blank=True, null=True)
     
-    can_discuss_with = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="can_be_discussed_with")
+    can_discuss_with = models.ForeignKey(Student, on_delete=models.CASCADE, related_name="can_be_discussed_with", blank=True, null=True)
     
     is_friend = models.BooleanField(default=True)
     

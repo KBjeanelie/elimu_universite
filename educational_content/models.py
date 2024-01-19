@@ -71,11 +71,11 @@ class eBook(models.Model):
     
     title = models.CharField(max_length=120)
     
-    author = models.ForeignKey(Teacher, on_delete=models.CASCADE)
+    author = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
     
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE)
+    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, blank=True, null=True)
     
-    career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    career = models.ForeignKey(Career, on_delete=models.CASCADE, blank=True, null=True)
     
     photo_cover = models.ImageField(upload_to='images_ebook')
     

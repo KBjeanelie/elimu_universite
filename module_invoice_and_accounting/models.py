@@ -100,11 +100,11 @@ class Invoice(models.Model):
     
     invoice_date = models.DateField(auto_now=True)
     
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
     career = models.ForeignKey(Career, on_delete=models.SET_NULL, null=True)
     
-    item = models.ForeignKey(Item, on_delete=models.DO_NOTHING)
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, blank=True, null=True)
     
     #timeline = models.ForeignKey(TimeLine, on_delete=models.DO_NOTHING)
     
@@ -126,9 +126,9 @@ class Regulations(models.Model):
     
     payment_number = models.CharField(max_length=50, unique=True)
     
-    invoice = models.ForeignKey(Invoice, on_delete=models.CASCADE)
+    invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, blank=True, null=True)
     
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
     choices = [('Espèce', 'Espèce'), ('Chèque', 'Chèque')]
     payment_method = models.CharField(max_length=20, choices=choices, blank=True)
@@ -165,7 +165,7 @@ class Regulations(models.Model):
 
 class FinancialCommitment(models.Model):
     
-    student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
     school_fees = models.IntegerField()
     
