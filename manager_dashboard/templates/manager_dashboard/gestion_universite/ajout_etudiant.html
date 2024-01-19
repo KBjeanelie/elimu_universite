@@ -1,3 +1,6 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -8,7 +11,7 @@
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href="javascript:void(0);">Accueil</a></li>
-                            <li class="breadcrumb-item"><a href="etudiants.html">Etudiants</a></li>
+                            <li class="breadcrumb-item"><a href='{% url "manager_dashboard:students" %}'>Etudiants</a></li>
                             <li class="breadcrumb-item"><a>Ajouter</a></li>
                         </ol>
                     </div>
@@ -27,97 +30,35 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form>
+                        <form method='post'>
+                            {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Nom</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="nom">
+                                {{form.lastname}}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Prénom</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="nom">
+                                {{form.firstname}}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Date de naissance</label>
-                                <input type="date" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Email</label>
-                                <input type="email" class="form-control">
+                                {{form.bithday}}
                             </div>
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Téléphone</label>
-                                <input type="tel" class="form-control">
+                                {{form.tel}}
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="libelle">Adrèsse</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Département de naissance</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Ville</label>
-                                <input type="text" class="form-control">
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="level">Parent 1</label>
-                                <select id="level" class="form-control">
-                                    <option selected>Choisir...</option>
-                                    <option>Informatique</option>
-                                    <option>Administration publique</option>
-                                </select>
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="level">Parent 2</label>
-                                <select id="level" class="form-control">
-                                    <option selected>Choisir...</option>
-                                    <option>Informatique</option>
-                                    <option>Administration publique</option>
-                                </select>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="level">Filière</label>
-                                    <select id="level" class="form-control">
-                                        <option selected>Choisir...</option>
-                                        <option>Informatique</option>
-                                        <option>Administration publique</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="level">Parcours</label>
-                                    <select id="level" class="form-control">
-                                        <option selected>Choisir...</option>
-                                        <option>Lic Info 1</option>
-                                        <option>...</option>
-                                    </select>
-                                </div>
-                            </div>
-                            <div class="row mb-3">
-                                <div class="col-md-6">
-                                    <label class="form-label" for="level">Niveau</label>
-                                    <select id="level" class="form-control">
-                                        <option selected>Choisir...</option>
-                                        <option>Premiere anée</option>
-                                        <option>...</option>
-                                    </select>
-                                </div>
-                                <div class="col-md-6">
-                                    <label class="form-label" for="level">Sexe</label>
-                                    <select id="level" class="form-control">
-                                        <option selected>Choisir...</option>
-                                        <option>Masculin</option>
-                                        <option>Féminin</option>
-                                    </select>
-                                </div>
+                                <label class="form-label" for="libelle">Sexe</label>
+                                {{form.sex}}
                             </div>
                             <div>
                                 <div class="form-check">
-                                    <input class="form-check-input" type="checkbox" id="gridCheck">
+                                    {{form.status}}
                                     <label class="form-label form-check-label" for="gridCheck"> Accès en ligne ?</label>
                                 </div>
                             </div>
+                            <a href='{% url "manager_dashboard:students" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
                     </div>
@@ -126,3 +67,4 @@
         </div>
     </div>
 </div>
+{% endblock content %}

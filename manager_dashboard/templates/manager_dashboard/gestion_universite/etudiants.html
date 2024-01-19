@@ -1,3 +1,6 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
 <div class="main_content_iner overly_inner ">
     <div class="container-fluid p-0 ">
         <!-- ================= Entête ====================-->
@@ -13,7 +16,7 @@
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href="ajout_etudiant.html" class="white_btn3"><i class="fas fa-plus-square"></i>  Ajouter un Étudiant</a>
+                            <a href='{% url "manager_dashboard:add_student" %}' class="white_btn3"><i class="fas fa-plus-square"></i>  Ajouter un Étudiant</a>
                         </div>
                     </div>
                 </div>
@@ -29,33 +32,33 @@
                                 <thead>
                                     <tr>
                                         <th class="border-top-0">Photo</th>
+                                        <th class="border-top-0">Matricule</th>
                                         <th class="border-top-0">Nom</th>
                                         <th class="border-top-0">Prénom</th>
-                                        <th class="border-top-0">Date de naissnce</th>
                                         <th class="border-top-0">Parcours</th>
-                                        <th class="border-top-0">Filière</th>
                                         <th class="border-top-0">Niveau</th>
                                         <th class="border-top-0">Accès en ligne</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    <tr>
-                                        <td><img src="../img/staf/3.png" alt height="52"></td>
-                                        <td>KUBEMBULA</td>
-                                        <td>Jean Élie</td>
-                                        <td>02/01/1999</td>
-                                        <td>Lic Info 1</td>
-                                        <td>Informatique</td>
-                                        <td>Premiere année</td>
-                                        <td><a class="status_btn">Oui</a></td>
-                                        <td>
-                                            <div class="action_btns d-flex">
-                                                <a href="etudiant_detail.html" class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
-                                                <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                            </div>
-                                        </td>
-                                    </tr>
+                                    {% for student in students %}
+                                        <tr>
+                                            <td><img src="../img/staf/3.png" alt height="52"></td>
+                                            <td><h6> {{student.registration_number}} </h6></td>
+                                            <td><h6> {{student.lastname}} </h6></td>
+                                            <td><h6> {{student.firstname}} </h6></td>
+                                            <td>Lic Info 1</td>
+                                            <td>Premiere année</td>
+                                            <td><a class="status_btn">Oui</a></td>
+                                            <td>
+                                                <div class="action_btns d-flex">
+                                                    <a href='{% url "manager_dashboard:student_detail" student.id %}' class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
+                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    {% endfor %}
                                 </tbody>
                             </table>
                         </div>
@@ -65,3 +68,42 @@
         </div>
     </div>
 </div>
+<script>
+
+    // Supprimer un élément
+    function deleteTeacher(teacher_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/gestion_universite/teachers/${teacher_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${teacher_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
+{% endblock content %}

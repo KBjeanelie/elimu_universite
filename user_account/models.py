@@ -46,6 +46,8 @@ class Student(models.Model):
     
     picture = models.ImageField(upload_to="student_pics", blank=True, null=True)
     
+    status = models.BooleanField(default=False)
+    
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     updated_at = models.DateTimeField(auto_now=True, null=True)

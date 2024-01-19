@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
 from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Sector, Semester, Subject
-from user_account.forms import TeacherForm
+from user_account.forms import StudentForm, TeacherForm
 
 from user_account.models import Student, Teacher, User
 
@@ -490,6 +490,36 @@ class TeacherDetailView(View):
 #===END
 
 
+#================================= PARTIE CONCERNANT LES ETUDIANT ======================
+
+class AddStudentView(View):
+    template = "manager_dashboard/gestion_universite/ajout_etudiant.html"
+    
+    def get(self, request, *args, **kwargs):
+        context = {'form': StudentForm()}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = StudentForm(request.POST, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect("manager_dashboard:students")
+
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+        
+
+
+class StudentsView(View):
+
+    template = "manager_dashboard/gestion_universite/etudiants.html"
+    
+    def get(self, request, *args, **kwargs):
+        students = Student.objects.all().order_by('-created_at')
+        context = {'students':students}
+        return render(request, template_name=self.template, context=context)
+
+    
 class StudentDetailView(View):
     template = "manager_dashboard/gestion_universite/etudiant_detail.html"
     

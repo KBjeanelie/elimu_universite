@@ -4,7 +4,83 @@ from .models import Student, Teacher, ManagementProfil, User
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['registration_number', 'lastname', 'firstname', 'address', 'tel', 'city', 'sex', 'email', 'bithday', 'nationality', 'picture']
+        fields = ['lastname', 'firstname', 'status', 'address', 'tel', 'city', 'sex', 'email', 'bithday', 'nationality', 'picture']
+        widgets = {
+            'lastname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nom',
+                    'required': True
+                }
+            ),
+            'firstname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Prenom',
+                    'required': True
+                }
+            ),
+            'address': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'adresse',
+                }
+            ),
+            'nationality': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nationalité',
+                }
+            ),
+            'tel': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Numéro de téléphone',
+                    'required': True
+                }
+            ),
+            'email': forms.EmailInput(
+                attrs={
+                    'type':'email',
+                    'class': 'form-control',
+                    'placeholder': 'email',
+                }
+            ),
+            'city': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'sex': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required':True
+                }
+            ),
+            'bithday':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                    'required':True
+                }
+            ),
+            'picture': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                }
+            ),
+            'status':forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                }
+            )
+        }
 
 class TeacherForm(forms.ModelForm):
     class Meta:
