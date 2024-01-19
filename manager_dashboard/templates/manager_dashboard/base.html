@@ -57,7 +57,7 @@
         <ul id="sidebar_menu">
 
             <li class>
-                <a href="index.html" aria-expanded="false">
+                <a href='{% url "manager_dashboard:index" %}' aria-expanded="false">
                     <div class="nav_icon_small">
                     <img src="{% static 'img/menu-icon/dashboard.svg' %}" alt>
                     </div>
@@ -103,9 +103,9 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href="gestion_temps/emplois_temps.html">Emploi du temps</a></li>
-                    <!-- <li><a href="">Présence des étudiants</a></li> -->
-                    <li><a href="">Absences de l'équipe</a></li>
+                    <li><a href='{% url "manager_dashboard:times" %}'>Emploi du temps</a></li>
+                    <!-- <li><a href="">Présence des étudiants</a></li> 
+                    <li><a href="">Absences de l'équipe</a></li> -->
                 </ul>
             </li>
 
@@ -139,7 +139,7 @@
                     <!-- <li><a href="communication/notifications.html">Notifications</a></li> -->
                     <li><a href='{% url "manager_dashboard:informations" %}'>Informations</a></li>
                     <li><a href='{% url "manager_dashboard:events" %}'>Évenements</a></li>
-                    <li><a href='{% url "manager_dashboard:discussion_group" %}'>Groupe de discussion</a></li>
+                    <li><a href='{% url "manager_dashboard:discussion_group" %}'>Groupe de discussions</a></li>
                 </ul>
             </li>
 
@@ -153,7 +153,7 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href="">Bulletin academique</a></li>
+                    <li><a href="">Bulletins</a></li>
                     <li><a href="">Évaluations</a></li>
                     <li><a href="">Tableau des moyennes</a></li>
                     <li><a href="">Tableau des notes</a></li>
@@ -187,9 +187,9 @@
                 </a>
                 <ul>
                     {% comment %} <li><a href="{% url 'manager_dashboard:type_evaluation' %}">Type d'Évaluations</a></li> {% endcomment %}
-                    <li><a href="{% url 'manager_dashboard:type_documents' %}">Type de document</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_documents' %}">Type de documents</a></li>
                     <!-- <li><a href="">Type de présence</a></li> -->
-                    <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Type de sanction</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Type de sanctions</a></li>
                     {% comment %} <li><a href="administration/type_comptes.html">Type de comptes</a></li> {% endcomment %}
                     <!-- <li><a href="administration/types_conges.html">Type de congé</a></li> -->
                     <li><a href="{% url 'manager_dashboard:reglage_general' %}">Réglages généraux</a></li>

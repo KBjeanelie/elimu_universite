@@ -287,6 +287,39 @@ class ScheduleForm(forms.ModelForm):
     class Meta:
         model = Schedule
         fields = ['start_hours', 'end_hours', 'day', 'subject', 'career']
+        widgets = {
+            'start_hours': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'end_hours': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'day': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'subject': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'career': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            
+        }
 
 class SanctionAppreciationForm(forms.ModelForm):
     class Meta:
