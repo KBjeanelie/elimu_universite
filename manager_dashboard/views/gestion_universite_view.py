@@ -249,7 +249,9 @@ class AddSubjectView(View):
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:subjects")
-        form = SubjectForm()
+        else:
+            print(form.errors)
+        
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -481,8 +483,9 @@ class TeacherDetailView(View):
     
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
-        account = get_object_or_404(User, teacher=teacher)
-        context = {'teacher':teacher, 'account': account}
+        #account = get_object_or_404(User, teacher=teacher)
+        
+        context = {'teacher':teacher}
         return render(request, template_name=self.template, context=context)
 #===END
 
