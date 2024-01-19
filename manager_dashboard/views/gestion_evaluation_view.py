@@ -13,7 +13,7 @@ class AddAssessmentView(View):
         form = AssessmentForm()
         context = {'form': form}
         return render(request, template_name=self.template, context=context)
-
+    
 class AssessmentView(View):
     template = 'manager_dashboard/evaluations/evaluations.html'
     
