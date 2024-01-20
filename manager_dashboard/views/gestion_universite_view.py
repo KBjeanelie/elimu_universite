@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
-from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Sector, Semester, Subject
+from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Sector, Semester, StudentCareer, Subject
 from user_account.forms import StudentForm, TeacherForm
 
 from user_account.models import Student, Teacher, User
@@ -489,6 +489,16 @@ class TeacherDetailView(View):
         return render(request, template_name=self.template, context=context)
 #===END
 
+#================================
+class PreRegistrationView(View):
+    template = "manager_dashboard/gestion_universite/pre-inscription.html"
+    
+    def get(self, request, *args, **kwargs):
+        academic_year = get_object_or_404(AcademicYear, status=True)
+        students = get_object_or_404(StudentCareer, academic_year=academic_year)
+        context = {'student_careers':students}
+        return render(request, template_name=self.template, context=context)
+#===END
 
 #================================= PARTIE CONCERNANT LES ETUDIANT ======================
 
