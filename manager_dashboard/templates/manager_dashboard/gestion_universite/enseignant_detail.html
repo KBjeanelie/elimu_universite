@@ -102,96 +102,24 @@
                             <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
                                 <div class="builder_select">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="card bg-primary mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Lundi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Parcours : <br> Lic Info 1</li><hr>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-danger mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Mardi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Parcours : <br> Lic Info 1</li><hr>
-                                                    </ol>
+                                        {% for schedule in schedules_for_subject %}
+                                            <div class="col-md-3">
+                                                <div class="card {% if schedule.day == 'lundi' %}bg-primary{% elif schedule.day == 'mardi' %}bg-danger{% elif schedule.day == 'mercredi' %}bg-success{% elif schedule.day == 'jeudi' %}bg-info{% elif schedule.day == 'vendredi' %}bg-warning{% else %}bg-dark{% endif %} mb-3 widget-chart">
+                                                    <div class="icon-wrapper rounded-circle">
+                                                        <div class="icon-wrapper-bg bg-primary"></div>
+                                                        <i class="ti-timer" style="color: white;"></i>
+                                                    </div>
+                                                    <div><h4 style="color: white;">{{ schedule.day | capfirst}}</h4></div>
+                                                    <div class="widget-subheading mt-2">
+                                                        <ol>
+                                                            <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li><hr>
+                                                            <li>Parcours : <br> {{ schedule.career.title}} </li><hr>
+                                                        </ol>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-success mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Mercredi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Parcours : <br> Lic Info 1</li><hr>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-info mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Jeudi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Parcours : <br> Lic Info 1</li><hr>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-warning mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Vendredi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Parcours : <br> Lic Info 1</li><hr>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-dark mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Samedi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Parcours : <br> Lic Info 1</li><hr>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
+                                        {% endfor %}
+
                                     </div>
                                 </div>
                             </div>

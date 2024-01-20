@@ -1,7 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
-from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Sector, Semester, StudentCareer, Subject
+from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, Subject
 from user_account.forms import StudentForm, TeacherForm
 
 from user_account.models import Student, Teacher, User
@@ -483,9 +483,12 @@ class TeacherDetailView(View):
     
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
+        subjects_taught_by_teacher = Subject.objects.filter(teacher_in_charge=teacher)
+        schedules_for_subject = Schedule.objects.filter(subject__in=subjects_taught_by_teacher)
         #account = get_object_or_404(User, teacher=teacher)
         
-        context = {'teacher':teacher}
+        print(schedules_for_subject)
+        context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject}
         return render(request, template_name=self.template, context=context)
 #===END
 
