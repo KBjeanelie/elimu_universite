@@ -6,7 +6,7 @@ from manager_dashboard.views.administration_view import TypeDocumentDeleteView, 
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EditInformationView, EventDetail, EventView, GroupDiscussionView, InformationDetail, InformationView
 from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, EditStudentAccountView, EditTeacherAccountView, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
-from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, EditAssessmentView, NoteTableView
+from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BullettinView, EditAssessmentView, NoteTableView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, PreRegistrationView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
@@ -99,7 +99,7 @@ urlpatterns = [
     #===END
     
     #============================ THIS ROUTE SI FOR BULLETIN & EVALUATIONS ==================================
-    #path(route='bulletins-&-évaluations/evaluations/', view=AssessmentView.as_view(), name='bulletins'),
+    path(route='bulletins-&-évaluations/bulletins/', view=BullettinView.as_view(), name='bulletins'),
     path(route='bulletins-&-évaluations/tableau-des-notes/', view=NoteTableView.as_view(), name='table_notes'),
     path(route='bulletins-&-évaluations/tableau-des-moyennes/', view=AverageTableView.as_view(), name='averages'),
     path(route='bulletins-&-évaluations/evaluations/', view=AssessmentView.as_view(), name='evaluations'),

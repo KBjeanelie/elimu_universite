@@ -82,3 +82,11 @@ class AverageTableView(View):
         evaluations = Assessment.objects.all().order_by('-created_at')
         context = {'evaluations': evaluations}
         return render(request, template_name=self.template)
+
+class BullettinView(View):
+    template = 'manager_dashboard/evaluations/bulletins.html'
+    
+    def get(self, request, *args, **kwargs):
+        evaluations = Assessment.objects.all().order_by('-created_at')
+        context = {'evaluations': evaluations}
+        return render(request, template_name=self.template)
