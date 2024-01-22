@@ -1,0 +1,106 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+<div class="main_content_iner overly_inner ">
+    <div class="container-fluid p-0 ">
+        <!-- ================= Entête ====================-->
+        <div class="row">
+            <div class="col-12">
+                <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="page_title_left d-flex align-items-center">
+                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau des Notes</h3>
+                        <ol class="breadcrumb page_bradcam mb-0">
+                            <li class="breadcrumb-item"><a href='{% url "manager_dashboard:index" %}'>Accueil</a></li>
+                            
+                        </ol>
+                    </div>
+                    <div class="page_title_right">
+                        <div class="page_date_button d-flex align-items-center">
+                            <a href='{% url "manager_dashboard:add_evaluation" %}' class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter une évaluation</a>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-12">
+                <div class="white_card card_height_100 mb_30 pt-4">
+                    <div class="white_card_body">
+                        <div class="QA_section">
+                            <div class="white_box_tittle list_header">
+                                
+                            </div>
+                            <div class="QA_table mb_30">
+                                <table class="table lms_table_active ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Matricule</th>
+                                            <th scope="col">Nom complet</th>
+                                            <th scope="col">Rang</th>
+                                            <th scope="col">Note</th>
+                                            <th scope="col">Evaluations</th>
+                                            <th scope="col">Coefficient</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="elementList">
+                                        <tr class='bg-light'>
+                                            <td>
+                                                <h6> KB0011KDH </h6>
+                                            </td>
+                                            <td><h6> KUBEMBULA Jean Elie</h6></td>
+                                            <td><h6> 1 </h6></td>
+                                            <td><h6><span class="badge rounded-pill bg-info"> 17 </span></h6></td>
+                                            <td><h6>Communiquer en Anglais</h6></td>
+                                            <td><h6>2</h6></td>
+                                        </tr>
+                                        <tr class='bg-light'>
+                                            <td>
+                                                <h6> KB0011KDH </h6>
+                                            </td>
+                                            <td><h6> KUBEMBULA Jean Elie</h6></td>
+                                            <td><h6> 1 </h6></td>
+                                            <td><h6><span class="badge rounded-pill bg-info"> 17 </span></h6></td>
+                                            <td><h6>Communiquer en Anglais</h6></td>
+                                            <td><h6>2</h6></td>
+                                        </tr>
+                                        <tr class='bg-secondary'>
+                                            <td colspan="3">
+                                                <h6 class='text-center text-white'> Moyenne de classe </h6>
+                                            </td>
+                                            <td><h6 class="text-white"> 12 </h6></td>
+                                            <td colspan="2">
+                                                <h6 class='text-center text-white'> 12 </h6>
+                                            </td>
+                                        </tr>
+                                        <tr class='bg-secondary'>
+                                            <td colspan="3">
+                                                <h6 class='text-center text-white'> Note la plus haute </h6>
+                                            </td>
+                                            <td><h6 class="text-white"> 17 </h6></td>
+                                            <td colspan="2">
+                                                <h6 class='text-center text-white'> 17 </h6>
+                                            </td>
+                                        </tr>
+                                        <tr class='bg-secondary'>
+                                            <td colspan="3">
+                                                <h6 class='text-center text-white'> Note la plus base </h6>
+                                            </td>
+                                            <td><h6 class="text-white"> 10 </h6></td>
+                                            <td colspan="2">
+                                                <h6 class='text-center text-white'> 10 </h6>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}

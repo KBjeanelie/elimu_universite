@@ -1,5 +1,3 @@
-
-
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from module_assessments.forms import AssessmentForm
@@ -67,3 +65,20 @@ class AssessmentView(View):
         evaluations = Assessment.objects.all().order_by('-created_at')
         context = {'evaluations': evaluations}
         return render(request, template_name=self.template, context=context)
+
+
+class NoteTableView(View):
+    template = 'manager_dashboard/evaluations/tableau_notes.html'
+    
+    def get(self, request, *args, **kwargs):
+        evaluations = Assessment.objects.all().order_by('-created_at')
+        context = {'evaluations': evaluations}
+        return render(request, template_name=self.template)
+    
+class AverageTableView(View):
+    template = 'manager_dashboard/evaluations/tableau_moyennes.html'
+    
+    def get(self, request, *args, **kwargs):
+        evaluations = Assessment.objects.all().order_by('-created_at')
+        context = {'evaluations': evaluations}
+        return render(request, template_name=self.template)
