@@ -504,6 +504,36 @@ class PreRegistrationView(View):
 #===END
 
 #================================= PARTIE CONCERNANT LES ETUDIANT ======================
+class EditStudentView(View):
+    template = "manager_dashboard/gestion_universite/editer_etudiant.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(Student, pk=pk)
+        context = {'form': StudentForm(instance=student), 'student':student}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(Student, pk=pk)
+        bithday = student.bithday
+        
+        mutable_data = request.POST.copy()
+        mutable_files = request.FILES.copy()
+        
+        if 'picture' not in mutable_files or not mutable_files['picture']:
+            mutable_files['picture'] = None
+        
+        if 'bithday' not in request.POST or not request.POST['bithday']:
+            mutable_data['bithday'] = bithday
+        
+        form = StudentForm(mutable_data, mutable_files, instance=student)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:students')
+        
+        context = {'form':form, 'student': student}
+        return render(request, template_name=self.template, context=context)
+
 
 class AddStudentView(View):
     template = "manager_dashboard/gestion_universite/ajout_etudiant.html"
@@ -528,8 +558,9 @@ class StudentsView(View):
     template = "manager_dashboard/gestion_universite/etudiants.html"
     
     def get(self, request, *args, **kwargs):
-        students = Student.objects.all().order_by('-created_at')
-        context = {'students':students}
+        academic_year = get_object_or_404(AcademicYear, status=True)
+        students = get_object_or_404(StudentCareer, academic_year=academic_year)
+        context = {'student_careers':students}
         return render(request, template_name=self.template, context=context)
 
     
@@ -538,5 +569,6 @@ class StudentDetailView(View):
     
     def get(self, request, pk, *args, **kwargs):
         student = get_object_or_404(Student, pk=pk)
-        context = {'student': student}
+        student_carreer = get_object_or_404(StudentCareer, student=student)
+        context = {'student': student, 'student_career':student_carreer}
         return render(request, template_name=self.template, context=context)

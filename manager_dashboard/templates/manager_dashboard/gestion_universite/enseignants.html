@@ -44,7 +44,6 @@
                                     {% for teacher in teachers %}
                                         <tr data-id="{{ teacher.id }}">
                                             <td>
-                                                
                                                 {% if teacher.file_exists %}
                                                     <img src="{{ teacher.picture.url }}" alt height="52" alt="">
                                                 {% else %}

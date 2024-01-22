@@ -4,7 +4,7 @@ from .models import Student, Teacher, ManagementProfil, User
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student
-        fields = ['lastname', 'firstname', 'status', 'address', 'tel', 'city', 'sex', 'email', 'bithday', 'nationality', 'picture']
+        fields = ['lastname', 'firstname', 'status', 'blood_type', 'birthday_place', 'allergy', 'address', 'tel', 'city', 'sex', 'email', 'bithday', 'nationality', 'picture']
         widgets = {
             'lastname': forms.TextInput(
                 attrs={
@@ -20,6 +20,20 @@ class StudentForm(forms.ModelForm):
                     'class': 'form-control',
                     'placeholder': 'Prenom',
                     'required': True
+                }
+            ),
+            'birthday_place': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Lieu de naissance',
+                }
+            ),
+            'allergy': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'ex: noix de coco; lactose;',
                 }
             ),
             'address': forms.TextInput(
@@ -56,6 +70,11 @@ class StudentForm(forms.ModelForm):
                     'class': 'form-control',
                 }
             ),
+            'blood_type': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
             'sex': forms.Select(
                 attrs={
                     'class': 'form-control',
@@ -66,7 +85,6 @@ class StudentForm(forms.ModelForm):
                 attrs={
                     'type':'date',
                     "class": "form-control",
-                    'required':True
                 }
             ),
             'picture': forms.FileInput(

@@ -35,30 +35,62 @@
                                         <th class="border-top-0">Matricule</th>
                                         <th class="border-top-0">Nom</th>
                                         <th class="border-top-0">Prénom</th>
+                                        <th class="border-top-0">tel</th>
                                         <th class="border-top-0">Parcours</th>
                                         <th class="border-top-0">Niveau</th>
                                         <th class="border-top-0">Accès en ligne</th>
                                     </tr>
                                 </thead>
                                 <tbody>
-                                    {% for student in students %}
+                                    {% if student_careers|length > 1 %}
+                                        {% for student_career in student_careers %}
+                                            <tr>
+                                                <td>
+                                                    {% if student_career.student.file_exists %}
+                                                        <img src="{{ student_career.student.picture.url }}" alt height="52">
+                                                    {% else %}
+                                                        <img src="{% static 'img/staf/3.png' %}" alt height="52">
+                                                    {% endif %}
+                                                </td>
+                                                <td><h6> {{student_career.student.registration_number}} </h6></td>
+                                                <td><h6> {{student_career.student.lastname}} </h6></td>
+                                                <td><h6> {{student_career.student.firstname}} </h6></td>
+                                                <td><h6> {{student_career.student.tel}} </h6></td>
+                                                <td><h6> {{student_career.career.title}} </h6></td>
+                                                <td><h6> {{student_career.semester.level.label}} </h6></td>
+                                                <td><a class="status_btn">Oui</a></td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        <a href='{% url "manager_dashboard:student_detail" student_career.student.id %}' class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
+                                                        <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                    {% else %}
                                         <tr>
-                                            <td><img src="../img/staf/3.png" alt height="52"></td>
-                                            <td><h6> {{student.registration_number}} </h6></td>
-                                            <td><h6> {{student.lastname}} </h6></td>
-                                            <td><h6> {{student.firstname}} </h6></td>
-                                            <td>Lic Info 1</td>
-                                            <td>Premiere année</td>
+                                            <td>
+                                                {% if student_careers.student.file_exists %}
+                                                    <img src="{{ student_careers.student.picture.url }}" alt height="52">
+                                                {% else %}
+                                                    <img src="{% static 'img/staf/3.png' %}" alt height="52">
+                                                {% endif %}
+                                            </td>
+                                            <td><h6> {{student_careers.student.registration_number}} </h6></td>
+                                            <td><h6> {{student_careers.student.lastname}} </h6></td>
+                                            <td><h6> {{student_careers.student.firstname}} </h6></td>
+                                            <td><h6> {{student_careers.student.tel}} </h6></td>
+                                            <td><h6> {{student_careers.career.title}} </h6></td>
+                                            <td><h6> {{student_careers.semester.level.label}} </h6></td>
                                             <td><a class="status_btn">Oui</a></td>
                                             <td>
                                                 <div class="action_btns d-flex">
-                                                    <a href='{% url "manager_dashboard:student_detail" student.id %}' class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
-                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    <a href='{% url "manager_dashboard:student_detail" student_careers.student.id %}' class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
+                                                    <a href='{% url "manager_dashboard:edit_student" student_careers.student.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
                                                 </div>
                                             </td>
                                         </tr>
-                                    {% endfor %}
+                                    {%endif%}
                                 </tbody>
                             </table>
                         </div>

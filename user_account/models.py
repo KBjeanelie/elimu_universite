@@ -15,6 +15,17 @@ cities = (
     ('brazzaville', "Brazzaville")
 )
 
+type_blood = (
+    ('O+', "O+"),
+    ('O-', "O-"),
+    ('A+', "A+"),
+    ('A-', "A-"),
+    ('B+', "B+"),
+    ('B-', "B-"),
+    ('AB+', "AB+"),
+    ('AB-', "AB-"),
+)
+
 sexes = (
     ('masculin', 'Masculin'),
     ('feminin', 'Féminin')
@@ -44,6 +55,12 @@ class Student(models.Model):
     
     nationality = models.CharField(max_length=20, blank=True)
     
+    blood_type = models.CharField(max_length=5, blank=True, null=True, choices=type_blood)
+    
+    birthday_place = models.CharField(max_length=100, blank=True, null=True)
+    
+    allergy = models.CharField(max_length=255, blank=True, null=True)
+    
     picture = models.ImageField(upload_to="student_pics", blank=True, null=True)
     
     status = models.BooleanField(default=False)
@@ -57,6 +74,11 @@ class Student(models.Model):
     
     def fullname(self):
         return f"{self.firstname} {self.lastname}"
+    
+    def file_exists(self):
+        if self.picture:
+            return os.path.exists(settings.MEDIA_ROOT / str(self.picture))
+        return False
 
 
 # Represent an objet of Teacher and his profil info

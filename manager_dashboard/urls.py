@@ -8,7 +8,7 @@ from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAc
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
 from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, EditAssessmentView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
-from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, PreRegistrationView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
+from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, PreRegistrationView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
@@ -57,6 +57,7 @@ urlpatterns = [
     path(route='gestion_universite/demande-de-préinscription/', view=PreRegistrationView.as_view(), name='pre_registrations'),
     
     path(route='gestion_universite/students/<int:pk>/detail/', view=StudentDetailView.as_view(), name='student_detail'),
+    path(route='gestion_universite/students/<int:pk>/edit/', view=EditStudentView.as_view(), name='edit_student'),
     path(route='gestion_universite/students/ajouter/', view=AddStudentView.as_view(), name='add_student'),
     path(route='gestion_universite/students/', view=StudentsView.as_view(), name='students'),
     
