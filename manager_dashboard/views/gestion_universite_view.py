@@ -4,7 +4,8 @@ from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectFo
 from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, Subject
 from user_account.forms import StudentForm, TeacherForm
 
-from user_account.models import Student, Teacher, User
+from user_account.models import Student, Teacher
+
 
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
 class EditAcademicYearView(View):
@@ -498,7 +499,7 @@ class PreRegistrationView(View):
     
     def get(self, request, *args, **kwargs):
         academic_year = get_object_or_404(AcademicYear, status=True)
-        students = get_object_or_404(StudentCareer, academic_year=academic_year)
+        students = students = StudentCareer.objects.filter(academic_year=academic_year)
         context = {'student_careers':students}
         return render(request, template_name=self.template, context=context)
 #===END
@@ -559,7 +560,7 @@ class StudentsView(View):
     
     def get(self, request, *args, **kwargs):
         academic_year = get_object_or_404(AcademicYear, status=True)
-        students = get_object_or_404(StudentCareer, academic_year=academic_year)
+        students = StudentCareer.objects.filter(academic_year=academic_year)
         context = {'student_careers':students}
         return render(request, template_name=self.template, context=context)
 
