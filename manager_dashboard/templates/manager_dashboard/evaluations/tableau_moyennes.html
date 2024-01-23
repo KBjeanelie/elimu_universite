@@ -17,39 +17,42 @@
             </div>
         </div>
 
-        <div class="container mt-4">
+        <div class="container mt-3">
             <div class="row">
                 <div class="col-12">
-                    <form class="row g-3">
+                    <form method="post" class="row g-3">
+                        {% csrf_token %}
                         <div class="col-auto">
-                            <label class="form-label" for="inputState">Selectionner le semestre</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>Semestre 1</option>
-                                <option>Semestre 2</option>
-                                <option>Semestre 3</option>
+                            <label class="form-label" for="inputStateSemester">Selectionner le semestre</label>
+                            <select id="inputStateSemester" class="form-control" name="semester" required>
+                                {% for semester in semesters %}
+                                    <option value="{{semester.id}}"> {{semester.title}} </option>
+                                {% endfor %}
                             </select> 
                         </div>
                         <div class="col-auto">
-                            <label class="form-label" for="inputState">Selectionner le parcours</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>Licence Informatique 1 A</option>
-                                <option>Licence Informatique 1 B</option>
+                            <label class="form-label" for="inputStateCareer">Selectionner le parcours</label>
+                            <select id="inputStateCareer" class="form-control" name="career" required>
+                                
+                                {% for career in careers %}
+                                    <option value="{{career.id}}"> {{career.title}} </option>
+                                {% endfor %}
                             </select> 
                         </div>
                         <div class="col-auto">
-                            <label class="form-label" for="inputState">Année academique</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>2020 - 2021</option>
-                                <option>2021 - 2022</option>
+                            <label class="form-label" for="inputStateYear">Selectionner la matière</label>
+                            <select id="inputStateYear" class="form-control" name="subject" required>
+                                
+                                {% for subject in subjects %}
+                                    <option value="{{subject.id}}"> {{subject.label}} </option>
+                                {% endfor %}
                             </select> 
                         </div>
                         <div class="col-auto">
                             <button type="submit" class="btn btn-primary mt-4">Rechercher</button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
         </div>
@@ -69,35 +72,41 @@
                                             <th scope="col">Matricule</th>
                                             <th scope="col">Nom complet</th>
                                             <th scope="col">Rang</th>
-                                            <th scope="col">Moyenne</th>
+                                            <th scope="col">Controle</th>
+                                            <th scope="col">Partiel</th>
+                                            <th scope="col">TOTAL</th>
                                         </tr>
                                     </thead>
                                     <tbody id="elementList">
-                                        <tr class='bg-light'>
-                                            <td>
-                                                <h6> KB0011KDH </h6>
-                                            </td>
-                                            <td><h6> KUBEMBULA Jean Elie</h6></td>
-                                            <td><h6> 1 </h6></td>
-                                            <td><h6><span class="badge rounded-pill bg-info"> 17,5</span></h6></td>
-                                        </tr>
+                                        {% for result in results %}
+                                            <tr class='bg-light'>
+                                                <td>
+                                                    <h6> {{result.nui}} </h6>
+                                                </td>
+                                                <td><h6> {{result.firstname}} {{result.lastname|upper}}</h6></td>
+                                                <td><h6> {{ forloop.counter }} </h6></td>
+                                                <td><h6> {{result.controle}} </h6></td>
+                                                <td><h6> {{result.partiel}} </h6></td>
+                                                <td><h6><span class="badge rounded-pill bg-info"> {{result.total}}</span></h6></td>
+                                            </tr>
+                                        {% endfor %}
                                         <tr class='bg-secondary'>
                                             <td colspan="3">
                                                 <h6 class='text-center text-white'> Moyenne de classe </h6>
                                             </td>
-                                            <td><h6 class="text-white"> 12 </h6></td>
+                                            <td colspan="3"><h6 class="text-white"> {{average}} </h6></td>
                                         </tr>
                                         <tr class='bg-secondary'>
                                             <td colspan="3">
                                                 <h6 class='text-center text-white'> Moyenne la plus haute </h6>
                                             </td>
-                                            <td><h6 class="text-white"> 17 </h6></td>
+                                            <td colspan="3"><h6 class="text-white"> {{max}} </h6></td>
                                         </tr>
                                         <tr class='bg-secondary'>
                                             <td colspan="3">
                                                 <h6 class='text-center text-white'> Moyenne la plus base </h6>
                                             </td>
-                                            <td><h6 class="text-white"> 10 </h6></td>
+                                            <td colspan="3"><h6 class="text-white"> {{last}} </h6></td>
                                         </tr>
                                     </tbody>
                                 </table>

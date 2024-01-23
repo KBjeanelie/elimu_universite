@@ -131,11 +131,81 @@ class NoteTableView(View):
     
 class AverageTableView(View):
     template = 'manager_dashboard/evaluations/tableau_moyennes.html'
+    semesters = Semester.objects.all()
+    careers = Career.objects.all()
+    subjects = Subject.objects.all()
     
     def get(self, request, *args, **kwargs):
-        evaluations = Assessment.objects.all().order_by('-created_at')
-        context = {'evaluations': evaluations}
-        return render(request, template_name=self.template)
+        context = {
+            'semesters':self.semesters,
+            'careers':self.careers,
+            'subjects':self.subjects
+        }
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        semester_id = request.POST['semester']
+        career_id = request.POST['career']
+        subject_id = request.POST['subject']
+        
+        try:
+            semester = Semester.objects.get(pk=semester_id)
+            career = Career.objects.get(pk=career_id)
+            subject = Subject.objects.get(pk=subject_id)
+
+            evaluations = Assessment.objects.filter(semester=semester, career=career, subject=subject).order_by('-note')
+
+            if evaluations.exists():
+                results = []
+                controle_evaluations = evaluations.filter(type_evaluation__title='Contrôle')
+
+                for controle_evaluation in controle_evaluations:
+                    partiel_evaluation = evaluations.filter(
+                        student=controle_evaluation.student,
+                        type_evaluation__title='Partiel'
+                    ).first()
+
+                    if partiel_evaluation:
+                        results.append(
+                            {
+                                'nui': controle_evaluation.student.registration_number,
+                                'lastname': controle_evaluation.student.lastname,
+                                'firstname': controle_evaluation.student.firstname,
+                                'controle': controle_evaluation.note,
+                                'partiel': partiel_evaluation.note,
+                                'total': (
+                                    (controle_evaluation.note+partiel_evaluation.note)* controle_evaluation.subject.coefficient
+                                    ) / 2
+                            }
+                        )
+                results = sorted(results, key=lambda x: x['controle'] + x['partiel'], reverse=True)
+                
+                if results:
+                    average= round(sum(x['total'] for x in results) / len(results), 3)
+                
+                context = {
+                    'semesters': self.semesters,
+                    'careers': self.careers,
+                    'subjects': self.subjects,
+                    'results': results,
+                    'max':results[0]['total'],
+                    'last':results[-1]['total'],
+                    
+                    'average':average
+                }
+                return render(request, template_name=self.template, context=context)
+# ...
+
+            else:
+                context = {
+                    'semesters':self.semesters,
+                    'careers':self.careers,
+                    'subjects':self.subjects,
+                }
+                return render(request, template_name=self.template, context=context)
+
+        except (Semester.DoesNotExist, Career.DoesNotExist, Subject.DoesNotExist) as e:
+            return HttpResponse(f"Erreur: {e}")
 
 class BullettinView(View):
     template = 'manager_dashboard/evaluations/bulletins.html'

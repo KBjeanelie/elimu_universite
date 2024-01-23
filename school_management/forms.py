@@ -198,7 +198,7 @@ class SectorForm(forms.ModelForm):
 class SubjectForm(forms.ModelForm):
     class Meta:
         model = Subject
-        fields = ['label', 'sector', 'teacher_in_charge', 'level', 'type', 'subject_group', 'possible_evaluation', 'possible_averaging']
+        fields = ['label', 'coefficient','sector', 'teacher_in_charge', 'level', 'type', 'subject_group', 'possible_evaluation', 'possible_averaging']
         widgets = {
             'label' : forms.TextInput(
                 attrs={
@@ -209,6 +209,12 @@ class SubjectForm(forms.ModelForm):
                     'maxLength':'50',
                     'placeholder': 'Nom de la matière',
                     'required': True
+                }
+            ),
+            'coefficient': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
                 }
             ),
             'sector': forms.Select(

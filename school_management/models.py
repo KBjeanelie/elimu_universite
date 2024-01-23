@@ -104,6 +104,7 @@ class Subject(models.Model):
     subject_group = models.ForeignKey(GroupSubject, on_delete=models.SET_NULL, null=True, blank=True)
     possible_evaluation = models.BooleanField(default=True)
     possible_averaging = models.BooleanField(default=True)
+    coefficient = models.IntegerField(default=1)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
