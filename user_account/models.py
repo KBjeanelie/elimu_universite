@@ -49,7 +49,7 @@ class Student(models.Model):
     
     sex = models.CharField(max_length=10, choices=sexes, blank=True)
     
-    email = models.CharField(max_length=120, unique=True, blank=True)
+    email = models.CharField(max_length=120, unique=True, blank=True, null=True)
     
     bithday = models.DateField(null=True, blank=True)
     

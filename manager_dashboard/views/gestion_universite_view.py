@@ -1,10 +1,34 @@
+import datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
 from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, Subject
 from user_account.forms import StudentForm, TeacherForm
-
 from user_account.models import Student, Teacher
+from django.core.cache import cache
+from django.db import transaction
+
+def convertir_en_hexadecimal(nombre):
+    # Utiliser la fonction hex() pour convertir le nombre en hexadécimal
+    nombre_hexadecimal = hex(nombre)
+    
+    # La fonction hex() renvoie une chaîne qui commence par '0x', nous la supprimons
+    nombre_hexadecimal = nombre_hexadecimal[2:]
+    
+    return nombre_hexadecimal
+
+def generer_nui_etudiant():
+    now = datetime.datetime.now()
+    annee = now.year
+
+    # Utilisation du cache pour stocker le compteur
+    with transaction.atomic():
+        student_counter = cache.get('student_counter') or 0
+        student_counter += 1
+        cache.set('student_counter', student_counter)
+
+    identifiant_hexadecimal = convertir_en_hexadecimal(student_counter)
+    return f"ELM-{annee}-STD-{identifiant_hexadecimal.upper()}"
 
 
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
@@ -544,11 +568,30 @@ class AddStudentView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = StudentForm(request.POST, request.FILES)
+        form = StudentForm(request.POST)
         if form.is_valid():
-            form.save()
-            return redirect("manager_dashboard:students")
-
+            registration_number = generer_nui_etudiant()
+            lastname = form.data['lastname']
+            firstname = form.data['firstname']
+            bithday = form.data['bithday']
+            tel = form.data['tel']
+            sex = form.data['sex']
+            new_student = Student(
+                registration_number=registration_number,
+                lastname=lastname,
+                firstname=firstname,
+                bithday=bithday,
+                tel=tel,
+                sex=sex
+            )
+            if 'status' in request.POST:
+                new_student.status = True
+                
+            new_student.save()
+            return redirect('manager_dashboard:students')
+        else:
+            print(form.errors)
+        
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
         
