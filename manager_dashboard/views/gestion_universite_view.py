@@ -523,7 +523,7 @@ class PreRegistrationView(View):
     
     def get(self, request, *args, **kwargs):
         academic_year = get_object_or_404(AcademicYear, status=True)
-        students = students = StudentCareer.objects.filter(academic_year=academic_year)
+        students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=False).order_by('-created_at')
         context = {'student_careers':students}
         return render(request, template_name=self.template, context=context)
 #===END
@@ -603,7 +603,7 @@ class StudentsView(View):
     
     def get(self, request, *args, **kwargs):
         academic_year = get_object_or_404(AcademicYear, status=True)
-        students = StudentCareer.objects.filter(academic_year=academic_year)
+        students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True)
         context = {'student_careers':students}
         return render(request, template_name=self.template, context=context)
 
