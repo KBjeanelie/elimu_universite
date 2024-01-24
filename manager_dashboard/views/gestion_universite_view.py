@@ -1,5 +1,5 @@
 import datetime
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from module_assessments.models import Assessment
@@ -547,10 +547,15 @@ class PreRegistrationView(View):
     template = "manager_dashboard/gestion_universite/pre-inscription.html"
     
     def get(self, request, *args, **kwargs):
-        academic_year = get_object_or_404(AcademicYear, status=True)
-        students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=False).order_by('-created_at')
-        context = {'student_careers':students}
-        return render(request, template_name=self.template, context=context)
+        try:
+            academic_year = AcademicYear.objects.get(status=True)
+            students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=False).order_by('-created_at')
+            context = {'student_careers':'students'}
+            return render(request, template_name=self.template, context=context)
+        except AcademicYear.DoesNotExist:
+            # Exécuter du code alternatif si l'objet AcademicYear n'existe pas
+           return render(request, template_name=self.template)
+        
 
 class PreRegistrationDetailView(View):
     template = "manager_dashboard/gestion_universite/pre-inscription_detail.html"
@@ -651,10 +656,14 @@ class StudentsView(View):
     template = "manager_dashboard/gestion_universite/etudiants.html"
     
     def get(self, request, *args, **kwargs):
-        academic_year = get_object_or_404(AcademicYear, status=True)
-        students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True)
-        context = {'student_careers':students}
-        return render(request, template_name=self.template, context=context)
+        try:
+            academic_year = AcademicYear.objects.get(status=True)
+            students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True).order_by('-created_at')
+            context = {'student_careers':'students'}
+            return render(request, template_name=self.template, context=context)
+        except AcademicYear.DoesNotExist:
+            # Exécuter du code alternatif si l'objet AcademicYear n'existe pas
+           return render(request, template_name=self.template)
 
     
 class StudentDetailView(View):
