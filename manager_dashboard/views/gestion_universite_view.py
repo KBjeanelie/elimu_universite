@@ -648,8 +648,6 @@ class AddStudentView(View):
         
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
-        
-
 
 class StudentsView(View):
 
@@ -665,7 +663,6 @@ class StudentsView(View):
             # Exécuter du code alternatif si l'objet AcademicYear n'existe pas
            return render(request, template_name=self.template)
 
-    
 class StudentDetailView(View):
     template = "manager_dashboard/gestion_universite/etudiant_detail.html"
     
