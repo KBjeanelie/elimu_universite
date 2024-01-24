@@ -8,7 +8,7 @@ from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAc
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
 from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BullettinView, EditAssessmentView, NoteTableView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
-from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, PreRegistrationView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
+from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, PreRegistrationDetailView, PreRegistrationView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
 
 
@@ -55,6 +55,9 @@ urlpatterns = [
     path(route='gestion_universite/trombinoscopes/', view=TrombinoscopeView.as_view(), name='trombinoscopes'),
     
     path(route='gestion_universite/demande-de-préinscription/', view=PreRegistrationView.as_view(), name='pre_registrations'),
+    path(route='gestion_universite/demande-de-préinscription/<int:pk>/detail/', view=PreRegistrationDetailView.as_view(), name='pre_registrations_detail'),
+    path(route='gestion_universite/demande-de-préinscription/<int:pk>/check/', view=PreRegistrationDetailView.check, name='pre_registrations_check'),
+    path(route='gestion_universite/demande-de-préinscription/<int:pk>/delete/', view=PreRegistrationDetailView.delete, name='pre_registrations_delete'),
     
     path(route='gestion_universite/students/<int:pk>/detail/', view=StudentDetailView.as_view(), name='student_detail'),
     path(route='gestion_universite/students/<int:pk>/edit/', view=EditStudentView.as_view(), name='edit_student'),

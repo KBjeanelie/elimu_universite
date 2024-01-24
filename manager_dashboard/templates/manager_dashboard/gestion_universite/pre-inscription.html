@@ -32,8 +32,6 @@
                                         <th class="border-top-0">Nom</th>
                                         <th class="border-top-0">Prénom</th>
                                         <th class="border-top-0">Date de Naissance</th>
-                                        <th class="border-top-0">Téléphone</th>
-                                        <th class="border-top-0">Sexe</th>
                                         <th class="border-top-0">Parcours</th>
                                         <th class="border-top-0">Niveau</th>
                                     </tr>
@@ -53,14 +51,12 @@
                                             <td><h6> {{student_career.student.lastname}} </h6></td>
                                             <td><h6> {{student_career.student.firstname}} </h6></td>
                                             <td><h6> {{student_career.student.bithday}} </h6></td>
-                                            <td><h6> {{student_career.student.tel}} </h6></td>
-                                            <td><h6> {{student_career.student.sex}} </h6></td>
                                             <td><h6> {{student_career.career.title}} </h6></td>
                                             <td><h6> {{student_career.semester.level.label}} </h6></td>
                                             <td>
                                                 <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"><i class="fa fa-check-circle" aria-hidden="true"></i></a>
-                                                    <a href="#" class="action_btn"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
+                                                    <a href='{% url "manager_dashboard:pre_registrations_detail" student_career.id %}' class="action_btn mr_10"><i class="fas fa-eye" aria-hidden="true"></i></a>
+                                                    <a href='{% url "manager_dashboard:pre_registrations_delete" student_career.id %}' class="action_btn"><i class="fa fa-times-circle" aria-hidden="true"></i></a>
                                                 </div>
                                             </td>
                                         </tr>

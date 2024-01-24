@@ -529,6 +529,30 @@ class PreRegistrationView(View):
         students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=False).order_by('-created_at')
         context = {'student_careers':students}
         return render(request, template_name=self.template, context=context)
+
+class PreRegistrationDetailView(View):
+    template = "manager_dashboard/gestion_universite/pre-inscription_detail.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        academic_year = get_object_or_404(AcademicYear, status=True)
+        student_career = get_object_or_404(StudentCareer, pk=pk, academic_year=academic_year)
+        context = {'student_career':student_career}
+        return render(request, template_name=self.template, context=context)
+    
+    def check(self, pk, *args, **kwargs):
+        academic_year = get_object_or_404(AcademicYear, status=True)
+        student_career = get_object_or_404(StudentCareer, pk=pk, academic_year=academic_year)
+        student_career.is_registered = True
+        student_career.save()
+        return redirect('manager_dashboard:pre_registrations')
+    
+    def delete(self, pk, *args, **kwargs):
+        academic_year = get_object_or_404(AcademicYear, status=True)
+        student_career = get_object_or_404(StudentCareer, pk=pk, academic_year=academic_year)
+        student = get_object_or_404(Student, id=student_career.student.id)
+        student_career.delete()
+        student.delete()
+        return redirect('manager_dashboard:pre_registrations')
 #===END
 
 #================================= PARTIE CONCERNANT LES ETUDIANT ======================
