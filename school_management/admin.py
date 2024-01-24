@@ -1,6 +1,6 @@
 from django.contrib import admin
 
-from school_management.models import AcademicYear, Career,DocumentType, GroupSubject, Level, Program, SanctionAppreciation, SanctionAppreciationType, Schedule, Sector, Semester, StudentCareer, Subject
+from school_management.models import AcademicYear, Career,DocumentType, GroupSubject, Level, Program, SanctionAppreciation, SanctionAppreciationType, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject, TeacherDocument
 
 # Register your models here.
 admin.site.register(AcademicYear)
@@ -16,3 +16,5 @@ admin.site.register(Semester)
 admin.site.register(StudentCareer)
 admin.site.register(Schedule)
 admin.site.register(SanctionAppreciation)
+admin.site.register(StudentDocument)
+admin.site.register(TeacherDocument)

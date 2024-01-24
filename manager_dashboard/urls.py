@@ -60,6 +60,7 @@ urlpatterns = [
     path(route='gestion_universite/students/<int:pk>/edit/', view=EditStudentView.as_view(), name='edit_student'),
     path(route='gestion_universite/students/ajouter/', view=AddStudentView.as_view(), name='add_student'),
     path(route='gestion_universite/students/', view=StudentsView.as_view(), name='students'),
+    path(route='gestion_universite/students/<int:pk>/delete-document/', view=StudentDetailView.as_view(), name='student_delete_document'),
     
     path(route='gestion_universite/teachers/', view=TeacherView.as_view(), name='teachers'),
     path(route='gestion_universite/teachers/ajouter/', view=AddTeacherView.as_view(), name='add_teacher'),

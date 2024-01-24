@@ -1,8 +1,11 @@
 import datetime
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, SubjectForm
-from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, Subject
+from module_assessments.models import Assessment
+from module_invoice_and_accounting.models import Invoice
+from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm
+from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject
 from user_account.forms import StudentForm, TeacherForm
 from user_account.models import Student, Teacher
 from django.core.cache import cache
@@ -612,7 +615,59 @@ class StudentDetailView(View):
     template = "manager_dashboard/gestion_universite/etudiant_detail.html"
     
     def get(self, request, pk, *args, **kwargs):
+        academic_year = AcademicYear.objects.get(status=True)
         student = get_object_or_404(Student, pk=pk)
+        documents = StudentDocument.objects.filter(student=student)
+        sanctions_student = SanctionAppreciation.objects.filter(student=student)
+        invoices_student = Invoice.objects.filter(student=student)
+        controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
+        partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         student_carreer = get_object_or_404(StudentCareer, student=student)
-        context = {'student': student, 'student_career':student_carreer}
+        form = StudentDocumentForm()
+        context = {
+            'student':student,
+            'student_career':student_carreer,
+            'documents':documents,
+            'sanctions_student':sanctions_student,
+            'invoices_student':invoices_student,
+            'controle_evaluations':controle_evaluations,
+            'partiel_evaluations': partiel_evaluations,
+            'form':form
+        }
         return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        student = get_object_or_404(Student, pk=pk)
+        mutable_data = request.POST.copy()
+        mutable_file = request.FILES.copy()
+        mutable_data['student'] = student
+        form = StudentDocumentForm(mutable_data, mutable_file)
+        if form.is_valid():
+            form.save()
+        
+        academic_year = AcademicYear.objects.get(status=True)
+        student = get_object_or_404(Student, pk=pk)
+        documents = StudentDocument.objects.filter(student=student)
+        sanctions_student = SanctionAppreciation.objects.filter(student=student)
+        invoices_student = Invoice.objects.filter(student=student)
+        controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
+        partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
+        student_carreer = get_object_or_404(StudentCareer, student=student)
+        form = StudentDocumentForm()
+        context = {
+            'student':student,
+            'student_career':student_carreer,
+            'documents':documents,
+            'sanctions_student':sanctions_student,
+            'invoices_student':invoices_student,
+            'controle_evaluations':controle_evaluations,
+            'partiel_evaluations': partiel_evaluations,
+            'form':form
+        }
+        return render(request, template_name=self.template, context=context)
+    
+    
+    def delete(self, request, pk, *args, **kwargs):
+        document = get_object_or_404(StudentDocument, pk=pk)
+        document.delete()
+        return JsonResponse({'message': 'Document supprimé avec succès'})

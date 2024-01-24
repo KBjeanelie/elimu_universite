@@ -1,4 +1,3 @@
-from datetime import date
 from django import forms
 from .models import (
     AcademicYear,
@@ -10,6 +9,7 @@ from .models import (
     GroupSubject,
     Sector,
     Subject,
+    StudentDocument,
     Career,
     StudentCareer,
     Schedule,
@@ -281,7 +281,6 @@ class StudentCareerForm(forms.ModelForm):
     class Meta:
         model = StudentCareer
         fields = ['student', 'career', 'academic_year', 'semester']
-        
 
 class ScheduleForm(forms.ModelForm):
     class Meta:
@@ -364,4 +363,40 @@ class SanctionAppreciationForm(forms.ModelForm):
                     'class': 'form-control',
                 }
             )
+        }
+
+class StudentDocumentForm(forms.ModelForm):
+    class Meta:
+        model = StudentDocument
+        fields = ['title', 'document_type', 'file', 'student', ]
+        widgets = {
+            'title' : forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'id': 'title',
+                    'class': 'form-control',
+                    'name': 'title',
+                    'maxLength':'50',
+                    'placeholder': 'Titre du document',
+                    'required': True
+                }
+            ),
+            'document_type': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'student': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'file': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
         }
