@@ -8,7 +8,7 @@
             <div class="col-12">
                 <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
                     <div class="page_title_left d-flex align-items-center">
-                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Bulletins</h3>
+                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Releve des notes</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a href='{% url "manager_dashboard:index" %}'>Accueil</a></li>
                         </ol>
@@ -17,47 +17,33 @@
             </div>
         </div>
 
-        <div class="container mt-4">
+        <div class="container mt-3">
             <div class="row">
                 <div class="col-12">
-                    <form class="row g-3">
+                    <form method="post" class="row g-3">
+                        {% csrf_token %}
                         <div class="col-auto">
-                            <label class="form-label" for="inputState">Selectionner le niveau</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>1er année</option>
-                                <option>2e année</option>
+                            <label class="form-label" for="inputStateSemester">Selectionner le semestre</label>
+                            <select id="inputStateSemester" class="form-control" name="semester" required>
+                                {% for semester in semesters %}
+                                    <option value="{{semester.id}}"> {{semester.title}} </option>
+                                {% endfor %}
                             </select> 
                         </div>
                         <div class="col-auto">
-                            <label class="form-label" for="inputState">Selectionner le semestre</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>Semestre 1</option>
-                                <option>Semestre 2</option>
-                                <option>Semestre 3</option>
-                            </select> 
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-label" for="inputState">Selectionner le parcours</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>Licence Informatique 1 A</option>
-                                <option>Licence Informatique 1 B</option>
-                            </select> 
-                        </div>
-                        <div class="col-auto">
-                            <label class="form-label" for="inputState">Année academique</label>
-                            <select id="inputState" class="form-control">
-                                <option selected>Choisir...</option>
-                                <option>2020 - 2021</option>
-                                <option>2021 - 2022</option>
+                            <label class="form-label" for="inputStateCareer">Selectionner le parcours</label>
+                            <select id="inputStateCareer" class="form-control" name="career" required>
+                                
+                                {% for career in careers %}
+                                    <option value="{{career.id}}"> {{career.title}} </option>
+                                {% endfor %}
                             </select> 
                         </div>
                         <div class="col-auto">
                             <button type="submit" class="btn btn-primary mt-4">Rechercher</button>
                         </div>
                     </form>
+                    
                 </div>
             </div>
         </div>
