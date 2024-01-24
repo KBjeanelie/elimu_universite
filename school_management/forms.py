@@ -7,7 +7,6 @@ from .models import (
     Program,
     DocumentType,
     SanctionAppreciationType,
-    Document,
     GroupSubject,
     Sector,
     Subject,
@@ -153,11 +152,6 @@ class SanctionAppreciationTypeForm(forms.ModelForm):
     class Meta:
         model = SanctionAppreciationType
         fields = ['title', 'description']
-
-class DocumentForm(forms.ModelForm):
-    class Meta:
-        model = Document
-        fields = ['title', 'document_type', 'file']
 
 class GroupSubjectForm(forms.ModelForm):
     class Meta:
