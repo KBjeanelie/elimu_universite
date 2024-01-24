@@ -16,7 +16,7 @@ class Information(models.Model):
     
     content = RichTextField(blank=True, null=True)
     
-    file = models.FileField(upload_to='information_doc', blank=True)
+    file = models.FileField(upload_to='info_files', blank=True)
     
     status = models.BooleanField(default=True)
     
@@ -45,9 +45,9 @@ class Event(models.Model):
     
     status = models.BooleanField(default=True)
     
-    file = models.FileField(upload_to='information_doc', blank=True)
+    file = models.FileField(upload_to='events_files/', blank=True)
     
-    photo = models.ImageField(upload_to='event_doc', blank=True)
+    photo = models.ImageField(upload_to='events_image/', blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     

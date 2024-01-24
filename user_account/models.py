@@ -61,7 +61,7 @@ class Student(models.Model):
     
     allergy = models.CharField(max_length=255, blank=True, null=True)
     
-    picture = models.ImageField(upload_to="student_pics", blank=True, null=True)
+    picture = models.ImageField(upload_to="student_images", blank=True, null=True)
     
     status = models.BooleanField(default=False)
     
@@ -106,7 +106,7 @@ class Teacher(models.Model):
     
     last_diploma = models.CharField(max_length=20, choices=last_diploma, blank=True,)
     
-    picture = models.ImageField(upload_to="teacher_pics", blank=True, null=True)
+    picture = models.ImageField(upload_to="teacher_images", blank=True, null=True)
     
     type_of_counter = models.CharField(max_length=20, blank=True)
     
@@ -147,6 +147,8 @@ class ManagementProfil(models.Model):
     sex = models.CharField(max_length=10, choices=sexes, blank=True)
     
     email = models.CharField(max_length=120, unique=True, blank=True)
+    
+    picture = models.ImageField(upload_to="managements_images", blank=True, null=True)
     
     bio = models.TextField(blank=True)
     
