@@ -14,6 +14,7 @@ from .models import (
     StudentCareer,
     Schedule,
     SanctionAppreciation,
+    TeacherDocument,
 )
 
 class AcademicYearForm(forms.ModelForm):
@@ -388,6 +389,42 @@ class StudentDocumentForm(forms.ModelForm):
                 }
             ),
             'student': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'file': forms.FileInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+        }
+
+class TeacherDocumentForm(forms.ModelForm):
+    class Meta:
+        model = TeacherDocument
+        fields = ['title', 'document_type', 'file', 'teacher', ]
+        widgets = {
+            'title' : forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'id': 'title',
+                    'class': 'form-control',
+                    'name': 'title',
+                    'maxLength':'50',
+                    'placeholder': 'Titre du document',
+                    'required': True
+                }
+            ),
+            'document_type': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True,
+                }
+            ),
+            'teacher': forms.Select(
                 attrs={
                     'class': 'form-control',
                     'required': True,

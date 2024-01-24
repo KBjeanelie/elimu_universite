@@ -139,23 +139,25 @@
                                                             <th scope="col">Titre</th>
                                                             <th scope="col">Type du document</th>
                                                             <th scope="col">Fichier</th>
-                                                            <th scope="col">Date d'enregistrement</th>
+                                                            <th scope="col">Date</th>
                                                         </tr>
                                                     </thead>
-                                                    <tbody>
-                                                        <tr>
-                                                            <td>Certificat de nationnalité</td>
-                                                            <td>Certificat De Nationnalité</td>
-                                                            <td><a href="#">certificat.pdf</a></td>
-                                                            <td>02/11/2023</td>
-                                                            <td>
-                                                                <div class="action_btns d-flex">
-                                                                    <a href="#" class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
-                                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                                </div>
-                                                            </td>
-                                                        </tr>
+                                                    <tbody id='elementList'>
+                                                        {% for document in documents %}
+                                                            <tr data-id='{{document.id}}'>
+                                                                <td><h6> {{document.title}} </h6></td>
+                                                                <td><h6>{{document.document_type.title}}</h6></td>
+                                                                <td><h6><a href="#">{{document.file.name}}</a></h6></td>
+                                                                <td><h6> {{document.created_at}} </h6></td>
+                                                                <td>
+                                                                    <div class="action_btns d-flex">
+                                                                        <a href="{{document.file.url}}" class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
+                                                                        <!--<a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>-->
+                                                                        <a href="#" onclick='deleteDocument({{document.id}})'  id="delete-document" data-url="{% url 'manager_dashboard:teacher_delete_document' document.id %}" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                                    </div>
+                                                                </td>
+                                                            </tr>
+                                                        {% endfor %}
                                                     </tbody>
                                                 </table>
                                             </div>
@@ -170,4 +172,78 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="exampleModalLongTitle">Ajouter une Facture</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <div class="mb-3">
+                        <label class="form-label" for="level">Titre du document</label>
+                        {{form.title}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="level">Type de document</label>
+                        {{form.document_type}}
+                    </div>
+                    <div class="mb-3">
+                        <label class="form-label" for="libelle">Fichier</label>
+                        {{form.file}}
+                    </div>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ti-close"></i> Close</button>
+                    <button type="submit" class="btn btn-success"><i class="ti-save"></i> Save changes</button>
+                </div>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+
+    // Supprimer un élément
+    function deleteDocument(id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        var url = document.getElementById('delete-document').dataset.url
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+</script>
 {% endblock content %}

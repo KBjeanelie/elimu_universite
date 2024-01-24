@@ -70,6 +70,7 @@ urlpatterns = [
     path(route='gestion_universite/teachers/<int:pk>/editer/', view=EditTeacherView.as_view(), name='edit_teacher'),
     path(route='gestion_universite/teachers/<int:pk>/delete/', view=TeacherView.as_view(), name='delete_teacher'),
     path(route='gestion_universite/teachers/<int:pk>/detail/', view=TeacherDetailView.as_view(), name='teacher_detail'),
+    path(route='gestion_universite/teachers/<int:pk>/delete-document/', view=TeacherDetailView.as_view(), name='teacher_delete_document'),
     
     #===END
     

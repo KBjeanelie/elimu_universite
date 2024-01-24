@@ -4,8 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from module_assessments.models import Assessment
 from module_invoice_and_accounting.models import Invoice
-from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm
-from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject
+from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm, TeacherDocumentForm
+from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject, TeacherDocument
 from user_account.forms import StudentForm, TeacherForm
 from user_account.models import Student, Teacher
 from django.core.cache import cache
@@ -513,11 +513,33 @@ class TeacherDetailView(View):
         teacher = get_object_or_404(Teacher, pk=pk)
         subjects_taught_by_teacher = Subject.objects.filter(teacher_in_charge=teacher)
         schedules_for_subject = Schedule.objects.filter(subject__in=subjects_taught_by_teacher)
+        documents = TeacherDocument.objects.filter(teacher=teacher)
         #account = get_object_or_404(User, teacher=teacher)
-        
-        print(schedules_for_subject)
-        context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject}
+        form = TeacherDocumentForm()
+        context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject, 'form':form, 'documents':documents}
         return render(request, template_name=self.template, context=context)
+    
+    def post(self, request,pk, *args, **kwargs):
+        teacher = get_object_or_404(Teacher, pk=pk)
+        mutable_data = request.POST.copy()
+        mutable_file = request.FILES.copy()
+        mutable_data['teacher'] = teacher
+        form = TeacherDocumentForm(mutable_data, mutable_file)
+        if form.is_valid():
+            form.save()
+        
+        subjects_taught_by_teacher = Subject.objects.filter(teacher_in_charge=teacher)
+        schedules_for_subject = Schedule.objects.filter(subject__in=subjects_taught_by_teacher)
+        documents = TeacherDocument.objects.filter(teacher=teacher)
+        #account = get_object_or_404(User, teacher=teacher)
+        form = TeacherDocumentForm()
+        context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject, 'form':form, 'documents':documents}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        document = get_object_or_404(TeacherDocument, pk=pk)
+        document.delete()
+        return JsonResponse({'message': 'Document supprimé avec succès'})
 #===END
 
 #================================
