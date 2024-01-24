@@ -1,5 +1,5 @@
 from django import forms
-from .models import BookCategory, Book, eBook
+from .models import eBook
 
 # class FolderForm(forms.ModelForm):
 #     class Meta:
@@ -56,15 +56,15 @@ from .models import BookCategory, Book, eBook
 #             ),
 #         }
 
-class BookCategoryForm(forms.ModelForm):
-    class Meta:
-        model = BookCategory
-        fields = ['label']
+# class BookCategoryForm(forms.ModelForm):
+#     class Meta:
+#         model = BookCategory
+#         fields = ['label']
 
-class BookForm(forms.ModelForm):
-    class Meta:
-        model = Book
-        fields = ['label', 'author', 'code_isbn', 'location', 'attachement', 'sector']
+# class BookForm(forms.ModelForm):
+#     class Meta:
+#         model = Book
+#         fields = ['label', 'author', 'code_isbn', 'location', 'attachement', 'sector']
 
 class eBookForm(forms.ModelForm):
     class Meta:

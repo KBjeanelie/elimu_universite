@@ -1,10 +1,10 @@
 from django.contrib import admin
 
-from educational_content.models import Book, BookCategory, eBook
+from educational_content.models import  eBook
 
 # Register your models here.
 # admin.site.register(Folder)
 # admin.site.register(File)
-admin.site.register(BookCategory)
+# admin.site.register(BookCategory)
 admin.site.register(eBook)
-admin.site.register(Book)
+# admin.site.register(Book)
