@@ -622,16 +622,21 @@ class StudentDetailView(View):
         invoices_student = Invoice.objects.filter(student=student)
         controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
-        student_carreer = get_object_or_404(StudentCareer, student=student)
+        students_career = StudentCareer.objects.filter(student=student)
+        student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year)
+        schedules = Schedule.objects.filter(career=student_career.career)
+
         form = StudentDocumentForm()
         context = {
             'student':student,
-            'student_career':student_carreer,
+            'students_career':students_career,
+            'student_career':student_career,
             'documents':documents,
             'sanctions_student':sanctions_student,
             'invoices_student':invoices_student,
             'controle_evaluations':controle_evaluations,
             'partiel_evaluations': partiel_evaluations,
+            'schedules':schedules,
             'form':form
         }
         return render(request, template_name=self.template, context=context)

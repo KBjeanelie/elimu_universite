@@ -188,89 +188,6 @@
                                                 </div>
                                             </div>
                                         </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-danger mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Mardi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Cisco : <br> 9h30 - 12h</li><hr>
-                                                        <li>Pause : <br> 12h - 13h</li><hr>
-                                                        <li>Structure de données et algorithme fondamentaux : <br> 13h - 17h</li>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-success mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Mercredi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Cisco : <br> 9h30 - 12h</li><hr>
-                                                        <li>Pause : <br> 12h - 13h</li><hr>
-                                                        <li>Structure de données et algorithme fondamentaux : <br> 13h - 17h</li>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-info mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Jeudi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Cisco : <br> 9h30 - 12h</li><hr>
-                                                        <li>Pause : <br> 12h - 13h</li><hr>
-                                                        <li>Structure de données et algorithme fondamentaux : <br> 13h - 17h</li>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-warning mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Vendredi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Cisco : <br> 9h30 - 12h</li><hr>
-                                                        <li>Pause : <br> 12h - 13h</li><hr>
-                                                        <li>Structure de données et algorithme fondamentaux : <br> 13h - 17h</li>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
-                                        <div class="col-md-3">
-                                            <div class="card bg-dark mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-timer" style="color: white;"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Samedi</h4></div>
-                                                <div class="widget-subheading mt-2">
-                                                    <ol>
-                                                        <li>Mathématique : <br> 08h - 9h30</li><hr>
-                                                        <li>Cisco : <br> 9h30 - 12h</li><hr>
-                                                    </ol>
-                                                </div>
-                                            </div>
-                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -726,23 +643,26 @@
                             <div class="tab-pane fade" id="parcours" role="tabpanel" aria-labelledby="parcours-tab">
                                 <div class="builder_select">
                                     <div class="row">
-                                        <div class="col-md-3">
-                                            <div class="card mb-3 widget-chart">
-                                                <div class="icon-wrapper rounded-circle">
-                                                    <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-home text-primary"></i>
-                                                </div>
-                                                <div><h4 style="color: white;">Lic Info 1</h4></div>
-                                                <div class="widget-subheading">
-                                                    <ol>
-                                                        <li>Parcours : <br> Linc Info 1</li><hr>
-                                                        <li>Niveau : <br> Première année</li><hr>
-                                                        <li>Moyennes : <br> 12,50</li><hr>
-                                                        <li>Année académique : <br>2022 - 2023</li>
-                                                    </ol>
+                                        {% for career in students_career %}
+                                            <div class="col-md-3">
+                                                <div class="card mb-3 widget-chart">
+                                                    <div class="icon-wrapper rounded-circle">
+                                                        <div class="icon-wrapper-bg bg-primary"></div>
+                                                        <i class="ti-home text-primary"></i>
+                                                    </div>
+                                                    <div><h4 style="color: white;"> {{career.career.title}} </h4></div>
+                                                    <div class="widget-subheading">
+                                                        <ol>
+                                                            <li>Parcours : <br> {{career.career.title}}</li><hr>
+                                                            <li>Semestre : <br> {{career.semester.title}}</li><hr>
+                                                            <li>Niveau : <br> {{career.semester.level.label}}</li><hr>
+                                                            <li>Moyennes : <br> -</li><hr>
+                                                            <li>Année académique : <br>{{career.academic_year.label}}</li>
+                                                        </ol>
+                                                    </div>
                                                 </div>
                                             </div>
-                                        </div>
+                                        {% endfor %}
                                     </div>
                                 </div>
                             </div>
