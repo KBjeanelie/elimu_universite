@@ -50,6 +50,10 @@
                                 {{ form.content | safe }}
                                 {{form.media}}
                             </div>
+                            <div class="form-check">
+                                {{ form.status }}
+                                <label class="form-label form-check-label" for="gridCheck">Publié ?</label>
+                            </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
                     </div>

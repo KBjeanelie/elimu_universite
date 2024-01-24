@@ -62,6 +62,10 @@
                                 {{ form.content | safe }}
                                 {{form.media}}
                             </div>
+                            <div class="form-check">
+                                {{ form.status }}
+                                <label class="form-label form-check-label" for="gridCheck">Publié ?</label>
+                            </div>
                             <div>
                                 <a href='{% url "manager_dashboard:events" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                                 <button type="submit" class="btn btn-dark"> <i class="ti-save"></i> Modifer</button>
