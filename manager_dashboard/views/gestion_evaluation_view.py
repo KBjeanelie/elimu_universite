@@ -188,8 +188,8 @@ class AverageTableView(View):
                     'careers': self.careers,
                     'subjects': self.subjects,
                     'results': results,
-                    'max':results[0]['total'],
-                    'last':results[-1]['total'],
+                    'max': results[0]['total'],
+                    'last': results[-1]['total'],
                     'average':average
                 }
                 return render(request, template_name=self.template, context=context)

@@ -62,7 +62,7 @@ class LevelForm(forms.ModelForm):
                     'class': 'form-control',
                     'name': 'label',
                     'maxLength':'50',
-                    'placeholder': 'Titre du programmme',
+                    'placeholder': 'ex: 1er année',
                     'required': True
                 }
             ),
