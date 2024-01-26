@@ -1,0 +1,190 @@
+{% extends '../base.html' %}
+{% load static %}
+{% block content %}
+<div class="main_content_iner overly_inner ">
+    <div class="container-fluid p-0 ">
+        <!-- ================= Entête ====================-->
+        <div class="row">
+            <div class="col-12">
+                <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="page_title_left d-flex align-items-center">
+                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Releve des notes</h3>
+                        <ol class="breadcrumb page_bradcam mb-0">
+                            <li class="breadcrumb-item"><a href='{% url "manager_dashboard:index" %}'>Accueil</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
+        <div class="row mt-5">
+            <div class="col-lg-12">
+                <div class="white_card card_height_100 mb_30 pt-4">
+                    <div class="white_card_body">
+                        <div class="QA_section">
+                            <div class="card QA_table ">
+                                <div class="card-header">
+                                    releve de note
+                                    <!-- <strong>15/08/2020</strong> -->
+                                    <span class="float-end"> <strong>Status:</strong> authentique</span>
+                                </div>
+                                <div class="card-body">
+                                <div class="row mb-4">
+                                    <div class="col-sm-4">
+                                        <h6 class="mb-3 text-center">
+                                            <strong>
+                                                CENTRE D'INFORMATIQUE ET DE RECHERCHE DE L'ARMEE ET <br> DE LA SÉCURITE <br>
+                                                ________________________
+                                            </strong>
+                                        </h6>
+
+                                        <h6 class="mb-3 text-center mt-3">
+                                            <strong>
+                                                CENTRE DE FORMATION <br> EN INFORMATIQUE <br>
+                                                ________________
+                                            </strong>
+                                        </h6>
+
+                                        <h6 class="mb-3 text-center mt-3">
+                                            <strong>
+                                                SERVICE DE LA SCOLARITE <br> ET DES EXAMENS <br>
+                                                ___________
+                                            </strong>
+                                        </h6>
+                                        
+                                    </div>
+                                    <div class="col-sm-4"></div>
+                                    <div class="col-sm-4">
+                                        <h6 class="mb-3 text-center">
+                                            <strong>RÉPUBLIQUE DU CONGO</strong> <br>
+                                            <span style="font-size: small;" >Unité - Travail - Progrès</span>
+                                        </h6>
+                                        <h6 class="mb-3 text-center mt-5">
+                                            <strong>ANNEE ACADEMIQUE : </strong> {{year.label}}
+                                        </h6>
+                                        <h6 class="mb-3 text-center mt-3">
+                                            <strong>SEMESTRE : </strong> {{student_career.semester.title}}
+                                        </h6>
+                                    </div>
+                                    <div class="col-sm-12">
+                                        <h3 class="mb-3 text-center">
+                                            <strong>RELEVE DES NOTES</strong> <br>
+                                        </h3>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h6 class="mb-3 mt-3"><strong>Matricule : </strong> {{student_career.student.registration_number |upper}} <br></h6>
+                                        <h6 class="mb-3 mt-3"><strong>Nom : </strong> {{student_career.student.lastname |upper}} <br></h6>
+                                        <h6 class="mb-3"><strong>Filère : {{student_career.career.sector.title |upper}}</strong> <br></h6>
+                                        <h6 class="mb-3"><strong>Parcours : {{student_career.career.title |upper}}</strong> <br></h6>
+                                    </div>
+                                    <div class="col-sm-6">
+                                        <h6 class="mb-3 mt-3"><strong>Prénom : </strong> {{student_career.student.firstname |capfirst}} <br></h6>
+                                        <h6 class="mb-3 mt-5"><strong>Niveau : {{student_career.semester.level.label}}</strong></h6>
+                                    </div>
+                                </div>
+                                <div class="table-responsive-sm">
+                                    <table class="table table-striped">
+                                        <thead>
+                                            <tr>
+                                                <th>Matière</th>
+                                                <th>Contrôle1</th>
+                                                <th class="right">Partiel1</th>
+                                                <th class="center">Coef</th>
+                                                <th class="right">TOTAL</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody>
+                                            {% for subject in subjects %}
+                                                <tr>
+                                                    <td class="center">{{subject.label}}</td>
+                                                    <td class="left strong">{{subject.controle}}</td>
+                                                    <td class="left">{{subject.partiel}}</td>
+                                                    <td class="right">{{subject.coefficient}}</td>
+                                                    <td class="center">{{subject.total}}</td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                                <div class="row">
+                                    <div class="col-lg-5 col-sm-5">
+                                        <table class="table table-clear QA_table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="left">
+                                                        <h6><strong>TOTAL DES COEFFICIENTS :</strong></h6>
+                                                    </td>
+                                                    <td class="right"> {{result.count_coefficient}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        <h6><strong>MOYENNE SEMESTRIELLE :</strong></h6>
+                                                    </td>
+                                                    <td class="right"> {{result.average}} </td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        <h6><strong>MOYENNE ANNUELLE :</strong></h6>
+                                                    </td>
+                                                    <td class="right">-</td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                    <div class="col-lg-4 col-sm-5 ms-auto QA_section">
+                                        <table class="table table-clear QA_table">
+                                            <tbody>
+                                                <tr>
+                                                    <td class="left">
+                                                        <h6><strong>TOTAL GENERAL :</strong></h6>
+                                                    </td>
+                                                    <td class="right">{{result.total_general}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        <h6><strong>CLASSEMENT :</strong></h6>
+                                                    </td>
+                                                    <td class="right">4/{{total_student}}</td>
+                                                </tr>
+                                                <tr>
+                                                    <td class="left">
+                                                        <h6><strong>DECISION :</strong></h6>
+                                                    </td>
+                                                    <td >
+                                                        {% if result.average >= 10 %}
+                                                        <h4 class="text-danger"><strong>ADMIS</strong></h4>
+                                                        {% else %}
+                                                        <h4 class="text-danger"><strong>ÉCHOUER</strong></h4>
+                                                        {% endif %}
+                                                    </td>
+                                                </tr>
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                                <div class="row">
+                                    <figure class="col-lg-4 mt-5 ml-5 col-md-6 mb_30" itemprop="associatedMedia" itemscope>
+                                        <img class="img-fluid" src="{% static 'img/qr-code.png' %}" height="150" width="150" itemprop="thumbnail" alt="QR CODE">
+                                    </figure>
+                                    <div class="col-lg-4 col-sm-5 ms-auto QA_section">
+                                        <h6 class="mb-3 mt-5">
+                                            <strong>
+                                                Le directeur du CFI-CIRAS <br>
+                                                ________________________
+                                            </strong>
+                                        </h6>
+                                    </div>
+                                </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+{% endblock content %}
