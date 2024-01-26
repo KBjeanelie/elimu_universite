@@ -34,7 +34,7 @@
                                 {% if student.file_exists %}
                                     <img src="{{ student.picture.url }}" alt class="mx-auto d-block" height="300" />
                                 {% else %}
-                                    <img src="" alt class="mx-auto d-block" height="300" />
+                                    <img src="{% static 'img/staf/student.png' %}" alt class="mx-auto d-block" height="300" />
                                 {% endif %}
                                     
                             </div>

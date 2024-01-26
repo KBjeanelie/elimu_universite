@@ -47,7 +47,7 @@
                                                 {% if teacher.file_exists %}
                                                     <img src="{{ teacher.picture.url }}" alt height="52" alt="">
                                                 {% else %}
-                                                    <img src="#" alt height="52" alt="No Picture">
+                                                <img src="{% static 'img/staf/teacher.png' %}" alt height="52">
                                                 {% endif %}
                                                     
                                             </td>
