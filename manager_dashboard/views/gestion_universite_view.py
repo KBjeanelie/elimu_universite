@@ -677,9 +677,14 @@ class StudentDetailView(View):
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         students_career = StudentCareer.objects.filter(student=student)
         student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year)
-        schedules = Schedule.objects.filter(career=student_career.career)
         regulations = Regulations.objects.filter(student=student).order_by('date_payment')
         results = []
+        monday_schedule = Schedule.objects.filter(career=student_career.career, day='lundi').order_by('start_hours')
+        tueday_schedule = Schedule.objects.filter(career=student_career.career, day='mardi').order_by('start_hours')
+        wednesday_schedule = Schedule.objects.filter(career=student_career.career, day='mercredi').order_by('start_hours')
+        thursday_schedule = Schedule.objects.filter(career=student_career.career, day='jeudi').order_by('start_hours')
+        friday_schedule = Schedule.objects.filter(career=student_career.career, day='vendredi').order_by('start_hours')
+        saturday_schedule = Schedule.objects.filter(career=student_career.career, day='samedi').order_by('start_hours')
         
         for s in students_career:
             R = calculate_results(semester_id=s.semester.id, career_id=s.career.id)
@@ -697,10 +702,15 @@ class StudentDetailView(View):
             'invoices_student':invoices_student,
             'controle_evaluations':controle_evaluations,
             'partiel_evaluations': partiel_evaluations,
-            'schedules':schedules,
             'form':form,
             'regulations':regulations,
-            'results':results
+            'results':results,
+            'monday_schedule':monday_schedule,
+            'tueday_schedule':tueday_schedule,
+            'wednesday_schedule':wednesday_schedule,
+            'thursday_schedule':thursday_schedule,
+            'friday_schedule':friday_schedule,
+            'saturday_schedule':saturday_schedule,
         }
         return render(request, template_name=self.template, context=context)
     
