@@ -437,203 +437,41 @@
                             <div class="tab-pane fade" id="bulletin" role="tabpanel" aria-labelledby="bulletin-tab">
                                 <div class="builder_select">
                                     <div class="row ">
-                                        <div class="col-12 QA_section">
-                                            <div class="card QA_table ">
-                                                <div class="card-header">
-                                                    releve de note
-                                                    <!-- <strong>15/08/2020</strong> -->
-                                                    <span class="float-end"> <strong>Status:</strong> authentique</span>
-                                                </div>
-                                                <div class="card-body">
-                                                <div class="row mb-4">
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-3 text-center">
-                                                            <strong>
-                                                                CENTRE D'INFORMATIQUE ET DE RECHERCHE DE L'ARMEE ET <br> DE LA SÉCURITE <br>
-                                                                ________________________
-                                                            </strong>
-                                                        </h6>
-
-                                                        <h6 class="mb-3 text-center mt-3">
-                                                            <strong>
-                                                                CENTRE DE FORMATION <br> EN INFORMATIQUE <br>
-                                                                ________________
-                                                            </strong>
-                                                        </h6>
-
-                                                        <h6 class="mb-3 text-center mt-3">
-                                                            <strong>
-                                                                SERVICE DE LA SCOLARITE <br> ET DES EXAMENS <br>
-                                                                ___________
-                                                            </strong>
-                                                        </h6>
-                                                        
-                                                    </div>
-                                                    <div class="col-sm-4"></div>
-                                                    <div class="col-sm-4">
-                                                        <h6 class="mb-3 text-center">
-                                                            <strong>RÉPUBLIQUE DU CONGO</strong> <br>
-                                                            <span style="font-size: small;" >Unité - Travail - Progrès</span>
-                                                        </h6>
-                                                        <h6 class="mb-3 text-center mt-5">
-                                                            <strong>ANNEE ACADEMIQUE : </strong> 2022-2023
-                                                        </h6>
-                                                        <h6 class="mb-3 text-center mt-3">
-                                                            <strong>SEMESTRE : </strong> Semestre 2
-                                                        </h6>
-                                                    </div>
-                                                    <div class="col-sm-12">
-                                                        <h3 class="mb-3 text-center">
-                                                            <strong>RELEVE DES NOTES</strong> <br>
-                                                        </h3>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <h6 class="mb-3 mt-3"><strong>Nom : </strong> KUBEMBULA <br></h6>
-                                                        <h6 class="mb-3"><strong>Filère : INFORMATIQUE</strong> <br></h6>
-                                                        <h6 class="mb-3"><strong>Parcours : LICENCE EN INFORMATIQUE 1 A</strong> <br></h6>
-                                                    </div>
-                                                    <div class="col-sm-6">
-                                                        <h6 class="mb-3 mt-3"><strong>Prénom : </strong> Jean-Élie <br></h6>
-                                                        <h6 class="mb-3 mt-5"><strong>Niveau : 1ère année</strong></h6>
-                                                    </div>
-                                                </div>
-                                                <div class="table-responsive-sm">
-                                                    <table class="table table-striped">
-                                                        <thead>
+                                        <div class="col-xl-12">
+                                            <h3 class="text-center">Tableau des Moyennes</h3>
+                                            <div class="QA_table mb_30">
+                                                <table class="table lms_table_active ">
+                                                    <thead>
+                                                        <tr>
+                                                            <th scope="col">Matricule</th>
+                                                            <th scope="col">Moyennes</th>
+                                                            <th scope="col">Rang</th>
+                                                            <th scope="col">Parcours</th>
+                                                            <th scope="col">Session</th>
+                                                            <th scope="col">Niveau</th>
+                                                            <th scope="col">Appréciation</th>
+                                                        </tr>
+                                                    </thead>
+                                                    <tbody>
+                                                        {% for result in results %}
                                                             <tr>
-                                                                <th>Matière</th>
-                                                                <th>Contrôle1</th>
-                                                                <th class="right">Partiel1</th>
-                                                                <th class="center">Coef</th>
-                                                                <th class="right">TOTAL</th>
+                                                                <td> {{result.nui}} </td>
+                                                                <td> {{result.average}} </td>
+                                                                <td> {{result.rang}} </h6></td>
+                                                                <td>{{result.parcours}}</td>
+                                                                <td> {{result.semestre}} </td>
+                                                                <td> {{result.niveau}} </td>
+                                                                <td>
+                                                                    {% if result.average >= 10 %}
+                                                                    <span class="badge rounded-pill bg-success"> Admis </span>
+                                                                    {% else %}
+                                                                    <span class="badge rounded-pill bg-danger"> Échoué </span>
+                                                                    {% endif %}
+                                                                </td>
                                                             </tr>
-                                                        </thead>
-                                                        <tbody>
-                                                            <tr>
-                                                                <td class="center">Analyse et méthode numérique</td>
-                                                                <td class="left strong">1,00</td>
-                                                                <td class="left">3,00</td>
-                                                                <td class="right">2,00</td>
-                                                                <td class="center">4,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Base de conception orienté objet</td>
-                                                                <td class="left strong">14,00</td>
-                                                                <td class="left">14,00</td>
-                                                                <td class="right">5,00</td>
-                                                                <td class="center">70,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Analyse et méthode numérique</td>
-                                                                <td class="left strong">1,00</td>
-                                                                <td class="left">3,00</td>
-                                                                <td class="right">2,00</td>
-                                                                <td class="center">4,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Base de conception orienté objet</td>
-                                                                <td class="left strong">14,00</td>
-                                                                <td class="left">14,00</td>
-                                                                <td class="right">5,00</td>
-                                                                <td class="center">70,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Analyse et méthode numérique</td>
-                                                                <td class="left strong">1,00</td>
-                                                                <td class="left">3,00</td>
-                                                                <td class="right">2,00</td>
-                                                                <td class="center">4,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Base de conception orienté objet</td>
-                                                                <td class="left strong">14,00</td>
-                                                                <td class="left">14,00</td>
-                                                                <td class="right">5,00</td>
-                                                                <td class="center">70,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Analyse et méthode numérique</td>
-                                                                <td class="left strong">1,00</td>
-                                                                <td class="left">3,00</td>
-                                                                <td class="right">2,00</td>
-                                                                <td class="center">4,50</td>
-                                                            </tr>
-                                                            <tr>
-                                                                <td class="center">Base de conception orienté objet</td>
-                                                                <td class="left strong">14,00</td>
-                                                                <td class="left">14,00</td>
-                                                                <td class="right">5,00</td>
-                                                                <td class="center">70,50</td>
-                                                            </tr>
-                                                        </tbody>
-                                                    </table>
-                                                </div>
-                                                <div class="row">
-                                                    <div class="col-lg-5 col-sm-5">
-                                                        <table class="table table-clear QA_table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="left">
-                                                                        <h6><strong>TOTAL DES COEFFICIENTS :</strong></h6>
-                                                                    </td>
-                                                                    <td class="right">46,00</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="left">
-                                                                        <h6><strong>MOYENNE SEMESTRIELLE :</strong></h6>
-                                                                    </td>
-                                                                    <td class="right">11,11</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="left">
-                                                                        <h6><strong>MOYENNE ANNUELLE :</strong></h6>
-                                                                    </td>
-                                                                    <td class="right">10,71</td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                    <div class="col-lg-4 col-sm-5 ms-auto QA_section">
-                                                        <table class="table table-clear QA_table">
-                                                            <tbody>
-                                                                <tr>
-                                                                    <td class="left">
-                                                                        <h6><strong>TOTAL GENERAL :</strong></h6>
-                                                                    </td>
-                                                                    <td class="right">511,12</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="left">
-                                                                        <h6><strong>CLASSEMENT :</strong></h6>
-                                                                    </td>
-                                                                    <td class="right">4/48</td>
-                                                                </tr>
-                                                                <tr>
-                                                                    <td class="left">
-                                                                        <h6><strong>DECISION :</strong></h6>
-                                                                    </td>
-                                                                    <td >
-                                                                        <h4 class="text-danger"><strong>ADMIS</strong></h4>
-                                                                    </td>
-                                                                </tr>
-                                                            </tbody>
-                                                        </table>
-                                                    </div>
-                                                </div>
-                                                <div class="row">
-                                                    <figure class="col-lg-4 mt-5 ml-5 col-md-6 mb_30" itemprop="associatedMedia" itemscope>
-                                                        <img class="img-fluid" src="../img/qr-code.png" height="150" width="150" itemprop="thumbnail" alt="QR CODE">
-                                                    </figure>
-                                                    <div class="col-lg-4 col-sm-5 ms-auto QA_section">
-                                                        <h6 class="mb-3 mt-5">
-                                                            <strong>
-                                                                Le directeur du CFI-CIRAS <br>
-                                                                ________________________
-                                                            </strong>
-                                                        </h6>
-                                                    </div>
-                                                </div>
-                                                </div>
+                                                        {% endfor %}
+                                                    </tbody>
+                                                </table>
                                             </div>
                                         </div>
                                     </div>
@@ -642,21 +480,21 @@
                             <div class="tab-pane fade" id="parcours" role="tabpanel" aria-labelledby="parcours-tab">
                                 <div class="builder_select">
                                     <div class="row">
-                                        {% for career in students_career %}
+                                        {% for result in results %}
                                             <div class="col-md-3">
                                                 <div class="card mb-3 widget-chart">
                                                     <div class="icon-wrapper rounded-circle">
                                                         <div class="icon-wrapper-bg bg-primary"></div>
                                                         <i class="ti-home text-primary"></i>
                                                     </div>
-                                                    <div><h4 style="color: white;"> {{career.career.title}} </h4></div>
+                                                    <div><h4 style="color: white;"> {{result.parcours}} </h4></div>
                                                     <div class="widget-subheading">
                                                         <ol>
-                                                            <li>Parcours : <br> {{career.career.title}}</li><hr>
-                                                            <li>Semestre : <br> {{career.semester.title}}</li><hr>
-                                                            <li>Niveau : <br> {{career.semester.level.label}}</li><hr>
-                                                            <li>Moyennes : <br> -</li><hr>
-                                                            <li>Année académique : <br>{{career.academic_year.label}}</li>
+                                                            <li>Parcours : <br> {{result.parcours}}</li><hr>
+                                                            <li>Semestre : <br> {{result.semestre}}</li><hr>
+                                                            <li>Niveau : <br> {{result.niveau}}</li><hr>
+                                                            <li>Moyennes : <br> {{result.average}} </li><hr>
+                                                            <li>Année académique : <br> {{result.year}} </li>
                                                         </ol>
                                                     </div>
                                                 </div>

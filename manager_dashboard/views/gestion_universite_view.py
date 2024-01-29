@@ -2,6 +2,7 @@ import datetime
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from manager_dashboard.views.gestion_evaluation_view import calculate_results
 from module_assessments.models import Assessment
 from module_invoice_and_accounting.models import Invoice, Regulations
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm, TeacherDocumentForm
@@ -678,6 +679,13 @@ class StudentDetailView(View):
         student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year)
         schedules = Schedule.objects.filter(career=student_career.career)
         regulations = Regulations.objects.filter(student=student).order_by('date_payment')
+        results = []
+        
+        for s in students_career:
+            R = calculate_results(semester_id=s.semester.id, career_id=s.career.id)
+            for r in R:
+                if r['nui'] == student_career.student.registration_number:
+                    results.append(r)
 
         form = StudentDocumentForm()
         context = {
@@ -691,7 +699,8 @@ class StudentDetailView(View):
             'partiel_evaluations': partiel_evaluations,
             'schedules':schedules,
             'form':form,
-            'regulations':regulations
+            'regulations':regulations,
+            'results':results
         }
         return render(request, template_name=self.template, context=context)
     
