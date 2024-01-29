@@ -131,6 +131,7 @@ class Regulations(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
     choices = [('Espèce', 'Espèce'), ('Chèque', 'Chèque')]
+    
     payment_method = models.CharField(max_length=20, choices=choices, blank=True)
     
     date_payment = models.DateField(auto_now=True)

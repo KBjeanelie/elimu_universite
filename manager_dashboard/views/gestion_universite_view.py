@@ -3,7 +3,7 @@ from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from module_assessments.models import Assessment
-from module_invoice_and_accounting.models import Invoice
+from module_invoice_and_accounting.models import Invoice, Regulations
 from school_management.forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm, TeacherDocumentForm
 from school_management.models import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject, TeacherDocument
 from user_account.forms import StudentForm, TeacherForm
@@ -677,6 +677,7 @@ class StudentDetailView(View):
         students_career = StudentCareer.objects.filter(student=student)
         student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year)
         schedules = Schedule.objects.filter(career=student_career.career)
+        regulations = Regulations.objects.filter(student=student).order_by('date_payment')
 
         form = StudentDocumentForm()
         context = {
@@ -689,7 +690,8 @@ class StudentDetailView(View):
             'controle_evaluations':controle_evaluations,
             'partiel_evaluations': partiel_evaluations,
             'schedules':schedules,
-            'form':form
+            'form':form,
+            'regulations':regulations
         }
         return render(request, template_name=self.template, context=context)
     
