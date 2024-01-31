@@ -5,6 +5,7 @@ from module_assessments.forms import AssessmentForm
 from module_assessments.models import Assessment
 from school_management.models import AcademicYear, Career, Semester, StudentCareer, Subject
 from django.db.models import Sum
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def calculate_results(semester_id, career_id):
     academic_year = AcademicYear.objects.get(status=True)
@@ -15,10 +16,9 @@ def calculate_results(semester_id, career_id):
 
         evaluations = Assessment.objects.filter(semester=semester, career=career, academic_year=academic_year).order_by('-note')
         student_career = StudentCareer.objects.filter(semester=semester, career=career, academic_year=academic_year)
-        
+    
         if evaluations.exists():
             results = []
-
             controle_evaluations = evaluations.filter(type_evaluation__title='Contrôle')
             partiel_evaluations = evaluations.filter(type_evaluation__title='Partiel')
 
@@ -136,7 +136,25 @@ class AssessmentView(View):
     
     def get(self, request, *args, **kwargs):
         evaluations = Assessment.objects.all().order_by('-created_at')
-        context = {'evaluations': evaluations}
+        # Nombre d'éléments par page
+        items_per_page = 10
+        
+        paginator = Paginator(evaluations, items_per_page)
+        
+        page = request.GET.get('page')
+        
+        try:
+            # Obtenez les éléments de la page demandée
+            data_page = paginator.page(page)
+        except PageNotAnInteger:
+            # Si la page n'est pas un entier, affichez la première page
+            data_page = paginator.page(1)
+        except EmptyPage:
+            # Si la page est en dehors de la plage, affichez la dernière page
+            data_page = paginator.page(paginator.num_pages)
+            
+        context = {'evaluations': data_page}
+        
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
@@ -302,7 +320,10 @@ class BullettinView(View):
         semester_id = request.POST['semester']
         career_id = request.POST['career']
         
+        
+        
         results = calculate_results(semester_id=semester_id, career_id=career_id)
+        print(results)
         if results:
             context = {
                 'semesters': self.semesters,

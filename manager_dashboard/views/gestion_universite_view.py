@@ -657,7 +657,7 @@ class StudentsView(View):
     def get(self, request, *args, **kwargs):
         try:
             academic_year = AcademicYear.objects.get(status=True)
-            students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True).order_by('-created_at')
+            students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True, is_valid=False).order_by('-created_at')
             context = {'student_careers': students}
             return render(request, template_name=self.template, context=context)
         except AcademicYear.DoesNotExist:
@@ -676,7 +676,7 @@ class StudentDetailView(View):
         controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         students_career = StudentCareer.objects.filter(student=student)
-        student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year)
+        student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year, is_valid=False)
         regulations = Regulations.objects.filter(student=student).order_by('date_payment')
         results = []
         monday_schedule = Schedule.objects.filter(career=student_career.career, day='lundi').order_by('start_hours')

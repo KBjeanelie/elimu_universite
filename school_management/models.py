@@ -138,6 +138,7 @@ class StudentCareer(models.Model):
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.SET_NULL, blank=True, null=True)
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
     is_registered =  models.BooleanField(default=False)
+    is_valid =  models.BooleanField(default=False)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

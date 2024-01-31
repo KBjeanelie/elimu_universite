@@ -40,6 +40,7 @@
                                     <h3 class="pro-title"> {{student.firstname}} {{student.lastname|upper}} </h3><br>
                                     <h6 class="text-muted font_s_13 mt-2 mb-1">Parcours : {{student_career.career.title}} </h6>
                                     <h6 class="text-muted font_s_13 mt-2 mb-1">Filière : {{student_career.career.sector.title}} </h6>
+                                    <h6 class="text-muted font_s_13 mt-2 mb-1">Semestre actuelle : {{student_career.semester.title}} </h6>
                                     <h6 class="text-muted font_s_13 mt-2 mb-1">Niveau : {{student_career.semester.level.label}} </h6>
                                     <div class="quantity mt-3">
                                         <a href='{% url "manager_dashboard:edit_student" student.id %}' class="btn bg-dark text-white px-4 d-inline-block "><i class="fa fa-edit me-2"></i>Modifier</a>

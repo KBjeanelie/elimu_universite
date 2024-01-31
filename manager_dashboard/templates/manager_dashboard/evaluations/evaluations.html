@@ -46,43 +46,63 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="QA_table mb_30">
-                                <table class="table lms_table_active ">
-                                    <thead>
-                                        <tr>
-                                            <th scope="col">Matricule</th>
-                                            <th scope="col">Nom complet</th>
-                                            <th scope="col">Matière</th>
-                                            <th scope="col">Note</th>
-                                            <th scope="col">Parcours</th>
-                                            <th scope="col">Semestre</th>
-                                            <th scope="col">Type d'évaluation</th>
-                                            <!--<th scope="col">Est public ?</th>-->
-                                        </tr>
-                                    </thead>
-                                    <tbody id="elementList">
-                                        {% for evaluation in evaluations %}
-                                            <tr data-id="{{ evaluation.id }}">
-                                                <td>
-                                                    <h6> {{evaluation.student.registration_number}} </h6>
-                                                </td>
-                                                <td><h6> {{evaluation.student.fullname}} </h6></td>
-                                                <td><h6> {{evaluation.subject.label}} </h6></td>
-                                                <td><h6><span class="badge rounded-pill bg-info"> {{evaluation.note}}/20 </span></h6></td>
-                                                <td><h6>{{evaluation.career.title}}</h6></td>
-                                                <td><h6>{{evaluation.semester.title}}</h6></td>
-                                                <td><h6> {{evaluation.type_evaluation.title}} </h6></td>
-                                                <!--<td><h6> <a class="status_btn">Active</a> </h6></td>-->
-                                                <td>
-                                                    <div class="action_btns d-flex">
-                                                        <a href='{% url "manager_dashboard:edit_evaluation" evaluation.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                        <a href="#" onclick='deleteEvaluation({{evaluation.id}})' class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                    </div>
-                                                </td>
+
+                            <div class="col-xl-12">
+                                <div class="QA_table mb_30">
+                                    <table class="table lms_table_active ">
+                                        <thead>
+                                            <tr>
+                                                <th scope="col">Matricule</th>
+                                                <th scope="col">Nom complet</th>
+                                                <th scope="col">Matière</th>
+                                                <th scope="col">Note</th>
+                                                <th scope="col">Parcours</th>
+                                                <th scope="col">Semestre</th>
+                                                <th scope="col">Type d'évaluation</th>
+                                                <!--<th scope="col">Est public ?</th>-->
                                             </tr>
-                                        {% endfor %}
-                                    </tbody>
-                                </table>
+                                        </thead>
+                                        <tbody id="elementList">
+                                            {% for evaluation in evaluations %}
+                                                <tr data-id="{{ evaluation.id }}">
+                                                    <td>
+                                                        <h6> {{evaluation.student.registration_number}} </h6>
+                                                    </td>
+                                                    <td><h6> {{evaluation.student.fullname}} </h6></td>
+                                                    <td><h6> {{evaluation.subject.label}} </h6></td>
+                                                    <td><h6><span class="badge rounded-pill bg-info"> {{evaluation.note}}/20 </span></h6></td>
+                                                    <td><h6>{{evaluation.career.title}}</h6></td>
+                                                    <td><h6>{{evaluation.semester.title}}</h6></td>
+                                                    <td><h6> {{evaluation.type_evaluation.title}} </h6></td>
+                                                    <!--<td><h6> <a class="status_btn">Active</a> </h6></td>-->
+                                                    <td>
+                                                        <div class="action_btns d-flex">
+                                                            <a href='{% url "manager_dashboard:edit_evaluation" evaluation.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                            <a href="#" onclick='deleteEvaluation({{evaluation.id}})' class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                        </div>
+                                                    </td>
+                                                </tr>
+                                            {% endfor %}
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="pagination">
+                                <h4 class="step-links">
+                                    {% if evaluations.has_previous %}
+                                        <a href="?page=1">&laquo; 1 | </a>
+                                        <a href="?page={{ evaluations.previous_page_number }}">Précedent</a>
+                                    {% endif %}
+                            
+                                    <span class="current">
+                                        [Page {{ evaluations.number }} sur {{ evaluations.paginator.num_pages }}.]
+                                    </span>
+                            
+                                    {% if evaluations.has_next %}
+                                        <a href="?page={{ evaluations.next_page_number }}">Suivant</a>
+                                        <a href="?page={{ evaluations.paginator.num_pages }}"> | {{ evaluations.paginator.num_pages }} &raquo;</a>
+                                    {% endif %}
+                                </h4>
                             </div>
                         </div>
                     </div>
