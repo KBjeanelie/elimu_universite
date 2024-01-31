@@ -83,6 +83,78 @@ def calculate_results(semester_id, career_id):
         return HttpResponse(f"Erreur: {e}")
 
 
+def get_all_results():
+    academic_year = AcademicYear.objects.get(status=True)
+    semesters = Semester.objects.all()
+    results = []
+    
+    for semester in semesters:
+        try:
+            evaluations = Assessment.objects.filter(academic_year=academic_year, semester=semester).order_by('semester__title')
+            student_career = StudentCareer.objects.filter(academic_year=academic_year, is_valid=False, semester=semester)
+
+            if evaluations.exists():
+                controle_evaluations = evaluations.filter(type_evaluation__title='Contrôle')
+                partiel_evaluations = evaluations.filter(type_evaluation__title='Partiel')
+
+                for student in student_career:
+                    m = []
+                    count_coefficient = 0
+
+                    for controle_evaluation in controle_evaluations.filter(student=student.student):
+                        count_coefficient += controle_evaluation.subject.coefficient
+                        partiel_evaluation = partiel_evaluations.filter(
+                            student=controle_evaluation.student,
+                            subject=controle_evaluation.subject
+                        ).first()
+
+                        if partiel_evaluation:
+                            total = ((controle_evaluation.note + partiel_evaluation.note) * controle_evaluation.subject.coefficient) / 2
+                            m.append(
+                                {
+                                    'id_student':student.id,
+                                    'nui': controle_evaluation.student.registration_number,
+                                    'lastname': controle_evaluation.student.lastname,
+                                    'firstname': controle_evaluation.student.firstname,
+                                    'controle': controle_evaluation.note,
+                                    'partiel': partiel_evaluation.note,
+                                    'semestre':controle_evaluation.semester.title,
+                                    'niveau':controle_evaluation.semester.level.label,
+                                    'parcours':controle_evaluation.career.title,
+                                    'year':controle_evaluation.academic_year.label,
+                                    'total': total,
+                                }
+                            )
+
+                    if m:
+                        # Calculer la moyenne pondérée
+                        average = round(sum(x['total'] for x in m) / count_coefficient, 2) if count_coefficient != 0 else 0
+
+                        results.append({
+                            'id_student': m[0]['id_student'],
+                            'nui': m[0]['nui'],
+                            'lastname': m[0]['lastname'],
+                            'firstname': m[0]['firstname'],
+                            'semestre': m[0]['semestre'],
+                            'niveau': m[0]['niveau'],
+                            'parcours': m[0]['parcours'],
+                            'year':m[0]['year'],
+                            'average': average,
+                        })
+
+                # Tri des résultats par rapport à 'average'
+                results = sorted(results, key=lambda x: x['average'], reverse=True)
+
+                # Ajout du rang à chaque résultat
+                for i, result in enumerate(results, start=1):
+                    result['rang'] = i
+                    
+        except (Semester.DoesNotExist, Career.DoesNotExist, Subject.DoesNotExist) as e:
+            return HttpResponse(f"Erreur: {e}")
+        
+    return results
+
+
 
 
 class EditAssessmentView(View):
@@ -323,7 +395,7 @@ class BullettinView(View):
         
         
         results = calculate_results(semester_id=semester_id, career_id=career_id)
-        print(results)
+
         if results:
             context = {
                 'semesters': self.semesters,

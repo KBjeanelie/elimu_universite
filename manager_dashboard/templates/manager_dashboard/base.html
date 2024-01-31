@@ -173,6 +173,22 @@
             <li class>
                 <a class="has-arrow" href="#" aria-expanded="false">
                     <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/21.svg' %}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Rapport & Statistique </span>
+                    </div>
+                </a>
+                <ul>
+                    <li><a href='{% url "manager_dashboard:academic_result" %}'>Résultat academique</a></li>
+                    <li><a href=''>Statistique anterieur</a></li> 
+                    <!--<li><a href="">Absences de l'équipe</a></li> -->
+                </ul>
+            </li>
+
+            <li class>
+                <a class="has-arrow" href="#" aria-expanded="false">
+                    <div class="nav_icon_small">
                         <img src="{% static 'img/menu-icon/4.svg' %}" alt>
                     </div>
                     <div class="nav_title">
