@@ -283,8 +283,12 @@
                                 <img src="{% static 'img/membre.jpg' %}" width="50" height="50" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
-                                        <p>Gestionnaire </p>
-                                        <h5>Elijah WALTER</h5>
+                                        {% if user.is_admin %}
+                                            <p>ADMINISTRATEUR</p>
+                                        {% else %}
+                                            <p>GESTIONNAIRE</p>
+                                        {% endif %}
+                                        <h5> {{user.username | capfirst}} </h5>
                                 </div>
                                 <div class="profile_info_details">
                                     <a href='{% url "manager_dashboard:user_profile" %}'>MonProfile </a>
