@@ -1,21 +1,5 @@
 from django import forms
-from .models import (
-    AcademicYear,
-    Level,
-    Semester,
-    Program,
-    DocumentType,
-    SanctionAppreciationType,
-    GroupSubject,
-    Sector,
-    Subject,
-    StudentDocument,
-    Career,
-    StudentCareer,
-    Schedule,
-    SanctionAppreciation,
-    TeacherDocument,
-)
+from backend.models.gestion_ecole import *
 
 class AcademicYearForm(forms.ModelForm):
     class Meta:

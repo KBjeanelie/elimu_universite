@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.gestion_ecole_forms import DocumentTypeForm, SanctionAppreciationTypeForm
-from school_management.models import DocumentType, SanctionAppreciationType
+from backend.models.gestion_ecole import DocumentType, SanctionAppreciationType
 from backend.forms.user_account_forms import ManagementProfilForm
 
 class TypeEvaluationView(View):

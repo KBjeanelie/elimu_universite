@@ -1,5 +1,5 @@
 from django import forms
-from ..models.user_account import Student, Teacher, ManagementProfil, User
+from backend.models.user_account import Student, Teacher, ManagementProfil, User
 
 class StudentForm(forms.ModelForm):
     class Meta:

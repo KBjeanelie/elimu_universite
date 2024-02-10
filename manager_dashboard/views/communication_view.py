@@ -1,6 +1,3 @@
-
-from datetime import date
-from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.communication_forms import EventForm, GroupForm, InformationForm

@@ -1,5 +1,5 @@
 from django import forms
-from .models import eBook
+from backend.models.contenue_pedagogique import eBook
 
 # class FolderForm(forms.ModelForm):
 #     class Meta:

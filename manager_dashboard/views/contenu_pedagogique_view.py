@@ -1,9 +1,9 @@
-from django.http import HttpResponse, JsonResponse
+from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.contenue_pedagogique_forms import eBookForm
 
-from educational_content.models import  eBook
+from backend.models.contenue_pedagogique import  eBook
 
 class AddeBook(View):
     template = "manager_dashboard/contenue_pedagogique/ajout_ebook.html"

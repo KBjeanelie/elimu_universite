@@ -39,13 +39,9 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'user_account',
     #------------ module of application
-    'educational_content',
-    'school_management',
-    'module_assessments',
-    'module_communication',
-    'module_invoice_and_accounting',
+    'backend',
+    'api',
     #------------ app for restframework and others
     'corsheaders',
     'rest_framework',
@@ -161,7 +157,6 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AUTH user model for authentication
-AUTH_USER_MODEL = "user_account.User"
 
 
 SIMPLE_JWT = {

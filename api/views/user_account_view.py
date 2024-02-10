@@ -2,8 +2,8 @@ from django.db import IntegrityError
 from rest_framework.response import Response
 from rest_framework import viewsets, status
 from rest_framework.views import APIView
+from api.serializers.user_account_serializers import ManagementProfilSerializer, ManagerUserSerializer, StudentSerializer, StudentUserSerializer, TeacherSerializer, TeacherUserSerializer
 from backend.models.user_account import ManagementProfil, Student, Teacher, User
-from user_account.serializers import ManagementProfilSerializer, ManagerUserSerializer, StudentSerializer, StudentUserSerializer, TeacherSerializer, TeacherUserSerializer, UserSerializer
 from rest_framework_simplejwt.tokens import RefreshToken
 from django.contrib.auth import authenticate, login, logout
 

@@ -2,7 +2,7 @@ from django.shortcuts import render
 from django.views import View
 from manager_dashboard.views.gestion_evaluation_view import calculate_results, get_all_results
 
-from school_management.models import AcademicYear, Career, Semester
+from backend.models.gestion_ecole import AcademicYear, Career, Semester
 from backend.models.user_account import Student
 
 

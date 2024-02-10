@@ -1,5 +1,6 @@
 from rest_framework import serializers
-from backend.models.user_account import ManagementProfil, Student, Teacher, User
+
+from backend.models.user_account import User, Student, Teacher, ManagementProfil
 
 
 class UserSerializer(serializers.ModelSerializer):

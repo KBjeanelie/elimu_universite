@@ -2,7 +2,7 @@ from django.shortcuts import redirect, render
 from django.views import View
 
 from backend.forms.gestion_ecole_forms import ScheduleForm
-from school_management.models import Career, Schedule, Semester
+from backend.models.gestion_ecole import Career, Schedule, Semester
 
 class AddScheduleView(View):
     template = 'manager_dashboard/gestion_temps/ajout_emplois_temps.html'

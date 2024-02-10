@@ -3,7 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.evaluation_forms import AssessmentForm
 from backend.models.evaluations import Assessment
-from school_management.models import AcademicYear, Career, Semester, StudentCareer, Subject
+from backend.models.gestion_ecole import AcademicYear, Career, Semester, StudentCareer, Subject
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
