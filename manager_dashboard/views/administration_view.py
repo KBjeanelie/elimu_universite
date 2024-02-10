@@ -2,10 +2,8 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from school_management.forms import DocumentTypeForm, SanctionAppreciationTypeForm
-
 from school_management.models import DocumentType, SanctionAppreciationType
 from user_account.forms import ManagementProfilForm
-
 
 class TypeEvaluationView(View):
     template_name = "manager_dashboard/administration/type_evaluations.html"
@@ -110,12 +108,18 @@ def get_last_sanction_type(request):
 
 class SettingAppView(View):
     template_name = "manager_dashboard/administration/reglage_generale.html"
-    
+
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template_name)
     
 class ProfileAppView(View):
     template_name = "manager_dashboard/administration/profil.html"
+
+
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('user_account:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         form = ManagementProfilForm()

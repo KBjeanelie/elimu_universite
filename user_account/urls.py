@@ -9,6 +9,7 @@ router.register(r'students', StudentViewSet)
 router.register(r'teachers', TeacherViewSet)
 router.register(r'management_profil', ManagementProfilViewSet)
 
+app_name='user_account'
 
 urlpatterns = [
     path('', include(router.urls)),
