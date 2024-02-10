@@ -7,12 +7,10 @@ from backend.forms.user_account_forms import LoginForm
 
 # Create your views here.
 class LogoutView(View):
-    template_name = 'backend/login.html'
-    context_object = {'form': LoginForm}
 
     def get(self, request, *args, **kwargs):
         logout(request)
-        return render(request, self.template_name, self.context_object)
+        return redirect('backend:login')
 
 
 class LoginView(View):
