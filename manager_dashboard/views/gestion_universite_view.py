@@ -39,6 +39,11 @@ def generer_nui_etudiant():
 class EditAcademicYearView(View):
     template = "manager_dashboard/gestion_universite/editer_annee_academique.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         academique_year = get_object_or_404(AcademicYear, pk=pk)
         form = AcademicYearForm(instance=academique_year)
@@ -70,6 +75,12 @@ class EditAcademicYearView(View):
     
 class AddAcademicYearView(View):
     template = "manager_dashboard/gestion_universite/ajout_annee_academique.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = AcademicYearForm()
         context = {'form':form}
@@ -86,7 +97,12 @@ class AddAcademicYearView(View):
 
 class AcademicYearView(View):
     template = "manager_dashboard/gestion_universite/annee_academiques.html"
-
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         academic_years = AcademicYear.objects.all().order_by('-label')
         context = {'academic_years': academic_years}
@@ -103,6 +119,11 @@ class AcademicYearView(View):
 #=============================== PARTIE CONCERNANT LES NIVEAUX ==========================
 class LevelView(View):
     template = "manager_dashboard/gestion_universite/niveaux.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         form = LevelForm()
@@ -133,6 +154,11 @@ class LevelView(View):
 class SemesterView(View):
     template = "manager_dashboard/gestion_universite/semestres.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = SemesterForm()
         context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
@@ -161,6 +187,11 @@ class SemesterView(View):
 #=============================== PARTIE CONCERNANT LES FILIÈRE ==========================
 class SectorView(View):
     template = "manager_dashboard/gestion_universite/filieres.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         form = SectorForm()
@@ -191,6 +222,11 @@ class SectorView(View):
 class CareerView(View):
     template = "manager_dashboard/gestion_universite/parcours.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = CareerForm()
         context = {'careers':Career.objects.all().order_by('-created_at'), 'form':form}
@@ -220,6 +256,11 @@ class CareerView(View):
 class GroupSubjectView(View):
     template = "manager_dashboard/gestion_universite/groupe_matieres.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = GroupSubjectForm()
         context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
@@ -248,6 +289,12 @@ class GroupSubjectView(View):
 #=============================== PARTIE CONCERNANT LES MATIÈRES ==========================
 class EditSubjectView(View):
     template = "manager_dashboard/gestion_universite/editer_matiere.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         subject = get_object_or_404(Subject, pk=pk)
         form = SubjectForm(instance=subject)
@@ -267,6 +314,12 @@ class EditSubjectView(View):
     
 class AddSubjectView(View):
     template = "manager_dashboard/gestion_universite/ajout_matiere.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = SubjectForm()
         context = {'form':form}
@@ -286,7 +339,12 @@ class AddSubjectView(View):
 
 class SubjectView(View):
     template = "manager_dashboard/gestion_universite/matieres.html"
-
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         subjects = Subject.objects.all().order_by('-created_at')
         context = {'subjects':subjects}
@@ -303,6 +361,11 @@ class SubjectView(View):
 #=============================== PARTIE CONCERNANT LES PROGRAMMES ==========================
 class EditProgramView(View):
     template = "manager_dashboard/gestion_universite/editer_programme.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, pk, *args, **kwargs):
         program = get_object_or_404(Program, pk=pk)
@@ -338,6 +401,12 @@ class EditProgramView(View):
 
 class AddProgramView(View):
     template = "manager_dashboard/gestion_universite/ajout_programme.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = ProgramForm()
         context = {'form':form}
@@ -355,6 +424,11 @@ class AddProgramView(View):
 class ProgramView(View):
     template = "manager_dashboard/gestion_universite/programmes.html"
 
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         programs = Program.objects.all().order_by('-created_at')
         context = {'programs':programs}
@@ -371,6 +445,11 @@ class ProgramView(View):
 #================================= PARTIE CONCERNANT LES SANCTIONS ====================
 class EditSanctionView(View):
     template = "manager_dashboard/gestion_universite/edit_sanction.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, pk, *args, **kwargs):
         sanction = get_object_or_404(SanctionAppreciation, pk=pk)
@@ -398,11 +477,17 @@ class EditSanctionView(View):
     
 class AddSanctionView(View):
     template = "manager_dashboard/gestion_universite/ajout_sanction.html"
+    
     def get(self, request, *args, **kwargs):
         form = SanctionAppreciationForm()
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def post(self, request, *args, **kwargs):
         form = SanctionAppreciationForm(request.POST)
         if form.is_valid():
@@ -414,6 +499,11 @@ class AddSanctionView(View):
 
 class SanctionAppreciationView(View):
     template = "manager_dashboard/gestion_universite/sanctions.html"
+
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
         sanctions = SanctionAppreciation.objects.all().order_by('-created_at')
@@ -431,6 +521,11 @@ class SanctionAppreciationView(View):
 class TrombinoscopeView(View):
     template = "manager_dashboard/gestion_universite/trombinoscopes.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         students = Student.objects.all()
         teachers = Teacher.objects.all()
@@ -442,6 +537,11 @@ class TrombinoscopeView(View):
 class EditTeacherView(View):
     template = "manager_dashboard/gestion_universite/editer_enseignant.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
         form = TeacherForm(instance=teacher)
@@ -478,6 +578,11 @@ class EditTeacherView(View):
     
 class AddTeacherView(View):
     template = "manager_dashboard/gestion_universite/ajout_enseignant.html"
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         form = TeacherForm()
         context = {'form':form}
@@ -495,6 +600,11 @@ class AddTeacherView(View):
 class TeacherView(View):
     template = "manager_dashboard/gestion_universite/enseignants.html"
 
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         teachers = Teacher.objects.all().order_by('-created_at')
         context = {'teachers': teachers}
@@ -510,6 +620,11 @@ class TeacherView(View):
 class TeacherDetailView(View):
     template = "manager_dashboard/gestion_universite/enseignant_detail.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
         subjects_taught_by_teacher = Subject.objects.filter(teacher_in_charge=teacher)
@@ -547,6 +662,11 @@ class TeacherDetailView(View):
 class PreRegistrationView(View):
     template = "manager_dashboard/gestion_universite/pre-inscription.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         try:
             academic_year = AcademicYear.objects.get(status=True)
@@ -561,6 +681,11 @@ class PreRegistrationView(View):
 class PreRegistrationDetailView(View):
     template = "manager_dashboard/gestion_universite/pre-inscription_detail.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, pk, *args, **kwargs):
         academic_year = get_object_or_404(AcademicYear, status=True)
         student_career = get_object_or_404(StudentCareer, pk=pk, academic_year=academic_year)
@@ -587,6 +712,11 @@ class PreRegistrationDetailView(View):
 class EditStudentView(View):
     template = "manager_dashboard/gestion_universite/editer_etudiant.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, pk, *args, **kwargs):
         student = get_object_or_404(Student, pk=pk)
         context = {'form': StudentForm(instance=student), 'student':student}
@@ -618,6 +748,11 @@ class EditStudentView(View):
 class AddStudentView(View):
     template = "manager_dashboard/gestion_universite/ajout_etudiant.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         context = {'form': StudentForm()}
         return render(request, template_name=self.template, context=context)
@@ -654,6 +789,11 @@ class StudentsView(View):
 
     template = "manager_dashboard/gestion_universite/etudiants.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, *args, **kwargs):
         try:
             academic_year = AcademicYear.objects.get(status=True)
@@ -667,6 +807,11 @@ class StudentsView(View):
 class StudentDetailView(View):
     template = "manager_dashboard/gestion_universite/etudiant_detail.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+
     def get(self, request, pk, *args, **kwargs):
         academic_year = AcademicYear.objects.get(status=True)
         student = get_object_or_404(Student, pk=pk)

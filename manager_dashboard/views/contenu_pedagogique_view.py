@@ -10,6 +10,11 @@ class AddeBook(View):
     form = eBookForm()
     context_object = {'form': form}
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context_object)
     
@@ -23,6 +28,12 @@ class AddeBook(View):
 
 class EditEbook(View):
     template = "manager_dashboard/contenue_pedagogique/editer_ebook.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         ebook = get_object_or_404(eBook, pk=pk)
         form = eBookForm(instance=ebook)
@@ -52,6 +63,11 @@ class EditEbook(View):
 
 class eBookView(View):
     template = 'manager_dashboard/contenue_pedagogique/ebooks.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         ebooks = eBook.objects.all().order_by('-created_at')

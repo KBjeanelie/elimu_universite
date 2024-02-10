@@ -17,9 +17,10 @@ urlpatterns = [
     # re_path('api/', schema_view),
     path('', include('manager_dashboard.urls')),
     #path('accountnant-dashboard/', include('accountant_dashboard.urls')),
+    path('elimu-universite/', include('backend.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),
-    # path('api/user_account/', include('user_account.urls')),
+    
     path('api/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
     path('api/token/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
     path('api/login/', LoginAPIView.as_view(), name='api-login'),

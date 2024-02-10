@@ -8,6 +8,12 @@ from backend.models.user_account import User
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ENSEIGNANT
 class EditTeacherAccountView(View):
     template = "manager_dashboard/comptes/editer_compte_enseignant.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         user = get_object_or_404(User, pk=pk)
         print(user.password)
@@ -33,6 +39,11 @@ class AddTeacherAccount(View):
     form = UserTeacherForm()
     context_object = {'form': form}
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context_object)
     
@@ -49,6 +60,11 @@ class AddTeacherAccount(View):
 class ListAllTeacherAccount(View):
     template = "manager_dashboard/comptes/compte_enseignant.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         teachers_account = User.objects.filter(is_teacher=True)
         context_object = {'teachers_account': teachers_account}
@@ -63,6 +79,12 @@ class ListAllTeacherAccount(View):
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ETUDIANT
 class EditStudentAccountView(View):
     template = "manager_dashboard/comptes/editer_compte_etudiant.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         user = get_object_or_404(User, pk=pk)
         print(user.password)
@@ -88,6 +110,11 @@ class AddStudentAccount(View):
     form = UserStudentForm()
     context_object = {'form': form}
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context_object)
     
@@ -103,6 +130,11 @@ class AddStudentAccount(View):
 
 class ListAllStudentAccount(View):
     template = "manager_dashboard/comptes/compte_etudiant.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         students_account = User.objects.filter(is_student=True)

@@ -7,6 +7,11 @@ from backend.models.communication import Event, Group, Information
 class EditInformationView(View):
     template = "manager_dashboard/communication/editer_information.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         info = get_object_or_404(Information, pk=pk)
         form = InformationForm(instance=info)
@@ -39,12 +44,24 @@ class AddInformationView(View):
     template = "manager_dashboard/communication/ajouter_information.html"
     form = InformationForm()
     context = {'form':form}
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context)
 
 
 class InformationView(View):
     template = "manager_dashboard/communication/informations.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         context = {'informations': Information.objects.all().order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
@@ -69,6 +86,11 @@ class InformationView(View):
 class InformationDetail(View):
     template = "manager_dashboard/communication/information_detail.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         info = get_object_or_404(Information, pk=pk)
         object = {'info':info}
@@ -80,12 +102,24 @@ class AddEventView(View):
     template = "manager_dashboard/communication/ajouter_evenement.html"
     form = EventForm()
     context = {'form':form}
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context)
 
 
 class EditEventView(View):
     template = "manager_dashboard/communication/editer_evenement.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         event = get_object_or_404(Event, pk=pk)
         form = EventForm(instance=event)
@@ -122,6 +156,11 @@ class EditEventView(View):
 class EventView(View):
     template = "manager_dashboard/communication/evenements.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         context = {'events': Event.objects.all().order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
@@ -146,6 +185,11 @@ class EventView(View):
 class EventDetail(View):
     template = "manager_dashboard/communication/evenement_detail.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         event = get_object_or_404(Event, pk=pk)
         object = {'event':event}
@@ -155,6 +199,11 @@ class EventDetail(View):
 class GroupDiscussionView(View):
     template = "manager_dashboard/communication/group-discussions.html"
     form = GroupForm()
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         groups = Group.objects.all().order_by('-created_at')

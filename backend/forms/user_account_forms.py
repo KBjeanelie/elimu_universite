@@ -1,6 +1,34 @@
 from django import forms
 from backend.models.user_account import Student, Teacher, ManagementProfil, User
 
+class LoginForm(forms.ModelForm):
+    class Meta:
+        model = User
+        fields = ('username', 'password')
+
+        widgets = {
+            'username': forms.EmailInput(
+                attrs={
+                    "type": "text",
+                    "class": "form-control",
+                    "id": "InputEmail",
+                    "placeholder": "Nom d'utilisateur",
+                    "required": True
+                }
+            ),
+            'password': forms.PasswordInput(
+                attrs={
+                    "type": "password",
+                    "class": "form-control",
+                    "id": "InputPassword",
+                    "placeholder": "Mot de passe",
+                    "required": True
+                }
+            )
+        }
+
+
+
 class StudentForm(forms.ModelForm):
     class Meta:
         model = Student

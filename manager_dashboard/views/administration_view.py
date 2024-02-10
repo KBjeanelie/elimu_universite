@@ -8,6 +8,11 @@ from backend.forms.user_account_forms import ManagementProfilForm
 class TypeEvaluationView(View):
     template_name = "manager_dashboard/administration/type_evaluations.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template_name)
 
@@ -16,6 +21,11 @@ class TypeDocumentView(View):
     template_name = "manager_dashboard/administration/type_documents.html"
     typeDocuments = DocumentType.objects.all().order_by('-created_at')
     context_object = {'type_documents': typeDocuments}
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         type_documents = DocumentType.objects.all().order_by('-created_at')
@@ -42,6 +52,12 @@ class TypeDocumentView(View):
             return redirect('manager_dashboard:type_documents') 
 
 class TypeDocumentDeleteView(View):
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(DocumentType, pk=pk)
         instance.delete()
@@ -62,6 +78,11 @@ class TypeSanctionView(View):
     template_name = "manager_dashboard/administration/type_sanctions.html"
     typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
     context_object = {'type_sanctions': typeSanctions}
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
@@ -89,6 +110,12 @@ class TypeSanctionView(View):
 
 
 class TypeSanctionDeleteView(View):
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(SanctionAppreciationType, pk=pk)
         instance.delete()
@@ -108,18 +135,23 @@ def get_last_sanction_type(request):
 
 class SettingAppView(View):
     template_name = "manager_dashboard/administration/reglage_generale.html"
-
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template_name)
     
 class ProfileAppView(View):
     template_name = "manager_dashboard/administration/profil.html"
 
-
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
-            return redirect('user_account:login')
+            return redirect('backend:login')
         return super().dispatch(request, *args, **kwargs)
+    
     
     def get(self, request, *args, **kwargs):
         form = ManagementProfilForm()

@@ -160,6 +160,11 @@ def get_all_results():
 class EditAssessmentView(View):
     template = 'manager_dashboard/evaluations/editer_evaluation.html'
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         evaluation = get_object_or_404(Assessment, pk=pk)
         form = AssessmentForm(instance=evaluation)
@@ -184,6 +189,11 @@ class EditAssessmentView(View):
 class AddAssessmentView(View):
     template = 'manager_dashboard/evaluations/ajout_evaluation.html'
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = AssessmentForm()
         context = {'form': form}
@@ -205,6 +215,11 @@ class AddAssessmentView(View):
     
 class AssessmentView(View):
     template = 'manager_dashboard/evaluations/evaluations.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         evaluations = Assessment.objects.all().order_by('-created_at')
@@ -239,6 +254,11 @@ class AssessmentView(View):
 
 class NoteTableView(View):
     template = 'manager_dashboard/evaluations/tableau_notes.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     semesters = Semester.objects.all().order_by('-created_at')
     careers = Career.objects.all().order_by('-created_at')
@@ -302,6 +322,11 @@ class AverageTableView(View):
     semesters = Semester.objects.all()
     careers = Career.objects.all()
     subjects = Subject.objects.all()
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         context = {
@@ -381,6 +406,11 @@ class BullettinView(View):
     semesters = Semester.objects.all()
     careers = Career.objects.all()
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         context = {
             'semesters':self.semesters,
@@ -413,6 +443,11 @@ class BullettinView(View):
 
 class BulletinDetailView(View):
     template = 'manager_dashboard/evaluations/bulletin_detail.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, pk, *args, **kwargs):
         academic_year = AcademicYear.objects.get(status=True)

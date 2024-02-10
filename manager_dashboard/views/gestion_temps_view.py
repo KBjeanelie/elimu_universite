@@ -7,6 +7,11 @@ from backend.models.gestion_ecole import Career, Schedule, Semester
 class AddScheduleView(View):
     template = 'manager_dashboard/gestion_temps/ajout_emplois_temps.html'
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = ScheduleForm()
         context = {'form':form}
@@ -28,6 +33,11 @@ class ScheduleView(View):
     template = 'manager_dashboard/gestion_temps/emplois_temps.html'
     semesters = Semester.objects.all()
     careers = Career.objects.all()
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         context = {
