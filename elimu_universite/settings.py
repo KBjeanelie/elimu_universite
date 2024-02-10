@@ -41,15 +41,12 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #------------ module of application
     'backend',
-    'api',
     #------------ app for restframework and others
     'corsheaders',
     'rest_framework',
     'rest_framework_simplejwt',
     'rest_framework_swagger',
     #--------------- app for manager interface
-    'manager_dashboard',
-    'accountant_dashboard',
     
     'ckeditor'
 ]
@@ -157,7 +154,7 @@ MEDIA_ROOT = BASE_DIR / 'media/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 # AUTH user model for authentication
-
+AUTH_USER_MODEL = 'backend.User'
 
 SIMPLE_JWT = {
     "ACCESS_TOKEN_LIFETIME": timedelta(hours=24),
