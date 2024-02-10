@@ -41,6 +41,9 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     #------------ module of application
     'backend',
+    'api',
+    'manager_dashboard',
+    'accountant_dashboard',
     #------------ app for restframework and others
     'corsheaders',
     'rest_framework',

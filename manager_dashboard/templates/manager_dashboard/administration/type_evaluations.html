@@ -1,0 +1,86 @@
+{% extends '../base.html' %}
+{% load static %}
+
+
+{% block content %}
+    
+<div class="main_content_iner overly_inner ">
+    <div class="container-fluid p-0 ">
+        <!-- ================= Entête ====================-->
+        <div class="row">
+            <div class="col-12">
+                <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
+                    <div class="page_title_left d-flex align-items-center">
+                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Tableau de bord</h3>
+                        <ol class="breadcrumb page_bradcam mb-0">
+                            <li class="breadcrumb-item"><a href="../index.html">Accueil</a></li>
+                            <li class="breadcrumb-item"><a>Type d'Évaluations</a></li>
+                        </ol>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-lg-6">
+                <div class="white_card card_height_100 mb_30 pt-4">
+                    <div class="white_card_body">
+                        <div class="QA_section">
+                            <div class="white_box_tittle list_header">
+                                <h4>Type d'Évaluations </h4>
+                            </div>
+                            <div class="QA_table mb_30">
+                                <table class="table lms_table_active ">
+                                    <thead>
+                                        <tr>
+                                            <th scope="col">Titre</th>
+                                            <th scope="col">Actif</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        <tr>
+                                            <td>Devoir Pratique</td>
+                                            <td>Actif</td>
+                                            <td>
+                                                <div class="action_btns d-flex">
+                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                </div>
+                                            </td>
+                                        </tr>
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="col-6">
+                <div class="white_card card_height_100 mb_30">
+                    <div class="white_card_header">
+                        <div class="box_header m-0">
+                            <div class="main-title">
+                                <h3 class="m-0">Ajouter un Type d'évaluation</h3>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="white_card_body">
+                        <form>
+                            <div class="mb-3">
+                                <label class="form-label" for="libelle">Titre</label>
+                                <input type="text" class="form-control" id="libelle" placeholder="Devoir pratique">
+                            </div>
+                            <div class="form-check">
+                                <input class="form-check-input" type="checkbox" id="gridCheck">
+                                <label class="form-label form-check-label" for="gridCheck">Actif ?</label>
+                            </div>
+                            <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock content %}
+    
