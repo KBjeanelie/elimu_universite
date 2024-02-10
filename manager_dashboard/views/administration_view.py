@@ -4,6 +4,7 @@ from django.views import View
 from school_management.forms import DocumentTypeForm, SanctionAppreciationTypeForm
 
 from school_management.models import DocumentType, SanctionAppreciationType
+from user_account.forms import ManagementProfilForm
 
 
 class TypeEvaluationView(View):
@@ -112,3 +113,11 @@ class SettingAppView(View):
     
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template_name)
+    
+class ProfileAppView(View):
+    template_name = "manager_dashboard/administration/profil.html"
+    
+    def get(self, request, *args, **kwargs):
+        form = ManagementProfilForm()
+        context = {'form':form}
+        return render(request, template_name=self.template_name, context=context)

@@ -200,7 +200,71 @@ class TeacherForm(forms.ModelForm):
 class ManagementProfilForm(forms.ModelForm):
     class Meta:
         model = ManagementProfil
-        fields = ['lastname', 'firstname', 'address', 'tel', 'city', 'sex', 'email', 'bio']
+        fields = ['lastname', 'firstname', 'address', 'tel', 'city', 'sex', 'email', 'bio', 'picture']
+        widgets = {
+            'lastname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nom',
+                    'required': True
+                }
+            ),
+            'firstname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Prenom',
+                    'required': True
+                }
+            ),
+            'address': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'adresse',
+                }
+            ),
+            'tel': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Numéro de téléphone',
+                    'required': True
+                }
+            ),
+            'email': forms.EmailInput(
+                attrs={
+                    'type':'email',
+                    'class': 'form-control',
+                    'placeholder': 'email',
+                    'required': True
+                }
+            ),
+            'city': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'sex': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'picture': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                }
+            ),
+            'bio':forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows':5,
+                }
+            )
+        }
+
 
 class UserForm(forms.ModelForm):
     class Meta:
