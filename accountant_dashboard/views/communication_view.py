@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views import View
 
-from module_communication.models import Event, Information
+from backend.models.communication import Event, Information
 
 
 class InformationsView(View):

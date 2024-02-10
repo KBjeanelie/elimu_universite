@@ -1,8 +1,8 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
-from module_invoice_and_accounting.forms import ItemForm
-from module_invoice_and_accounting.models import Item
+from backend.forms.facturation_forms import ItemForm
+from backend.models.facturation import Item
 
 #=============================== PARTIE CONCERNANT LES ARTICLES ==========================
 class EditItemView(View):

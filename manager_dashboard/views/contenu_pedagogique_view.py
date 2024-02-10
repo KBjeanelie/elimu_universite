@@ -1,7 +1,7 @@
 from django.http import HttpResponse, JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from educational_content.forms import eBookForm
+from backend.forms.contenue_pedagogique_forms import eBookForm
 
 from educational_content.models import  eBook
 

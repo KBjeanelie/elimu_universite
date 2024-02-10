@@ -2,8 +2,8 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from user_account.forms import UserStudentForm, UserTeacherForm
-from user_account.models import User
+from backend.forms.user_account_forms import UserStudentForm, UserTeacherForm
+from backend.models.user_account import User
 
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ENSEIGNANT
 class EditTeacherAccountView(View):

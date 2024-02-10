@@ -1,8 +1,8 @@
 from django.http import HttpResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from module_assessments.forms import AssessmentForm
-from module_assessments.models import Assessment
+from backend.forms.evaluation_forms import AssessmentForm
+from backend.models.evaluations import Assessment
 from school_management.models import AcademicYear, Career, Semester, StudentCareer, Subject
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger

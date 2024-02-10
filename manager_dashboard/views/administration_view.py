@@ -1,9 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from school_management.forms import DocumentTypeForm, SanctionAppreciationTypeForm
+from backend.forms.gestion_ecole_forms import DocumentTypeForm, SanctionAppreciationTypeForm
 from school_management.models import DocumentType, SanctionAppreciationType
-from user_account.forms import ManagementProfilForm
+from backend.forms.user_account_forms import ManagementProfilForm
 
 class TypeEvaluationView(View):
     template_name = "manager_dashboard/administration/type_evaluations.html"

@@ -3,9 +3,9 @@ from datetime import date
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from module_communication.forms import EventForm, GroupForm, InformationForm
+from backend.forms.communication_forms import EventForm, GroupForm, InformationForm
 
-from module_communication.models import Event, Group, Information
+from backend.models.communication import Event, Group, Information
 
 class EditInformationView(View):
     template = "manager_dashboard/communication/editer_information.html"

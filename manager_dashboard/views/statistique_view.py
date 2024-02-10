@@ -3,7 +3,7 @@ from django.views import View
 from manager_dashboard.views.gestion_evaluation_view import calculate_results, get_all_results
 
 from school_management.models import AcademicYear, Career, Semester
-from user_account.models import Student
+from backend.models.user_account import Student
 
 
 class ResultatAcademique(View):
