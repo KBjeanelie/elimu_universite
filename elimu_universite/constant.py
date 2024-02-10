@@ -21,3 +21,16 @@ hours_of_the_day = [
     ('16h', '16h'),
     ('17h', '17h'),
 ]
+
+currencies = [
+    ('F CFA', 'F Cfa')
+]
+
+systemes = [
+    ('Congolais', 'Congolais')
+]
+
+statues = [
+    ('Activé', 'Activé'),
+    ('Desactivé', 'Desactivé')
+]

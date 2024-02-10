@@ -2,7 +2,20 @@ import os
 from django.db import models
 from elimu_universite import settings
 from backend.models.user_account import Student, Teacher
-from elimu_universite.constant import days_of_the_weeks, hours_of_the_day
+from elimu_universite.constant import days_of_the_weeks, hours_of_the_day, currencies, systemes, statues
+
+class Etablishment(models.Model):
+    name = models.CharField(max_length=120)
+    tel = models.CharField(max_length=20)
+    address = models.CharField(max_length=100)
+    social_address = models.CharField(max_length=100, blank=True, null=True)
+    email = models.EmailField(max_length=200, blank=True, null=True)
+    bulletin_foot = models.CharField(max_length=50, blank=True, null=True)
+    currency = models.CharField(max_length=50, choices=currencies)
+    système = models.CharField(max_length=50, choices=systemes)
+    status_fees = models.CharField(max_length=50, choices=statues)
+    subscription_fees = models.FloatField(default=1000)
+    re_registration_fees = models.FloatField(default=800)
 
 # Class representing Academic Year
 class AcademicYear(models.Model):
