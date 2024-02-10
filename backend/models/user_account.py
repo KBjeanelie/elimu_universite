@@ -146,7 +146,7 @@ class ManagementProfil(models.Model):
     
     sex = models.CharField(max_length=10, choices=sexes, blank=True)
     
-    email = models.CharField(max_length=120, unique=True, blank=True)
+    email = models.CharField(max_length=120, unique=True, blank=True, null=True)
     
     picture = models.ImageField(upload_to="managements_images", blank=True, null=True)
     

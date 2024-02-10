@@ -235,7 +235,6 @@ class ManagementProfilForm(forms.ModelForm):
                     'type':'text',
                     'class': 'form-control',
                     'placeholder': 'Nom',
-                    'required': True
                 }
             ),
             'firstname': forms.TextInput(
@@ -243,7 +242,6 @@ class ManagementProfilForm(forms.ModelForm):
                     'type':'text',
                     'class': 'form-control',
                     'placeholder': 'Prenom',
-                    'required': True
                 }
             ),
             'address': forms.TextInput(
@@ -258,7 +256,6 @@ class ManagementProfilForm(forms.ModelForm):
                     'type':'text',
                     'class': 'form-control',
                     'placeholder': 'Numéro de téléphone',
-                    'required': True
                 }
             ),
             'email': forms.EmailInput(
@@ -266,7 +263,6 @@ class ManagementProfilForm(forms.ModelForm):
                     'type':'email',
                     'class': 'form-control',
                     'placeholder': 'email',
-                    'required': True
                 }
             ),
             'city': forms.Select(

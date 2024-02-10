@@ -3,7 +3,94 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.user_account_forms import UserStudentForm, UserTeacherForm
-from backend.models.user_account import User
+from backend.models.user_account import ManagementProfil, User
+
+
+#========================== PARTIE CONCERNANT LA GESTION DE COMPTE ENSEIGNANT
+class EditDirectionAccountView(View):
+    template = "manager_dashboard/comptes/editer_compte_enseignant.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, pk, *args, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        print(user.password)
+        form = UserTeacherForm(instance=user)
+        context = {'form':form, 'account':user}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        user = get_object_or_404(User, pk=pk)
+        form = UserTeacherForm(request.POST, instance=user)
+        if form.is_valid():
+            form.save()
+            user.set_password(form.cleaned_data['password'])
+            user.is_teacher = True
+            user.save()
+            return redirect('manager_dashboard:teachers_account')  # Redirigez vers la page appropriée après la mise à jour réussie
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'user': user}
+        return render(request, template_name=self.template, context=context)
+    
+class AddDirectionAccount(View):
+    template = "manager_dashboard/comptes/ajout_compte_direction.html"
+    form = UserTeacherForm()
+    context_object = {'form': form}
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, template_name=self.template, context=self.context_object)
+    
+    def post(self, request, *args, **kwargs):
+        if request.POST['type'] == 'gestionnaire':
+            manager = ManagementProfil()
+            manager.save()
+            user = User.objects.create_user(
+                username=request.POST['username'],
+                password=request.POST['password']
+            )
+            user.is_manager = True
+            user.management_profil = manager
+        else:
+            manager = ManagementProfil()
+            manager.save()
+            user = User.objects.create_user(
+                username=request.POST['username'],
+                password=request.POST['password']
+            )
+            user.is_accountant = True
+            user.management_profil = manager
+            
+        user.save()
+        return redirect('manager_dashboard:directors')
+
+class ListAllDirectionAccount(View):
+    template = "manager_dashboard/comptes/compte_direction.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        managers_and_accountants = User.objects.filter(is_manager=True) | User.objects.filter(is_accountant=True)
+        print(managers_and_accountants)
+        context_object = {'managers_and_accountants': managers_and_accountants}
+        return render(request, template_name=self.template, context=context_object)
+
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(User, pk=pk)
+        instance.delete()
+        return JsonResponse({'message': 'Élément supprimé avec succès'})
+#===END
+
 
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ENSEIGNANT
 class EditTeacherAccountView(View):

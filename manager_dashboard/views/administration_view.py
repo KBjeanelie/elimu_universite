@@ -157,3 +157,30 @@ class ProfileAppView(View):
         form = ManagementProfilForm()
         context = {'form':form}
         return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = ManagementProfilForm()
+        context = {'form':form}
+        render(request, template_name=self.template_name, context=context)
+    
+class EditProfileView(View):
+    template_name = "manager_dashboard/administration/edit_profile.html"
+
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
+    
+    def get(self, request, *args, **kwargs):
+        management_profil_instance = request.user.management_profil
+        form = ManagementProfilForm(instance=management_profil_instance)
+        context = {'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        management_profil_instance = request.user.management_profil
+        form = ManagementProfilForm(request.POST, instance=management_profil_instance)
+        if form.is_valid():
+            form.save()
+        return redirect('manager_dashboard:user_profile')

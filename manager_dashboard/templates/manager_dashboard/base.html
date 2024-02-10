@@ -198,8 +198,8 @@
                     </div>
                 </a>
                 <ul>
-                    {% comment %} <li><a href="comptes/compte_direction.html">Équipe de direction</a></li> {% endcomment %}
-                    <li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>
+                    <li><a href='{% url "manager_dashboard:directors" %}'>Équipe de direction</a></li>
+                    <!--<li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>-->
                     <li><a href="{% url 'manager_dashboard:students_account' %}"">Comptes étudiants</a></li>
                 </ul>
             </li>
@@ -291,7 +291,7 @@
                                         <h5> {{user.username | capfirst}} </h5>
                                 </div>
                                 <div class="profile_info_details">
-                                    <a href='{% url "manager_dashboard:user_profile" %}'>MonProfile </a>
+                                    <a href='{% url "manager_dashboard:user_profile" %}'>Mon Profile </a>
                                     <a href='{% url "backend:logout" %}'>Se deconnecter</a>
                                     </div>
                                 </div>

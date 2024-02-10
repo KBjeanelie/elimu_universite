@@ -2,9 +2,9 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from elimu_universite import settings
-from manager_dashboard.views.administration_view import ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
+from manager_dashboard.views.administration_view import EditProfileView, ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EditInformationView, EventDetail, EventView, GroupDiscussionView, InformationDetail, InformationView
-from manager_dashboard.views.comptes_view import AddStudentAccount, AddTeacherAccount, EditStudentAccountView, EditTeacherAccountView, ListAllStudentAccount, ListAllTeacherAccount
+from manager_dashboard.views.comptes_view import AddDirectionAccount, AddStudentAccount, AddTeacherAccount, EditStudentAccountView, EditTeacherAccountView, ListAllDirectionAccount, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
 from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BulletinDetailView, BullettinView, EditAssessmentView, NoteTableView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
@@ -116,10 +116,14 @@ urlpatterns = [
     #===END
     
     #=================== THIS ROUTE IS FOR Compte MODULE ===============================#
+    path(route='comptes/compte_directions/', view=ListAllDirectionAccount.as_view(), name='directors'),
+    path(route='comptes/compte_directions/ajouter/', view=AddDirectionAccount.as_view(), name='director_add'),
+    
     path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
     path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
     path(route='comptes/compte_enseignants/<int:pk>/delete/', view=AddTeacherAccount.as_view(), name='delete_teacher_account'),
     path(route='comptes/compte_enseignants/<int:pk>/edit/', view=EditTeacherAccountView.as_view(), name='edit_teacher_account'),
+    
     path(route='comptes/compte_etudiants/', view=ListAllStudentAccount.as_view(), name='students_account'),
     path(route='comptes/compte_etudiants/ajouter/', view=AddStudentAccount.as_view(), name='add_student_account'),
     path(route='comptes/compte_etudiants/<int:pk>/delete/', view=ListAllStudentAccount.as_view(), name='delete_student_account'),
@@ -136,6 +140,7 @@ urlpatterns = [
     path(route='administration/type_sanctions/last/', view=get_last_sanction_type),
     path(route='administration/reglage-general/', view=SettingAppView.as_view(), name='reglage_general'),
     path(route='administration/user-profile/', view=ProfileAppView.as_view(), name='user_profile'),
+    path(route='administration/user-profile/edit/', view=EditProfileView.as_view(), name='edit_profil'),
     #===END
     
     #===================================== THIS ROUTE IS FOR STATISTIQUE MODULE ======================

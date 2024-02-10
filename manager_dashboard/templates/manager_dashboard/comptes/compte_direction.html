@@ -16,7 +16,7 @@
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href="" class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter un compte de direction</a>
+                            <a href='{% url "manager_dashboard:director_add" %}' class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter un compte de direction</a>
                         </div>
                     </div>
                 </div>
@@ -55,17 +55,23 @@
                                             <th scope="col">Mot de passe</th>
                                             <th scope="col">Rôle</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Dernière connexion</th>
                                         </tr>
                                     </thead>
                                     <tbody>
+                                        {% for account in managers_and_accountants %}
                                         <tr>
-                                            <td>kbjeanelie</td>
-                                            <td>elijahwalter@gmail.com</td>
-                                            <td>************</td>
-                                            <td><span class="badge rounded-pill bg-warning">Comptable</span></td>
+                                            <td> <h6> {{account.username}} </h6> </td>
+                                            <td><h6> {{account.management_profil.email}} </h6></td>
+                                            <td><h6>************</h6></td>
+                                            <td>
+                                                {% if account.is_manager %}
+                                                    <span class="badge rounded-pill bg-info">GESTIONNAIRE</span>
+                                                {% else %}
+                                                    <span class="badge rounded-pill bg-warning">COMPTABLE</span>
+                                                {% endif %}
+                                                
+                                            </td>
                                             <td><a class="status_btn">Active</a></td>
-                                            <td>le 25 decembre 2023 à 20h50:30</td>
                                             <td>
                                                 <div class="action_btns d-flex">
                                                     <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
@@ -73,6 +79,7 @@
                                                 </div>
                                             </td>
                                         </tr>
+                                        {% endfor %}
                                     </tbody>
                                 </table>
                             </div>
