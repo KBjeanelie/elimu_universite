@@ -1,10 +1,11 @@
 from django.db import models
-from backend.models.gestion_ecole import AcademicYear, Career, Semester, Subject
+from backend.models.gestion_ecole import AcademicYear, Career, Etablishment, Semester, Subject
 from backend.models.user_account import Student
 
 
 class TypeOfEvaluation(models.Model):
     title = models.CharField(max_length=50)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -34,6 +35,7 @@ class ReportCard(models.Model):
     career = models.ForeignKey(Career, on_delete=models.DO_NOTHING)
     semester = models.ForeignKey(Semester, on_delete=models.DO_NOTHING)
     academic_year = models.ForeignKey(AcademicYear, on_delete=models.DO_NOTHING)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

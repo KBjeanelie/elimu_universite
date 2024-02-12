@@ -88,6 +88,23 @@
                                     </tbody>
                                 </table>
                             </div>
+                            <div class="pagination">
+                                <h4 class="step-links">
+                                    {% if subjects.has_previous %}
+                                        <a href="?page=1">&laquo; 1 | </a>
+                                        <a href="?page={{ subjects.previous_page_number }}">Précedent</a>
+                                    {% endif %}
+                            
+                                    <span class="current">
+                                        [Page {{ subjects.number }} sur {{ subjects.paginator.num_pages }}.]
+                                    </span>
+                            
+                                    {% if subjects.has_next %}
+                                        <a href="?page={{ subjects.next_page_number }}">Suivant</a>
+                                        <a href="?page={{ subjects.paginator.num_pages }}"> | {{ subjects.paginator.num_pages }} &raquo;</a>
+                                    {% endif %}
+                                </h4>
+                            </div>
                         </div>
                     </div>
                 </div>

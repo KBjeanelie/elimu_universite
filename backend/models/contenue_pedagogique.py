@@ -1,5 +1,5 @@
 from django.db import models
-from backend.models.gestion_ecole import Career, Sector
+from backend.models.gestion_ecole import Career, Etablishment, Sector
 from backend.models.user_account import Teacher
 
 class eBook(models.Model):
@@ -17,6 +17,8 @@ class eBook(models.Model):
     attachement = models.FileField(upload_to='ebook_folder')
     
     is_private = models.BooleanField(default=False)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     

@@ -1,8 +1,9 @@
 import os
 from django.db import models
-from elimu_universite import settings
 from backend.models.user_account import Student, Teacher
+from elimu_universite import settings
 from elimu_universite.constant import days_of_the_weeks, hours_of_the_day, currencies, systemes, statues
+
 
 class Etablishment(models.Model):
     name = models.CharField(max_length=120)
@@ -16,6 +17,9 @@ class Etablishment(models.Model):
     status_fees = models.CharField(max_length=50, choices=statues)
     subscription_fees = models.FloatField(default=1000)
     re_registration_fees = models.FloatField(default=800)
+    
+    def __str__(self):
+        return f"Etablissement: {self.name}"
 
 # Class representing Academic Year
 class AcademicYear(models.Model):
@@ -23,6 +27,7 @@ class AcademicYear(models.Model):
     start_date = models.DateField(blank=True, null=True)
     end_date = models.DateField(blank=True, null=True)
     status = models.BooleanField(default=True)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -31,6 +36,7 @@ class AcademicYear(models.Model):
 # Class representing Academic Level
 class Level(models.Model):
     label = models.CharField(max_length=50)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -52,6 +58,7 @@ class Program(models.Model):
     program_date = models.DateField(blank=True)
     person_in_charge = models.ForeignKey(Teacher, on_delete=models.SET_NULL, blank=True, null=True)
     file = models.FileField(upload_to='programmes', blank=True)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -66,6 +73,7 @@ class Program(models.Model):
 # Class representing Document Type
 class DocumentType(models.Model):
     title = models.CharField(max_length=50)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -74,6 +82,7 @@ class DocumentType(models.Model):
 # Class representing Sanction Appreciation Type
 class SanctionAppreciationType(models.Model):
     title = models.CharField(max_length=50)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     description = models.TextField(blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
@@ -104,6 +113,7 @@ class TeacherDocument(models.Model):
 # Class representing Group Subject
 class GroupSubject(models.Model):
     title = models.CharField(max_length=50)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -112,6 +122,7 @@ class GroupSubject(models.Model):
 # Class representing Sector (Field of Study)
 class Sector(models.Model):
     title = models.CharField(max_length=50)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -152,6 +163,7 @@ class StudentCareer(models.Model):
     semester = models.ForeignKey(Semester, on_delete=models.SET_NULL, blank=True, null=True)
     is_registered =  models.BooleanField(default=False)
     is_valid =  models.BooleanField(default=False)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     
@@ -178,6 +190,8 @@ class SanctionAppreciation(models.Model):
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     career = models.ForeignKey(Career, on_delete=models.SET_NULL, blank=True, null=True)
     sanction_date = models.DateField(blank=True, null=True)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, null=True)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True, blank=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     

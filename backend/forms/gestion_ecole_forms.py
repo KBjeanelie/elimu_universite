@@ -4,7 +4,7 @@ from backend.models.gestion_ecole import *
 class AcademicYearForm(forms.ModelForm):
     class Meta:
         model = AcademicYear
-        fields = ['label', 'start_date', 'end_date', 'status']
+        fields = ['label', 'start_date', 'end_date', 'status', 'school']
         widgets = {
             'label' : forms.TextInput(
                 attrs={
@@ -38,7 +38,7 @@ class AcademicYearForm(forms.ModelForm):
 class LevelForm(forms.ModelForm):
     class Meta:
         model = Level
-        fields = ['label']
+        fields = ['label', 'school']
         widgets = {
             'label' : forms.TextInput(
                 attrs={
@@ -53,6 +53,12 @@ class LevelForm(forms.ModelForm):
         }
 
 class SemesterForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(SemesterForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['level'].queryset = Level.objects.filter(school=user.school)
+    
     class Meta:
         model = Semester
         fields = ['title', 'level']
@@ -78,7 +84,7 @@ class SemesterForm(forms.ModelForm):
 class ProgramForm(forms.ModelForm):
     class Meta:
         model = Program
-        fields = ['title', 'description', 'program_date', 'person_in_charge', 'file']
+        fields = ['title', 'description', 'program_date', 'person_in_charge', 'file', 'school']
         widgets = {
             'title' : forms.TextInput(
                 attrs={
@@ -119,7 +125,7 @@ class ProgramForm(forms.ModelForm):
 class DocumentTypeForm(forms.ModelForm):
     class Meta:
         model = DocumentType
-        fields = ['title']
+        fields = ['title', 'school']
         labels = {'title': 'Titre'}
         widgets = {
             'title' : forms.TextInput(
@@ -136,12 +142,12 @@ class DocumentTypeForm(forms.ModelForm):
 class SanctionAppreciationTypeForm(forms.ModelForm):
     class Meta:
         model = SanctionAppreciationType
-        fields = ['title', 'description']
+        fields = ['title', 'description', 'school']
 
 class GroupSubjectForm(forms.ModelForm):
     class Meta:
         model = GroupSubject
-        fields = ['title']
+        fields = ['title', 'school']
         widgets = {
             'title' : forms.TextInput(
                 attrs={
@@ -159,7 +165,7 @@ class GroupSubjectForm(forms.ModelForm):
 class SectorForm(forms.ModelForm):
     class Meta:
         model = Sector
-        fields = ['title']
+        fields = ['title', 'school']
         widgets = {
             'title' : forms.TextInput(
                 attrs={
@@ -175,6 +181,14 @@ class SectorForm(forms.ModelForm):
         }
 
 class SubjectForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(SubjectForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['sector'].queryset = Sector.objects.filter(school=user.school)
+        self.fields['level'].queryset = Level.objects.filter(school=user.school)
+        self.fields['subject_group'].queryset = GroupSubject.objects.filter(school=user.school)
+        
     class Meta:
         model = Subject
         fields = ['label', 'coefficient','sector', 'teacher_in_charge', 'level', 'type', 'subject_group', 'possible_evaluation', 'possible_averaging']
@@ -239,6 +253,12 @@ class SubjectForm(forms.ModelForm):
         }
 
 class CareerForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(CareerForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['sector'].queryset = Sector.objects.filter(school=user.school)
+        
     class Meta:
         model = Career
         fields = ['title', 'sector']
@@ -268,6 +288,12 @@ class StudentCareerForm(forms.ModelForm):
         fields = ['student', 'career', 'academic_year', 'semester']
 
 class ScheduleForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super(ScheduleForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['career'].queryset = Career.objects.filter(sector__school=user.school)
+        self.fields['subject'].queryset = Subject.objects.filter(sector__school=user.school)
+
     class Meta:
         model = Schedule
         fields = ['start_hours', 'end_hours', 'day', 'subject', 'career']
@@ -306,9 +332,19 @@ class ScheduleForm(forms.ModelForm):
         }
 
 class SanctionAppreciationForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(SanctionAppreciationForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['career'].queryset = Career.objects.filter(sector__school=user.school)
+        self.fields['subject'].queryset = Subject.objects.filter(sector__school=user.school)
+        self.fields['type'].queryset = SanctionAppreciationType.objects.filter(school=user.school)
+        student_ids = StudentCareer.objects.filter(academic_year__school=user.school, academic_year__status=True).values_list('student', flat=True).distinct()
+        self.fields['student'].queryset = Student.objects.filter(id__in=student_ids)
+        
     class Meta:
         model = SanctionAppreciation
-        fields = ['comment', 'type', 'subject', 'student', 'career', 'sanction_date']
+        fields = ['comment', 'type', 'subject', 'student', 'career', 'sanction_date', 'school', 'academic_year']
         widgets = {
             'comment': forms.Textarea(
                 attrs={

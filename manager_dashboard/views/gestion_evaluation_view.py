@@ -1,5 +1,6 @@
-from django.http import HttpResponse
+from django.http import HttpResponse, HttpResponseRedirect
 from django.shortcuts import get_object_or_404, redirect, render
+from django.urls import reverse
 from django.views import View
 from backend.forms.evaluation_forms import AssessmentForm
 from backend.models.evaluations import Assessment
@@ -7,8 +8,13 @@ from backend.models.gestion_ecole import AcademicYear, Career, Semester, Student
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
-def calculate_results(semester_id, career_id):
-    academic_year = AcademicYear.objects.get(status=True)
+from elimu_universite.constant import generate_qr_code_and_save
+
+def calculate_results(semester_id, career_id, user):
+    try:
+        academic_year = AcademicYear.objects.get(status=True, school=user.school)
+    except (AcademicYear.DoesNotExist):
+        return[]
     
     try:
         semester = Semester.objects.get(pk=semester_id)
@@ -83,9 +89,13 @@ def calculate_results(semester_id, career_id):
         return HttpResponse(f"Erreur: {e}")
 
 
-def get_all_results():
-    academic_year = AcademicYear.objects.get(status=True)
-    semesters = Semester.objects.all()
+def get_all_results(user):
+    try:
+        academic_year = AcademicYear.objects.get(status=True, school=user.school)
+    except (AcademicYear.DoesNotExist):
+        return[]
+    
+    semesters = Semester.objects.filter(level__school=user.school)
     results = []
     
     for semester in semesters:
@@ -154,9 +164,6 @@ def get_all_results():
         
     return results
 
-
-
-
 class EditAssessmentView(View):
     template = 'manager_dashboard/evaluations/editer_evaluation.html'
     
@@ -167,21 +174,19 @@ class EditAssessmentView(View):
     
     def get(self, request, pk, *args, **kwargs):
         evaluation = get_object_or_404(Assessment, pk=pk)
-        form = AssessmentForm(instance=evaluation)
+        form = AssessmentForm(request.user, instance=evaluation)
         context = {'form': form}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, pk, *args, **kwargs):
         evaluation = get_object_or_404(Assessment, pk=pk)
-        year = get_object_or_404(AcademicYear, status=True)
+        year = get_object_or_404(AcademicYear, status=True, school=request.user.school)
         mutable_data = request.POST.copy()
         mutable_data['academic_year'] = year
-        form = AssessmentForm(mutable_data, instance=evaluation)
+        form = AssessmentForm(request.user, mutable_data, instance=evaluation)
         if form.is_valid():
             form.save()
             return redirect('manager_dashboard:evaluations')
-        else:
-            print(form.errors)
         
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
@@ -195,20 +200,18 @@ class AddAssessmentView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        form = AssessmentForm()
+        form = AssessmentForm(request.user)
         context = {'form': form}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        year = get_object_or_404(AcademicYear, status=True)
+        year = get_object_or_404(AcademicYear, status=True, school=request.user.school)
         mutable_data = request.POST.copy()
         mutable_data['academic_year'] = year
-        form = AssessmentForm(mutable_data)
+        form = AssessmentForm(request.user, mutable_data)
         if form.is_valid():
             form.save()
             return redirect('manager_dashboard:evaluations')
-        else:
-            print(form.errors)
         
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
@@ -222,9 +225,9 @@ class AssessmentView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        evaluations = Assessment.objects.all().order_by('-created_at')
+        evaluations = Assessment.objects.filter(academic_year__school=request.user.school).order_by('-created_at')
         # Nombre d'éléments par page
-        items_per_page = 10
+        items_per_page = 7
         
         paginator = Paginator(evaluations, items_per_page)
         
@@ -247,10 +250,9 @@ class AssessmentView(View):
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Assessment, pk=pk)
         instance.delete()
-        evaluations = Assessment.objects.all().order_by('-created_at')
+        evaluations = Assessment.objects.filter(academic_year__school=request.user.school).order_by('-created_at')
         context = {'evaluations': evaluations}
         return render(request, template_name=self.template, context=context)
-
 
 class NoteTableView(View):
     template = 'manager_dashboard/evaluations/tableau_notes.html'
@@ -260,14 +262,10 @@ class NoteTableView(View):
             return redirect('backend:login')
         return super().dispatch(request, *args, **kwargs)
     
-    semesters = Semester.objects.all().order_by('-created_at')
-    careers = Career.objects.all().order_by('-created_at')
-    subjects = Subject.objects.all().order_by('-created_at')
-    
     def get(self, request, *args, **kwargs):
-        semesters = Semester.objects.all().order_by('-created_at')
-        careers = Career.objects.all().order_by('-created_at')
-        subjects = Subject.objects.all().order_by('-created_at')
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
+        subjects = Subject.objects.filter(level__school=request.user.school)
         context = {
             'semesters':semesters,
             'careers':careers,
@@ -287,6 +285,10 @@ class NoteTableView(View):
 
             evaluations = Assessment.objects.filter(semester=semester, career=career, subject=subject).order_by('-note')
 
+            semesters = Semester.objects.filter(level__school=request.user.school)
+            careers = Career.objects.filter(sector__school=request.user.school)
+            subjects = Subject.objects.filter(level__school=request.user.school)
+            
             if evaluations.exists():
                 max_note = evaluations.first().note
                 last_note = evaluations.last().note
@@ -296,9 +298,9 @@ class NoteTableView(View):
 
                 
                 context = {
-                    'semesters':self.semesters,
-                    'careers':self.careers,
-                    'subjects':self.subjects,
+                    'semesters':semesters,
+                    'careers':careers,
+                    'subjects':subjects,
                     'evaluations':evaluations,
                     'max_note':max_note,
                     'last_note':last_note,
@@ -307,9 +309,9 @@ class NoteTableView(View):
                 return render(request, template_name=self.template, context=context)
             else:
                 context = {
-                    'semesters':self.semesters,
-                    'careers':self.careers,
-                    'subjects':self.subjects,
+                    'semesters':semesters,
+                    'careers':careers,
+                    'subjects':subjects,
                 }
                 return render(request, template_name=self.template, context=context)
 
@@ -319,20 +321,21 @@ class NoteTableView(View):
     
 class AverageTableView(View):
     template = 'manager_dashboard/evaluations/tableau_moyennes.html'
-    semesters = Semester.objects.all()
-    careers = Career.objects.all()
-    subjects = Subject.objects.all()
-    
+
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
+        subjects = Subject.objects.filter(level__school=request.user.school)
+        
         context = {
-            'semesters':self.semesters,
-            'careers':self.careers,
-            'subjects':self.subjects
+            'semesters':semesters,
+            'careers':careers,
+            'subjects':subjects
         }
         return render(request, template_name=self.template, context=context)
     
@@ -348,6 +351,10 @@ class AverageTableView(View):
 
             evaluations = Assessment.objects.filter(semester=semester, career=career, subject=subject).order_by('-note')
 
+            semesters = Semester.objects.filter(level__school=request.user.school)
+            careers = Career.objects.filter(sector__school=request.user.school)
+            subjects = Subject.objects.filter(level__school=request.user.school)
+            
             if evaluations.exists():
                 results = []
                 controle_evaluations = evaluations.filter(type_evaluation__title='Contrôle')
@@ -376,10 +383,11 @@ class AverageTableView(View):
                 if results:
                     average= round(sum(x['total'] for x in results) / len(results), 3)
                 
+                
                 context = {
-                    'semesters': self.semesters,
-                    'careers': self.careers,
-                    'subjects': self.subjects,
+                    'semesters': semesters,
+                    'careers': careers,
+                    'subjects':subjects,
                     'results': results,
                     'max': results[0]['total'],
                     'last': results[-1]['total'],
@@ -390,9 +398,9 @@ class AverageTableView(View):
 
             else:
                 context = {
-                    'semesters':self.semesters,
-                    'careers':self.careers,
-                    'subjects':self.subjects,
+                    'semesters':semesters,
+                    'careers':careers,
+                    'subjects':subjects,
                 }
                 return render(request, template_name=self.template, context=context)
 
@@ -403,64 +411,62 @@ class AverageTableView(View):
 class BullettinView(View):
     template = 'manager_dashboard/evaluations/bulletins.html'
     
-    semesters = Semester.objects.all()
-    careers = Career.objects.all()
-    
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
         context = {
-            'semesters':self.semesters,
-            'careers':self.careers,
+            'semesters': semesters,
+            'careers': careers,
         }
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
         semester_id = request.POST['semester']
         career_id = request.POST['career']
-        
-        
-        
-        results = calculate_results(semester_id=semester_id, career_id=career_id)
 
+        results = calculate_results(semester_id=semester_id, career_id=career_id, user=request.user)
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
+        
         if results:
             context = {
-                'semesters': self.semesters,
-                'careers': self.careers,
+                'semesters': semesters,
+                'careers': careers,
                 'results': results,
             }
         else:
             context = {
-                'semesters': self.semesters,
-                'careers': self.careers,
+                'semesters': semesters,
+                'careers': careers,
             }
 
         return render(request, template_name=self.template, context=context)
 
 
 class BulletinDetailView(View):
-    template = 'manager_dashboard/evaluations/bulletin_detail.html'
+    template_name = 'manager_dashboard/evaluations/bulletin_detail.html'
     
-    def dispatch(self,request, *args, **kwargs):
+    def dispatch(self, request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         return super().dispatch(request, *args, **kwargs)
     
-    def get(self, request, pk, *args, **kwargs):
-        academic_year = AcademicYear.objects.get(status=True)
+    def get_context_data(self, request, pk, *args, **kwargs):
+        academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
         student_career = StudentCareer.objects.get(pk=pk, academic_year=academic_year)
         total_student = StudentCareer.objects.filter(semester=student_career.semester, career=student_career.career, academic_year=academic_year).count()
         evaluations = Assessment.objects.filter(semester=student_career.semester, career=student_career.career, academic_year=academic_year).order_by('subject__label')
+        subjects = []
+        result = {}
         
         if evaluations.exists():
-
             controle_evaluations = evaluations.filter(type_evaluation__title='Contrôle')
             partiel_evaluations = evaluations.filter(type_evaluation__title='Partiel')
-
-            subjects = []
             count_coefficient = 0
 
             for controle_evaluation in controle_evaluations.filter(student=student_career.student):
@@ -477,8 +483,8 @@ class BulletinDetailView(View):
                             'nui': controle_evaluation.student.registration_number,
                             'controle': controle_evaluation.note,
                             'partiel': partiel_evaluation.note,
-                            'label':controle_evaluation.subject.label,
-                            'coefficient':controle_evaluation.subject.coefficient,
+                            'label': controle_evaluation.subject.label,
+                            'coefficient': controle_evaluation.subject.coefficient,
                             'total': total,
                         }
                     )
@@ -488,17 +494,29 @@ class BulletinDetailView(View):
             total_general = round(sum(x['total'] for x in subjects), 2)
 
             result = {
-                'nui': subjects[0]['nui'],
+                'nui': subjects[0]['nui'] if subjects else '',
                 'average': average,
-                'count_coefficient':count_coefficient,
-                'total_general':total_general
+                'count_coefficient': count_coefficient,
+                'total_general': total_general
             }
 
+        qr_code_data = f"Matricule:{student_career.student.registration_number}\nParcours:{student_career.career.title}\Semestre:{student_career.semester.title}\\Niveau:{student_career.semester.level.label}\\Moyenne:{result['average']}\\Annee-academique:{academic_year.label}\nEtablissement:"
+        filename = f"qr_code_{student_career.student.registration_number}.png"  # Nom du fichier pour l'image du code QR
+
+        # Générer le code QR et enregistrer l'image
+        qr_code_path = generate_qr_code_and_save(qr_code_data, filename)
         context = {
-            'student_career':student_career,
-            'year':academic_year,
+            'student_career': student_career,
+            'year': academic_year,
             'result': result,
-            'subjects':subjects,
-            'total_student':total_student
+            'subjects': subjects,
+            'total_student': total_student,
+            'qr_code_path': qr_code_path
         }
-        return render(request, template_name=self.template, context=context)
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        pk = kwargs.get('pk')
+        context = self.get_context_data(request, pk)
+        return render(request, template_name=self.template_name, context=context)
+

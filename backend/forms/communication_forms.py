@@ -1,11 +1,13 @@
 from django import forms
-from ..models.communication import Information, Event, EventParticipate, Group, GroupMedia
+
+from backend.models.gestion_ecole import Career
+from ..models.communication import Information, Event, Group, GroupMedia
 from ckeditor.widgets import CKEditorWidget
 
 class InformationForm(forms.ModelForm):
     class Meta:
         model = Information
-        fields = ['title', 'date_info', 'content', 'file', 'status']
+        fields = ['title', 'date_info', 'content', 'file', 'status', 'school']
         widgets = {
             'content': CKEditorWidget(),
             'status': forms.CheckboxInput(
@@ -38,7 +40,7 @@ class InformationForm(forms.ModelForm):
 class EventForm(forms.ModelForm):
     class Meta:
         model = Event
-        fields = ['title', 'start_date', 'end_date', 'content', 'file', 'status', 'photo']
+        fields = ['title', 'start_date', 'end_date', 'content', 'file', 'status', 'photo', 'school']
         widgets = {
             'content': CKEditorWidget(),
             'status': forms.CheckboxInput(
@@ -82,9 +84,15 @@ class EventForm(forms.ModelForm):
 
 
 class GroupForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(GroupForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['career'].queryset = Career.objects.filter(sector__school=user.school)
+        
     class Meta:
         model = Group
-        fields = ['title', 'career']
+        fields = ['title', 'career', 'school']
         
         widgets = {
             'title': forms.TextInput(

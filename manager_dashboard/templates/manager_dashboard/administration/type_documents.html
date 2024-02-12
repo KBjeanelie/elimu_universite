@@ -39,7 +39,7 @@
                                     <tbody id="elementList">
                                         {% for type_document in type_documents %}
                                             <tr data-id="{{ type_document.id }}">
-                                                <td> {{ type_document.title }} </td>
+                                                <td> <h6>{{ type_document.title }}</h6> </td>
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
@@ -66,7 +66,7 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form method="post" id="form_id">
+                        <form method="post">
                             {% csrf_token %}
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Type de document</label>
@@ -118,45 +118,6 @@ function getCookie(name) {
     return cookieValue;
 }
 
-
-$('#form_id').submit(function(event) {
-    event.preventDefault();
-    var title = $('#title').val();
-    $.ajax({
-        type: "POST",
-        url: "{% url 'manager_dashboard:type_documents' %}",
-        data: { title: title, csrfmiddlewaretoken: '{{ csrf_token }}' },
-        success: function(response) {
-            console.log('Type de document ajouté avec succès');
-            // Récupérer l'objet créé
-            $.ajax({
-                type: "GET",
-                url: `/administration/type_documents/last/`,
-                success: function(data) {
-                    var newRow = `<tr data-id="${data.id}">
-                        <td>${data.title}</td>
-                        <td>
-                            <div class="action_btns d-flex">
-                                <a href="#" onclick="deleteDocumentType(${data.id})" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                            </div>
-                        </td>
-                      </tr>`;
-
-                    $('.QA_table tbody').append(newRow);
-                    // Clear form fields
-                    $('#form_id')[0].reset();
-                },
-                error: function(error) {
-                    console.error('Erreur lors de la récupération de l\'objet créé', error);
-                }
-            });
-            
-        },
-        error: function(error) {
-            console.error('Erreur lors de la création du document', error);
-        }
-    });
-});
 
 </script>
 {% endblock content %}

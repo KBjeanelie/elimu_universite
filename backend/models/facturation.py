@@ -1,5 +1,5 @@
 from django.db import models
-from backend.models.gestion_ecole import Career
+from backend.models.gestion_ecole import Career, Etablishment
 from backend.models.user_account import Student
 
 # Create your models here.
@@ -84,6 +84,8 @@ class Item(models.Model):
     #submitted_to_tranche = models.BooleanField(default=True)
     
     analytic_code = models.TextField(blank=True)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -172,6 +174,8 @@ class FinancialCommitment(models.Model):
     send_date = models.DateTimeField(blank=True, null=True)
     
     is_send = models.BooleanField(default=False)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     

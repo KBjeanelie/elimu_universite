@@ -1,6 +1,6 @@
 import os
 from django.db import models
-from backend.models.gestion_ecole import Career
+from backend.models.gestion_ecole import Career, Etablishment
 from elimu_universite import settings
 from ckeditor.fields import RichTextField
 
@@ -19,6 +19,8 @@ class Information(models.Model):
     file = models.FileField(upload_to='info_files', blank=True)
     
     status = models.BooleanField(default=True)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -48,6 +50,8 @@ class Event(models.Model):
     file = models.FileField(upload_to='events_files/', blank=True)
     
     photo = models.ImageField(upload_to='events_image/', blank=True)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -85,6 +89,8 @@ class Group(models.Model):
     title = models.CharField(max_length=20)
     
     career = models.ForeignKey(Career, on_delete=models.CASCADE,null=True, blank=True)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     

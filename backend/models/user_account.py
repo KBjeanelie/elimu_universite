@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import BaseUserManager, AbstractBaseUser, PermissionsMixin
 
 from elimu_universite import settings
+
+
 last_diploma = (
     ('Doctorat', 'Doctorat'),
     ('Master', 'Master'),
@@ -30,7 +32,6 @@ sexes = (
     ('masculin', 'Masculin'),
     ('feminin', 'Féminin')
 )
-
 
 # Represent an objet of Student and his profil info
 class Student(models.Model):
@@ -64,6 +65,8 @@ class Student(models.Model):
     picture = models.ImageField(upload_to="student_images", blank=True, null=True)
     
     status = models.BooleanField(default=False)
+    
+    is_valid = models.BooleanField(default=False)
     
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
@@ -101,6 +104,9 @@ class Teacher(models.Model):
     nationality = models.CharField(max_length=20, blank=True)
     
     email = models.CharField(max_length=120, unique=True, blank=True)
+    
+    # from backend.models.gestion_ecole import Etablishment
+    # school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True, blank=True)
     
     status = models.CharField(max_length=20, blank=True)
     
@@ -228,6 +234,9 @@ class UserManager(BaseUserManager):
 #  Custom User Model
 class User(AbstractBaseUser, PermissionsMixin):
     
+    from backend.models.gestion_ecole import Etablishment
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True, blank=True)
+    
     username = models.CharField(max_length=255, unique=True,)
     
     student = models.OneToOneField(Student, unique=True, on_delete=models.SET_NULL, null=True, blank=True)
@@ -275,3 +284,4 @@ class User(AbstractBaseUser, PermissionsMixin):
         "Is the user a member of staff?"
         # Simplest possible answer: All admins are staff
         return self.is_admin
+

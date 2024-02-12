@@ -69,7 +69,7 @@ from backend.models.contenue_pedagogique import eBook
 class eBookForm(forms.ModelForm):
     class Meta:
         model = eBook
-        fields = ['title', 'author', 'sector', 'career', 'photo_cover', 'attachement']
+        fields = ['title', 'author', 'sector', 'career', 'photo_cover', 'attachement', 'school']
         widgets = {
             'title': forms.TextInput(
                 attrs={

@@ -1,7 +1,9 @@
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from backend.forms.evaluation_forms import TypeOfEvaluationForm
 from backend.forms.gestion_ecole_forms import DocumentTypeForm, SanctionAppreciationTypeForm
+from backend.models.evaluations import TypeOfEvaluation
 from backend.models.gestion_ecole import DocumentType, SanctionAppreciationType
 from backend.forms.user_account_forms import ManagementProfilForm
 
@@ -14,42 +16,60 @@ class TypeEvaluationView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template_name)
+        type_evaluations = TypeOfEvaluation.objects.filter(school=request.user.school)
+        form = TypeOfEvaluationForm()
+        context = {'type_evaluations':type_evaluations, 'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = TypeOfEvaluationForm(data)
+        if form.is_valid():
+            form.save()  # Sauvegarde du nouvel objet
+            return redirect('manager_dashboard:type_evaluation')
+        
+        type_evaluations = TypeOfEvaluation.objects.filter(school=request.user.school)
+        context = {'type_evaluations':type_evaluations, 'form':form}
+        return render(request, template_name=self.template_name, context=context)
 
-
-class TypeDocumentView(View):
-    template_name = "manager_dashboard/administration/type_documents.html"
-    typeDocuments = DocumentType.objects.all().order_by('-created_at')
-    context_object = {'type_documents': typeDocuments}
+class TypeEvaluationDeleteView(View):
     
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         return super().dispatch(request, *args, **kwargs)
     
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(TypeOfEvaluation, pk=pk)
+        instance.delete()
+        return JsonResponse({'message': 'Élément supprimé avec succès'})
+
+class TypeDocumentView(View):
+    template_name = "manager_dashboard/administration/type_documents.html"
+
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
-        type_documents = DocumentType.objects.all().order_by('-created_at')
         form = DocumentTypeForm()  # Formulaire pour la création
-        context = {'type_documents': type_documents, 'form': form}
+        typeDocuments = DocumentType.objects.filter(school=request.user.school).order_by('-created_at')
+        context= {'type_documents': typeDocuments, 'form':form}
         return render(request, template_name=self.template_name, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = DocumentTypeForm(request.POST)  # Formulaire pour la création
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = DocumentTypeForm(data)
         if form.is_valid():
             form.save()  # Sauvegarde du nouvel objet
             return redirect('manager_dashboard:type_documents')
         
-        type_documents = DocumentType.objects.all().order_by('-created_at')
-        context = {'type_documents': type_documents, 'form': form}
+        typeDocuments = DocumentType.objects.filter(school=request.user.school).order_by('-created_at')
+        context = {'type_documents': typeDocuments, 'form': form}
         return render(request, template_name=self.template_name, context=context)
-
-    def put(self, request, *args, **kwargs):
-        document_type_id = kwargs.get('id')
-        instance = get_object_or_404(DocumentType, id=document_type_id)
-        form = DocumentTypeForm(request.POST or None, instance=instance)
-        if form.is_valid():
-            form.save()  # Sauvegarde de l'objet mis à jour
-            return redirect('manager_dashboard:type_documents') 
 
 class TypeDocumentDeleteView(View):
     
@@ -64,20 +84,17 @@ class TypeDocumentDeleteView(View):
         return JsonResponse({'message': 'Élément supprimé avec succès'})
 
 def get_last_document_type(request):
-    last_object = DocumentType.objects.last()
+    last_object = DocumentType.objects.filter(school=request.user.school).last()
     document_type = {
         'id': last_object.id,
         'title': last_object.title
     }
-    
     return JsonResponse(document_type)
 
 
 
 class TypeSanctionView(View):
     template_name = "manager_dashboard/administration/type_sanctions.html"
-    typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
-    context_object = {'type_sanctions': typeSanctions}
     
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -85,28 +102,22 @@ class TypeSanctionView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
+        typeSanctions = SanctionAppreciationType.objects.filter(school=request.user.school).order_by('-created_at')
         form = SanctionAppreciationTypeForm()  # Formulaire pour la création
         context = {'type_sanctions': typeSanctions, 'form': form}
         return render(request, template_name=self.template_name, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = SanctionAppreciationTypeForm(request.POST)  # Formulaire pour la création
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = SanctionAppreciationTypeForm(data)  # Formulaire pour la création
         if form.is_valid():
             form.save()  # Sauvegarde du nouvel objet
             return redirect('manager_dashboard:type_sanctions')
         
-        typeSanctions = SanctionAppreciationType.objects.all().order_by('-created_at')
+        typeSanctions = SanctionAppreciationType.objects.filter(school=request.user.school).order_by('-created_at')
         context = {'type_sanctions': typeSanctions, 'form': form}
         return render(request, template_name=self.template_name, context=context)
-
-    def put(self, request, *args, **kwargs):
-        sanction_type_id = kwargs.get('id')
-        instance = get_object_or_404(SanctionAppreciationType, id=sanction_type_id)
-        form = SanctionAppreciationTypeForm(request.POST or None, instance=instance)
-        if form.is_valid():
-            form.save()  # Sauvegarde de l'objet mis à jour
-            return redirect('manager_dashboard:type_sanctions')
 
 
 class TypeSanctionDeleteView(View):
@@ -123,7 +134,7 @@ class TypeSanctionDeleteView(View):
 
 
 def get_last_sanction_type(request):
-    last_object = SanctionAppreciationType.objects.last()
+    last_object = SanctionAppreciationType.objects.filter(school=request.user.school).last()
     sanction_type = {
         'id': last_object.id,
         'title': last_object.title,

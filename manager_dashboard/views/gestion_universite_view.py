@@ -11,6 +11,7 @@ from backend.forms.user_account_forms import StudentForm, TeacherForm
 from backend.models.user_account import Student, Teacher
 from django.core.cache import cache
 from django.db import transaction
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def convertir_en_hexadecimal(nombre):
     # Utiliser la fonction hex() pour convertir le nombre en hexadécimal
@@ -51,18 +52,19 @@ class EditAcademicYearView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, pk, *args, **kwargs):
-        academique_year = get_object_or_404(AcademicYear, pk=pk)
+        
+        academique_year = get_object_or_404(AcademicYear, pk=pk, school=request.user.school)
         
         old_date1 = academique_year.start_date
         old_date2 = academique_year.end_date
         
         mutable_data = request.POST.copy()
-        print(old_date1, old_date2, mutable_data)
         if 'start_date' not in request.POST or not request.POST['start_date']:
             mutable_data['start_date'] = old_date1
         if 'end_date' not in request.POST or not request.POST['end_date']:
             mutable_data['end_date'] = old_date2
-        print(mutable_data)
+        
+        mutable_data['school'] = request.user.school
         
         form = AcademicYearForm(mutable_data, instance=academique_year)
         
@@ -87,7 +89,9 @@ class AddAcademicYearView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = AcademicYearForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = AcademicYearForm(data)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:years")
@@ -127,26 +131,26 @@ class LevelView(View):
     
     def get(self, request, *args, **kwargs):
         form = LevelForm()
-        context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+        context = {'levels':Level.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = LevelForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = LevelForm(data)
         if form.is_valid():
             form.save()
-            form = LevelForm()
-            context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
-            return render(request, template_name=self.template, context=context)
-    
-        form = LevelForm()
-        context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+            return redirect('manager_dashboard:levels')
+
+        context = {'levels':Level.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Level, pk=pk)
         instance.delete()
+        # redirection vers l'interface de vue des niveau
         form = LevelForm()
-        context = {'levels':Level.objects.all().order_by('-created_at'), 'form':form}
+        context = {'levels':Level.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 #===END
 
@@ -160,27 +164,25 @@ class SemesterView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        form = SemesterForm()
-        context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+        form = SemesterForm(request.user)
+        context = {'semesters':Semester.objects.filter(level__school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = SemesterForm(request.POST)
+        form = SemesterForm(request.user, request.POST)
         if form.is_valid():
             form.save()
-            form = SemesterForm()
-            context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
-            return render(request, template_name=self.template, context=context)
-    
-        form = SemesterForm()
-        context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+            return redirect(to='manager_dashboard:semesters')
+
+        context = {'semesters':Semester.objects.filter(level__school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Semester, pk=pk)
         instance.delete()
-        form = SemesterForm()
-        context = {'semesters':Semester.objects.all().order_by('-created_at'), 'form':form}
+        
+        form = SemesterForm(request.user)
+        context = {'semesters':Semester.objects.filter(level__school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 #===END
 
@@ -195,26 +197,27 @@ class SectorView(View):
     
     def get(self, request, *args, **kwargs):
         form = SectorForm()
-        context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+        context = {'sectors':Sector.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = SectorForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = SectorForm(data)
         if form.is_valid():
             form.save()
-            form = SectorForm()
-            context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
-            return render(request, template_name=self.template, context=context)
+            return redirect('manager_dashboard:sectors')
     
         form = SectorForm()
-        context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+        context = {'sectors':Sector.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Sector, pk=pk)
         instance.delete()
+        
         form = SectorForm()
-        context = {'sectors':Sector.objects.all().order_by('-created_at'), 'form':form}
+        context = {'sectors':Sector.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 #===END
 
@@ -228,27 +231,26 @@ class CareerView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        form = CareerForm()
-        context = {'careers':Career.objects.all().order_by('-created_at'), 'form':form}
+        form = CareerForm(request.user)
+        context = {'careers':Career.objects.filter(sector__school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = CareerForm(request.POST)
+        form = CareerForm(request.user,request.POST)
         if form.is_valid():
             form.save()
-            form = CareerForm()
-            context = {'careers':Career.objects.all().order_by('-created_at'), 'form':form}
-            return render(request, template_name=self.template, context=context)
+            redirect('manager_dashboard:careers')
     
-        form = CareerForm()
-        context = {'careers':Career.objects.all().order_by('-created_at'), 'form':form}
+        form = CareerForm(request.user)
+        context = {'careers':Career.objects.filter(sector__school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Career, pk=pk)
         instance.delete()
-        form = CareerForm()
-        context = {'careers':Career.objects.all().order_by('-created_at'), 'form':form}
+        
+        form = CareerForm(request.user)
+        context = {'careers':Career.objects.filter(sector__school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 #===END
 
@@ -263,26 +265,26 @@ class GroupSubjectView(View):
     
     def get(self, request, *args, **kwargs):
         form = GroupSubjectForm()
-        context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+        context = {'groups':GroupSubject.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 
     def post(self, request, *args, **kwargs):
-        form = GroupSubjectForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = GroupSubjectForm(data)
         if form.is_valid():
             form.save()
-            form = GroupSubjectForm()
-            context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
-            return render(request, template_name=self.template, context=context)
-    
-        form = GroupSubjectForm()
-        context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+            return redirect('manager_dashboard:group_subjects')
+
+        context = {'groups':GroupSubject.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(GroupSubject, pk=pk)
         instance.delete()
+        
         form = GroupSubjectForm()
-        context = {'groups':GroupSubject.objects.all().order_by('-created_at'), 'form':form}
+        context = {'groups':GroupSubject.objects.filter(school=request.user.school), 'form':form}
         return render(request, template_name=self.template, context=context)
 #===END
 
@@ -297,13 +299,13 @@ class EditSubjectView(View):
     
     def get(self, request, pk, *args, **kwargs):
         subject = get_object_or_404(Subject, pk=pk)
-        form = SubjectForm(instance=subject)
+        form = SubjectForm(request.user, instance=subject)
         context = {'form':form, 'subject':subject}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, pk, *args, **kwargs):
         subject = get_object_or_404(Subject, pk=pk)
-        form = SubjectForm(request.POST, instance=subject)
+        form = SubjectForm(request.user, request.POST, instance=subject)
         if form.is_valid():
             form.save()
             return redirect('manager_dashboard:subjects')  # Redirigez vers la page appropriée après la mise à jour réussie
@@ -321,18 +323,15 @@ class AddSubjectView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        form = SubjectForm()
+        form = SubjectForm(request.user)
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = SubjectForm(request.POST)
-        print(request.POST)
+        form = SubjectForm(request.user, request.POST)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:subjects")
-        else:
-            print(form.errors)
         
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
@@ -346,14 +345,31 @@ class SubjectView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        subjects = Subject.objects.all().order_by('-created_at')
-        context = {'subjects':subjects}
+        subjects = Subject.objects.filter(level__school=request.user.school)
+        items_per_page = 10
+        
+        paginator = Paginator(subjects, items_per_page)
+        
+        page = request.GET.get('page')
+        
+        try:
+            # Obtenez les éléments de la page demandée
+            data_page = paginator.page(page)
+        except PageNotAnInteger:
+            # Si la page n'est pas un entier, affichez la première page
+            data_page = paginator.page(1)
+        except EmptyPage:
+            # Si la page est en dehors de la plage, affichez la dernière page
+            data_page = paginator.page(paginator.num_pages)
+            
+        context = {'subjects':data_page}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Subject, pk=pk)
         instance.delete()
-        subjects = Subject.objects.all().order_by('-created_at')
+        
+        subjects = Subject.objects.filter(level__school=request.user.school)
         context = {'subject':subjects}
         return render(request, template_name=self.template, context=context)
 #===END
@@ -381,14 +397,13 @@ class EditProgramView(View):
         mutable_data = request.POST.copy()
         mutable_files = request.FILES.copy()
         
-        print(mutable_files)
-        
         if 'file' not in mutable_files or not mutable_files['file']:
             mutable_files['file'] = None
             
         if 'program_date' not in request.POST or not request.POST['program_date']:
             mutable_data['program_date'] = old_date
             
+        mutable_data['school'] = request.user.school
         form = ProgramForm(mutable_data, mutable_files, instance=program)
         
         if form.is_valid():
@@ -413,11 +428,13 @@ class AddProgramView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = ProgramForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = ProgramForm(data)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:programs")
-        form = ProgramForm()
+        
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -430,14 +447,14 @@ class ProgramView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        programs = Program.objects.all().order_by('-created_at')
+        programs = Program.objects.filter(school=request.user.school)
         context = {'programs':programs}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Program, pk=pk)
         instance.delete()
-        programs = Program.objects.all().order_by('-created_at')
+        programs = Program.objects.filter(school=request.user.school)
         context = {'programs':programs}
         return render(request, template_name=self.template, context=context)
 #===END
@@ -453,7 +470,7 @@ class EditSanctionView(View):
     
     def get(self, request, pk, *args, **kwargs):
         sanction = get_object_or_404(SanctionAppreciation, pk=pk)
-        form = SanctionAppreciationForm(instance=sanction)
+        form = SanctionAppreciationForm(request.user, instance=sanction)
         context = {'form':form, 'sanction':sanction}
         return render(request, template_name=self.template, context=context)
     
@@ -465,7 +482,9 @@ class EditSanctionView(View):
         if 'sanction_date' not in request.POST or not request.POST['sanction_date']:
             mutable_data['sanction_date'] = old_date
         
-        form = SanctionAppreciationForm(mutable_data, instance=sanction)
+        mutable_data['school'] = request.user.school
+        mutable_data['academic_year'] = AcademicYear.objects.get(status=True, school=request.user.school)
+        form = SanctionAppreciationForm(request.user, mutable_data, instance=sanction)
         
         if form.is_valid():
             form.save()
@@ -479,7 +498,7 @@ class AddSanctionView(View):
     template = "manager_dashboard/gestion_universite/ajout_sanction.html"
     
     def get(self, request, *args, **kwargs):
-        form = SanctionAppreciationForm()
+        form = SanctionAppreciationForm(request.user)
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
@@ -489,11 +508,14 @@ class AddSanctionView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def post(self, request, *args, **kwargs):
-        form = SanctionAppreciationForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        data['academic_year'] = AcademicYear.objects.get(status=True, school=request.user.school)
+        form = SanctionAppreciationForm(request.user, data)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:sanction_appreciations")
-        form = SanctionAppreciationForm()
+        
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -506,14 +528,14 @@ class SanctionAppreciationView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        sanctions = SanctionAppreciation.objects.all().order_by('-created_at')
+        sanctions = SanctionAppreciation.objects.filter(academic_year__school=request.user.school, academic_year__status=True)
         context = {'sanctions':sanctions}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(SanctionAppreciation, pk=pk)
         instance.delete()
-        sanctions = SanctionAppreciation.objects.all().order_by('-created_at')
+        sanctions = SanctionAppreciation.objects.filter(school=request.user.school)
         context = {'sanctions':sanctions}
         return render(request, template_name=self.template, context=context)
 
@@ -669,7 +691,7 @@ class PreRegistrationView(View):
 
     def get(self, request, *args, **kwargs):
         try:
-            academic_year = AcademicYear.objects.get(status=True)
+            academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
             students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=False).order_by('-created_at')
             context = {'student_careers':students}
             return render(request, template_name=self.template, context=context)
@@ -687,16 +709,19 @@ class PreRegistrationDetailView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, pk, *args, **kwargs):
-        academic_year = get_object_or_404(AcademicYear, status=True)
+        academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
         student_career = get_object_or_404(StudentCareer, pk=pk, academic_year=academic_year)
         context = {'student_career':student_career}
         return render(request, template_name=self.template, context=context)
     
     def check(self, pk, *args, **kwargs):
-        academic_year = get_object_or_404(AcademicYear, status=True)
-        student_career = get_object_or_404(StudentCareer, pk=pk, academic_year=academic_year)
+        student_career = get_object_or_404(StudentCareer, pk=pk)
         student_career.is_registered = True
         student_career.save()
+        
+        if student_career.student:
+            student_career.student.is_valid = True
+            student_career.student.save()
         return redirect('manager_dashboard:pre_registrations')
     
     def delete(self, pk, *args, **kwargs):
@@ -796,7 +821,7 @@ class StudentsView(View):
 
     def get(self, request, *args, **kwargs):
         try:
-            academic_year = AcademicYear.objects.get(status=True)
+            academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
             students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True, is_valid=False).order_by('-created_at')
             context = {'student_careers': students}
             return render(request, template_name=self.template, context=context)
@@ -813,7 +838,7 @@ class StudentDetailView(View):
         return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, pk, *args, **kwargs):
-        academic_year = AcademicYear.objects.get(status=True)
+        academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
         student = get_object_or_404(Student, pk=pk)
         documents = StudentDocument.objects.filter(student=student)
         sanctions_student = SanctionAppreciation.objects.filter(student=student)
@@ -832,7 +857,7 @@ class StudentDetailView(View):
         saturday_schedule = Schedule.objects.filter(career=student_career.career, day='samedi').order_by('start_hours')
         
         for s in students_career:
-            R = calculate_results(semester_id=s.semester.id, career_id=s.career.id)
+            R = calculate_results(semester_id=s.semester.id, career_id=s.career.id, user=request.user)
             for r in R:
                 if r['nui'] == student_career.student.registration_number:
                     results.append(r)

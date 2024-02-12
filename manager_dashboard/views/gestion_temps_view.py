@@ -1,6 +1,5 @@
 from django.shortcuts import redirect, render
 from django.views import View
-
 from backend.forms.gestion_ecole_forms import ScheduleForm
 from backend.models.gestion_ecole import Career, Schedule, Semester
 
@@ -13,26 +12,23 @@ class AddScheduleView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        form = ScheduleForm()
+        form = ScheduleForm(request.user)
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = ScheduleForm(request.POST)
+        form = ScheduleForm(request.user, request.POST)
         
         if form.is_valid():
             form.save()
             return redirect('manager_dashboard:times')
         
-        form = ScheduleForm()
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
 
 class ScheduleView(View):
     template = 'manager_dashboard/gestion_temps/emplois_temps.html'
-    semesters = Semester.objects.all()
-    careers = Career.objects.all()
     
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -40,9 +36,11 @@ class ScheduleView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
         context = {
-            'semesters':self.semesters,
-            'careers':self.careers,
+            'semesters':semesters,
+            'careers':careers,
         }
         return render(request, template_name=self.template, context=context)
     
@@ -58,9 +56,12 @@ class ScheduleView(View):
         friday_schedule = Schedule.objects.filter(career__id=career_id, day='vendredi').order_by('start_hours')
         saturday_schedule = Schedule.objects.filter(career__id=career_id, day='samedi').order_by('start_hours')
         
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
+        
         context = {
-            'semesters':self.semesters,
-            'careers':self.careers,
+            'semesters':semesters,
+            'careers':careers,
             'monday_schedule':monday_schedule,
             'tueday_schedule':tueday_schedule,
             'wednesday_schedule':wednesday_schedule,
@@ -70,5 +71,3 @@ class ScheduleView(View):
             'career':career
         }
         return render(request, template_name=self.template, context=context)
-        
-        return super().post(request, *args, **kwargs)

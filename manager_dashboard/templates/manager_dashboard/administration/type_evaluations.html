@@ -33,21 +33,22 @@
                                 <table class="table lms_table_active ">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Titre</th>
-                                            <th scope="col">Actif</th>
+                                            <th scope="col">Type</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
-                                        <tr>
-                                            <td>Devoir Pratique</td>
-                                            <td>Actif</td>
-                                            <td>
-                                                <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                                </div>
-                                            </td>
-                                        </tr>
+                                    <tbody id="elementList">
+                                        {% for type_evaluation in type_evaluations %}
+                                            <tr data-id="{{ type_evaluation.id }}">
+                                                <td> <h6>{{ type_evaluation.title }}<h6> </td>
+                                                <td>
+                                                    <div class="action_btns d-flex">
+                                                        {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
+                                                        <a href="#" onclick="deleteEvaluationType({{type_evaluation.id}})" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    </div>
+                                                </td>
+                                            </tr>
+                                        {% endfor %}
+                                        
                                     </tbody>
                                 </table>
                             </div>
@@ -65,14 +66,11 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form>
+                        <form method="post">
+                            {% csrf_token %}
                             <div class="mb-3">
-                                <label class="form-label" for="libelle">Titre</label>
-                                <input type="text" class="form-control" id="libelle" placeholder="Devoir pratique">
-                            </div>
-                            <div class="form-check">
-                                <input class="form-check-input" type="checkbox" id="gridCheck">
-                                <label class="form-label form-check-label" for="gridCheck">Actif ?</label>
+                                <label class="form-label" for="libelle">Type</label>
+                                <input type="text" id="title" class='form-control' name="title", placeholder="Partiel" maxLength="50" required>
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
@@ -82,5 +80,46 @@
         </div>
     </div>
 </div>
+
+
+<script>
+
+    // Supprimer un élément
+    function deleteEvaluationType(id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `/administration/type_evaluation/${id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    
+    </script>
 {% endblock content %}
     

@@ -44,6 +44,7 @@
     <script src="https://code.jquery.com/jquery-3.7.1.min.js" integrity="sha256-/JqT3SQfawRcv/BIHPThkBvs0OEvtFFmqPF/lYI/Cxo=" crossorigin="anonymous"></script>
     <script src="https://raw.githack.com/eKoopmans/html2pdf/master/dist/html2pdf.bundle.js"></script>
 
+
 </head>
 
 <body class="crm_body_bg">
@@ -165,7 +166,6 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href='{% url "manager_dashboard:bulletins" %}' >Bulletins</a></li>
                     <li><a href='{% url "manager_dashboard:evaluations" %}'>Évaluations</a></li>
                     <li><a href='{% url "manager_dashboard:averages" %}'>Tableau des moyennes</a></li>
                     <li><a href='{% url "manager_dashboard:table_notes" %}'>Tableau des notes</a></li>
@@ -214,7 +214,7 @@
                     </div>
                 </a>
                 <ul>
-                    {% comment %} <li><a href="{% url 'manager_dashboard:type_evaluation' %}">Type d'Évaluations</a></li> {% endcomment %}
+                    <li><a href="{% url 'manager_dashboard:type_evaluation' %}">Type d'Évaluations</a></li>
                     <li><a href="{% url 'manager_dashboard:type_documents' %}">Type de documents</a></li>
                     <!-- <li><a href="">Type de présence</a></li> -->
                     <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Type de sanctions</a></li>

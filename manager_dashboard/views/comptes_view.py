@@ -67,7 +67,8 @@ class AddDirectionAccount(View):
             )
             user.is_accountant = True
             user.management_profil = manager
-            
+        
+        user.school = request.user.school
         user.save()
         return redirect('manager_dashboard:directors')
 
@@ -115,6 +116,7 @@ class EditTeacherAccountView(View):
             form.save()
             user.set_password(form.cleaned_data['password'])
             user.is_teacher = True
+            user.school = request.user.school
             user.save()
             return redirect('manager_dashboard:teachers_account')  # Redirigez vers la page appropriée après la mise à jour réussie
         # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
@@ -142,6 +144,8 @@ class AddTeacherAccount(View):
                 form.cleaned_data['teacher'],
                 form.cleaned_data['password'],
             )
+            new_user.school = request.user.school
+            new_user.save()
         return redirect('manager_dashboard:teachers_account')
 
 class ListAllTeacherAccount(View):
@@ -186,6 +190,7 @@ class EditStudentAccountView(View):
             form.save()
             user.set_password(form.cleaned_data['password'])
             user.is_student = True
+            user.school = request.user.school
             user.save()
             return redirect('manager_dashboard:students_account')  # Redirigez vers la page appropriée après la mise à jour réussie
         # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
@@ -213,6 +218,8 @@ class AddStudentAccount(View):
                 form.cleaned_data['student'],
                 form.cleaned_data['password'],
             )
+            new_user.school = request.user.school
+            new_user.save()
         return redirect('manager_dashboard:students_account')
 
 class ListAllStudentAccount(View):

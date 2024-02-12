@@ -19,7 +19,9 @@ class AddeBook(View):
         return render(request, template_name=self.template, context=self.context_object)
     
     def post(self, request, *args, **kwargs):
-        form = eBookForm(request.POST, request.FILES)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = eBookForm(data, request.FILES)
         if form.is_valid():
             form.save()
             return redirect('manager_dashboard:ebooks')
@@ -51,7 +53,7 @@ class EditEbook(View):
         if 'attachement' not in mutable_files or not mutable_files['attachement']:
             mutable_files['attachement'] = None
 
-            
+        mutable_data['school'] = request.user.school
         form = eBookForm(mutable_data, mutable_files, instance=ebook)
         
         if form.is_valid():
@@ -70,7 +72,7 @@ class eBookView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        ebooks = eBook.objects.all().order_by('-created_at')
+        ebooks = eBook.objects.filter(school=request.user.school)
         context_object = {'ebooks': ebooks}
         return render(request, template_name=self.template, context=context_object)
     

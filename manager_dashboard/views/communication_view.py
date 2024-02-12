@@ -1,7 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.communication_forms import EventForm, GroupForm, InformationForm
-
 from backend.models.communication import Event, Group, Information
 
 class EditInformationView(View):
@@ -31,6 +30,7 @@ class EditInformationView(View):
         if 'date_info' not in request.POST or not request.POST['date_info']:
             mutable_data['date_info'] = old_date
             
+        mutable_data['school'] = request.user.school
         form = InformationForm(mutable_data, mutable_files, instance=info)
         
         if form.is_valid():
@@ -63,23 +63,24 @@ class InformationView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        context = {'informations': Information.objects.all().order_by('-created_at')}
+        context = {'informations': Information.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = InformationForm(request.POST, request.FILES)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = InformationForm(data, request.FILES)
         if form.is_valid():
             form.save()
-            context = {'informations': Information.objects.all().order_by('-created_at')}
-            return render(request, template_name=self.template, context=context)
+            return redirect('manager_dashboard:informations')
         
-        context = {'informations': Information.objects.all().order_by('-created_at')}
+        context = {'informations': Information.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Information,pk=pk)
         instance.delete()
-        context = {'informations': Information.objects.all().order_by('-created_at')}
+        context = {'informations': Information.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
 
 
@@ -110,7 +111,6 @@ class AddEventView(View):
     
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template, context=self.context)
-
 
 class EditEventView(View):
     template = "manager_dashboard/communication/editer_evenement.html"
@@ -143,7 +143,9 @@ class EditEventView(View):
             mutable_data['start_date'] = old_date1
         if 'end_date' not in request.POST or not request.POST['end_date']:
             mutable_data['end_date'] = old_date2
-            
+        
+        mutable_data['school'] = request.user.school
+
         form = EventForm(mutable_data, mutable_files, instance=event)
         
         if form.is_valid():
@@ -162,25 +164,25 @@ class EventView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        context = {'events': Event.objects.all().order_by('-created_at')}
+        context = {'events': Event.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = EventForm(request.POST, request.FILES)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = EventForm(data, request.FILES)
         if form.is_valid():
             form.save()
-            context = {'events': Event.objects.all().order_by('-created_at')}
-            return render(request, template_name=self.template, context=context)
+            return redirect('manager_dashboard:events')
         
-        context = {'events': Event.objects.all().order_by('-created_at')}
+        context = {'events': Event.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Event,pk=pk)
         instance.delete()
-        context = {'events': Event.objects.all().order_by('-created_at')}
+        context = {'events': Event.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
-
 
 class EventDetail(View):
     template = "manager_dashboard/communication/evenement_detail.html"
@@ -198,7 +200,6 @@ class EventDetail(View):
 
 class GroupDiscussionView(View):
     template = "manager_dashboard/communication/group-discussions.html"
-    form = GroupForm()
     
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -206,26 +207,28 @@ class GroupDiscussionView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        groups = Group.objects.all().order_by('-created_at')
-        contexte_object = {'group_discussions': groups, 'form':self.form}
+        groups = Group.objects.filter(school=request.user.school)
+        form = GroupForm(request.user)
+        contexte_object = {'group_discussions': groups, 'form':form}
         return render(request, template_name=self.template, context=contexte_object)
     
     def post(self, request, *args, **kwargs):
-        form = GroupForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = GroupForm(request.user, data)
         if form.is_valid():
             form.save()
-            groups = Group.objects.all().order_by('-created_at')
-            contexte_object = {'group_discussions': groups, 'form':self.form}
-            return render(request, template_name=self.template, context=contexte_object)
+            return redirect('manager_dashboard:discussion_group')
         
-        return render(request, template_name=self.template, context=self.contexte_object)
+        groups = Group.objects.filter(school=request.user.school)
+        contexte_object = {'group_discussions': groups, 'form':form}
+        return render(request, template_name=self.template, context=contexte_object)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Group, pk=pk)
         instance.delete()
         
-        groups = Group.objects.all().order_by('-created_at')
-        contexte_object = {'group_discussions': groups, 'form':self.form}
+        groups = Group.objects.filter(school=request.user.school)
+        form = GroupForm(request.user)
+        contexte_object = {'group_discussions': groups, 'form':form}
         return render(request, template_name=self.template, context=contexte_object)
-
-

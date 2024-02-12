@@ -2,7 +2,7 @@ from django.conf.urls.static import static
 from django.urls import path
 
 from elimu_universite import settings
-from manager_dashboard.views.administration_view import EditProfileView, ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
+from manager_dashboard.views.administration_view import EditProfileView, ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeEvaluationDeleteView, TypeEvaluationView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EditInformationView, EventDetail, EventView, GroupDiscussionView, InformationDetail, InformationView
 from manager_dashboard.views.comptes_view import AddDirectionAccount, AddStudentAccount, AddTeacherAccount, EditStudentAccountView, EditTeacherAccountView, ListAllDirectionAccount, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
@@ -131,7 +131,8 @@ urlpatterns = [
     #===END
     
     #=================== THIS ROUTE IS FOR ADMINISTRATION MODULE ========================
-    # path(route='administration/type_evaluation/', view=TypeEvaluationView.as_view(), name='type_evaluation'),
+    path(route='administration/type_evaluation/', view=TypeEvaluationView.as_view(), name='type_evaluation'),
+    path(route='administration/type_evaluation/<int:pk>/delete/', view=TypeEvaluationDeleteView.as_view(), name='delete_type_evaluation'),
     path(route='administration/type_documents/', view=TypeDocumentView.as_view(), name='type_documents'),
     path(route='administration/type_documents/<int:pk>/delete/', view=TypeDocumentDeleteView.as_view(), name='delete_type_document'),
     path(route='administration/type_documents/last/', view=get_last_document_type),

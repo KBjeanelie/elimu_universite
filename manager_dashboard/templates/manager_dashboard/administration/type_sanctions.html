@@ -39,7 +39,7 @@
                                         
                                         {% for type_sanction in type_sanctions %}
                                             <tr data-id="{{ type_sanction.id }}">
-                                                <td> {{ type_sanction.title }} </td>
+                                                <td><h6> {{ type_sanction.title }} </h6></td>
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
@@ -117,47 +117,7 @@
         }
         return cookieValue;
     }
-    
-    
-    $('#form_id').submit(function(event) {
-        event.preventDefault();
-        var title = $('#title').val();
-        $.ajax({
-            type: "POST",
-            url: "{% url 'manager_dashboard:type_sanctions' %}",
-            data: { title: title, csrfmiddlewaretoken: '{{ csrf_token }}' },
-            success: function(response) {
-                console.log('Type de sanction ajouté avec succès');
-                // Récupérer l'objet créé
-                $.ajax({
-                    type: "GET",
-                    url: `/administration/type_sanctions/last/`,
-                    success: function(data) {
-                        var newRow = `<tr data-id="${data.id}">
-                            <td>${data.title}</td>
-                            <td>
-                                <div class="action_btns d-flex">
-                                    <a href="#" onclick="deleteSanctionType(${data.id})" class="action_btn"> <i class="fas fa-trash"></i> </a>
-                                </div>
-                            </td>
-                          </tr>`;
-                          
-                        $('.QA_table tbody').append(newRow);
-                        // Clear form fields
-                        $('#form_id')[0].reset();
-                    },
-                    error: function(error) {
-                        console.error('Erreur lors de la récupération de l\'objet créé', error);
-                    }
-                });
-                
-            },
-            error: function(error) {
-                console.error('Erreur lors de la création du sanction', error);
-            }
-        });
-    });
-    
+
 </script>
 {% endblock content %}
     
