@@ -43,7 +43,11 @@ class EditAcademicYearView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, pk, *args, **kwargs):
         academique_year = get_object_or_404(AcademicYear, pk=pk)
@@ -81,7 +85,11 @@ class AddAcademicYearView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = AcademicYearForm()
@@ -105,7 +113,11 @@ class AcademicYearView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         academic_years = AcademicYear.objects.all().order_by('-label')
@@ -127,7 +139,11 @@ class LevelView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = LevelForm()
@@ -161,7 +177,11 @@ class SemesterView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = SemesterForm(request.user)
@@ -193,7 +213,11 @@ class SectorView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = SectorForm()
@@ -228,7 +252,11 @@ class CareerView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = CareerForm(request.user)
@@ -261,7 +289,11 @@ class GroupSubjectView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = GroupSubjectForm()
@@ -295,7 +327,11 @@ class EditSubjectView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, pk, *args, **kwargs):
         subject = get_object_or_404(Subject, pk=pk)
@@ -320,7 +356,11 @@ class AddSubjectView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = SubjectForm(request.user)
@@ -342,7 +382,11 @@ class SubjectView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         subjects = Subject.objects.filter(level__school=request.user.school)
@@ -381,7 +425,11 @@ class EditProgramView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, pk, *args, **kwargs):
         program = get_object_or_404(Program, pk=pk)
@@ -420,7 +468,11 @@ class AddProgramView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = ProgramForm()
@@ -444,7 +496,11 @@ class ProgramView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         programs = Program.objects.filter(school=request.user.school)
@@ -466,7 +522,11 @@ class EditSanctionView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, pk, *args, **kwargs):
         sanction = get_object_or_404(SanctionAppreciation, pk=pk)
@@ -505,7 +565,11 @@ class AddSanctionView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def post(self, request, *args, **kwargs):
         data = request.POST.copy()
@@ -525,7 +589,11 @@ class SanctionAppreciationView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
         sanctions = SanctionAppreciation.objects.filter(academic_year__school=request.user.school, academic_year__status=True)
@@ -546,7 +614,11 @@ class TrombinoscopeView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
         students = Student.objects.all()
@@ -562,7 +634,11 @@ class EditTeacherView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
@@ -603,7 +679,11 @@ class AddTeacherView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
         form = TeacherForm()
@@ -625,7 +705,11 @@ class TeacherView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
         teachers = Teacher.objects.all().order_by('-created_at')
@@ -645,7 +729,11 @@ class TeacherDetailView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, pk, *args, **kwargs):
         teacher = get_object_or_404(Teacher, pk=pk)
@@ -752,7 +840,11 @@ class EditStudentView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, pk, *args, **kwargs):
         student = get_object_or_404(Student, pk=pk)
@@ -788,7 +880,11 @@ class AddStudentView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
         context = {'form': StudentForm()}
@@ -829,7 +925,11 @@ class StudentsView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
         try:
@@ -847,7 +947,11 @@ class StudentDetailView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
 
     def get(self, request, pk, *args, **kwargs):
         academic_year = AcademicYear.objects.get(status=True, school=request.user.school)

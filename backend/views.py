@@ -29,7 +29,8 @@ class LoginView(View):
         if user is None:
             return redirect(to='backend:login')
         login(request, user)
-        
-        print(user)
 
-        return redirect(to='manager_dashboard:index')
+        if user.is_manager or user.is_admin:
+            return redirect(to='manager_dashboard:index')
+        if user.is_accountant:
+            return redirect(to='accountant_dashboard:index')

@@ -11,7 +11,11 @@ class AddeBook(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = eBookForm(request.user)
@@ -34,7 +38,11 @@ class EditEbook(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, pk, *args, **kwargs):
         ebook = get_object_or_404(eBook, pk=pk)
@@ -69,7 +77,11 @@ class eBookView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
-        return super().dispatch(request, *args, **kwargs)
+        
+        if request.user.is_manager or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         ebooks = eBook.objects.filter(school=request.user.school)
