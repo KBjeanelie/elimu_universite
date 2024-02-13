@@ -243,7 +243,8 @@ class AssessmentView(View):
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
-        evaluations = Assessment.objects.filter(academic_year__school=request.user.school).order_by('-created_at')
+        year = AcademicYear.objects.get(status=True, school=request.user.school)
+        evaluations = Assessment.objects.filter(academic_year=year).order_by('-created_at')
         # Nombre d'éléments par page
         items_per_page = 7
         

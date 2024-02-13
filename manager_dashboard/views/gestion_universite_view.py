@@ -699,7 +699,7 @@ class PreRegistrationView(View):
         try:
             academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
             students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=False).order_by('-created_at')
-            context = {'student_careers':students}
+            context = {'student_careers':students, 'year':academic_year}
             return render(request, template_name=self.template, context=context)
         except AcademicYear.DoesNotExist:
             # Exécuter du code alternatif si l'objet AcademicYear n'existe pas
