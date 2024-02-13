@@ -10,7 +10,7 @@ from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, A
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, PreRegistrationDetailView, PreRegistrationView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
-from manager_dashboard.views.statistique_view import ResultatAcademique
+from manager_dashboard.views.statistique_view import CloseAcademicYear, NotAcademicYearFound, ResultatAcademique
 
 
 app_name = 'manager_dashboard'
@@ -146,6 +146,9 @@ urlpatterns = [
     
     #===================================== THIS ROUTE IS FOR STATISTIQUE MODULE ======================
     path(route='rapport-&-statistique/resultat-academique/', view=ResultatAcademique.as_view(), name='academic_result'),
+    path(route='rapport-&-statistique/resultat-academique/close/', view=CloseAcademicYear.as_view(), name='close_year'),
+    
+    path(route='no-academic-year-found/', view=NotAcademicYearFound.as_view(), name='no_year'),
 ]
 
 if settings.DEBUG:

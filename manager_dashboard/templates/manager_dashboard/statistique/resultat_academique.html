@@ -18,7 +18,7 @@
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href='' class="btn btn-danger">Clôturer l'année en cours</a>
+                            <button type="button" class="btn btn-danger" data-bs-toggle="modal" data-bs-target="#closeYearModal">Clôturer l'année en cours</button>
                         </div>
                         <div class="page_date_button d-flex align-items-center">
                             <a href='{% url "manager_dashboard:bulletins" %}' class="btn btn-primary">Rélévés de notes</a>
@@ -143,6 +143,30 @@
             </div>
         </div>
 
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="closeYearModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <form method="post">
+            {% csrf_token %}
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h5 class="modal-title" id="closeYearModal">?</h5>
+                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                    </button>
+                </div>
+                <div class="modal-body">
+                    <h4 class='text-center'>Êtes-vous sûr de vouloir clôturer l'année académique {{academic_year.label}} ?</h4>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ti-close"></i> Non</button>
+                    <a href='{% url "manager_dashboard:close_year" %}' class="btn btn-success"><i class="ti-check"></i> Oui</a>
+                </div>
+            </div>
+        </form>
     </div>
 </div>
 {% endblock content %}

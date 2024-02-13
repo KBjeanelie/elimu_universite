@@ -1,11 +1,36 @@
-from django.shortcuts import render
+from django.shortcuts import redirect, render
 from django.views import View
 from manager_dashboard.views.gestion_evaluation_view import calculate_results, get_all_results
 from backend.models.gestion_ecole import AcademicYear, Career, Semester, StudentCareer
 from django.http import Http404
 
+class NotAcademicYearFound(View):
+    template_name = "manager_dashboard/statistique/no_academique.html"
+    def get(self, request, *args, **kwargs):
+        return render(request, template_name=self.template_name)
+
+class CloseAcademicYear(View):
+    
+    def get(self, request, *args, **kwargs):
+        year = AcademicYear.objects.get(status=True, school=request.user.school)
+        year.status = False
+        year.save()
+        return redirect('manager_dashboard:years')
+
 class ResultatAcademique(View):
     template_name = "manager_dashboard/statistique/resultat_academique.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+        
     
     def get_context_data(self, request, **kwargs):
         semesters = Semester.objects.filter(level__school=self.request.user.school)

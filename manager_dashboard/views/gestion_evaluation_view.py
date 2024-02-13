@@ -170,6 +170,12 @@ class EditAssessmentView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, pk, *args, **kwargs):
@@ -197,6 +203,12 @@ class AddAssessmentView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
@@ -222,6 +234,12 @@ class AssessmentView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
@@ -260,6 +278,12 @@ class NoteTableView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
@@ -325,6 +349,12 @@ class AverageTableView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
@@ -414,6 +444,12 @@ class BullettinView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
@@ -451,9 +487,15 @@ class BullettinView(View):
 class BulletinDetailView(View):
     template_name = 'manager_dashboard/evaluations/bulletin_detail.html'
     
-    def dispatch(self, request, *args, **kwargs):
+    def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get_context_data(self, request, pk, *args, **kwargs):

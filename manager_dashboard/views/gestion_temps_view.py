@@ -1,7 +1,7 @@
 from django.shortcuts import redirect, render
 from django.views import View
 from backend.forms.gestion_ecole_forms import ScheduleForm
-from backend.models.gestion_ecole import Career, Schedule, Semester
+from backend.models.gestion_ecole import AcademicYear, Career, Schedule, Semester
 
 class AddScheduleView(View):
     template = 'manager_dashboard/gestion_temps/ajout_emplois_temps.html'
@@ -9,6 +9,12 @@ class AddScheduleView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
@@ -33,6 +39,12 @@ class ScheduleView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
         return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
