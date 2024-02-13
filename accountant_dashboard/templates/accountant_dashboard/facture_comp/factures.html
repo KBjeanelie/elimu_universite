@@ -65,13 +65,12 @@
                                                 <td><h6>{{ invoice.invoice_date }}</h6></td>
                                                 <td><h6>{{ invoice.student.fullname }}</h6></td>
                                                 <td><h6>{{ invoice.career.title }}</h6></td>
-                                                <td><h6><span class="badge rounded-pill bg-danger">{{ invoice.payment_status }}</span></h6></td>
+                                                <td><h6><span class="badge rounded-pill bg-danger">{{ invoice.invoice_status}}</span></h6></td>
                                                 <td><h6>{{ invoice.comment | slice:"50" }}</h6></td>
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         <a href='{% url "accountant_dashboard:invoice" invoice.id %}' class="action_btn mr_10"> <i class="ti-eye"></i></a>
-                                                        <a href="#" class="action_btn mr_10" data-bs-toggle="modal" data-bs-target="#Paiement" > <i class="ti-credit-card"></i> </a>
-                                                        <a href="#" class="action_btn mr_10" data-bs-toggle="modal" data-bs-target="#exampleModalLong" data-invoice-id="{{ invoice.id }}"> <i class="ti-pencil"></i> </a>
+                                                        <a href='{% url "accountant_dashboard:invoice_edit" invoice.id %}' class="action_btn mr_10"> <i class="ti-pencil"></i> </a>
                                                         <a href="#" onclick="deleteInvoice({{invoice.id}})" class="action_btn mr_10"> <i class="ti-trash"></i> </a>
                                                     </div>
                                                 </td>
@@ -115,43 +114,15 @@
                         {{form.student}}
                     </div>
                     <div class="mb-3">
+                        <label class="form-label" for="libelle">Status de la facture</label>
+                        {{form.invoice_status}}
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label" for="libelle">Commentaire</label>
                         {{form.comment}}
                     </div>
                     
                 </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ti-close"></i> Close</button>
-                    <button type="submit" class="btn btn-success"><i class="ti-save"></i> Save changes</button>
-                </div>
-            </div>
-        </form>
-    </div>
-</div>
-
-<div class="modal fade" id="Paiement" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
-    <div class="modal-dialog" role="document">
-        <form action="">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title" id="exampleModalLongTitle">Paiement de la facture N°FA23445DG</h5>
-                    <button type="button" class="close" data-bs-dismiss="modal" aria-label="Close">
-                    <span aria-hidden="true">&times;</span>
-                    </button>
-                </div>
-                <div class="modal-body">
-                    <div class="mb-3">
-                        <label class="form-label" for="libelle">Montant</label>
-                        <input type="number" class="form-control" id="libelle" placeholder="sauvegarde">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="libelle">Date</label>
-                        <input type="date" class="form-control" id="libelle" placeholder="sauvegarde">
-                    </div>
-                    <div class="mb-3">
-                        <label class="form-label" for="libelle">Commentaire</label>
-                        <textarea name="" class="form-control" id="" cols="30" rows="3"></textarea>
-                    </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ti-close"></i> Close</button>
                     <button type="submit" class="btn btn-success"><i class="ti-save"></i> Save changes</button>

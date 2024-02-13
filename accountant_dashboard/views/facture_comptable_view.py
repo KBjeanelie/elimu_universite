@@ -1,26 +1,48 @@
+import datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.facturation_forms import InvoiceForm, RegulationsForm
 from backend.models.facturation import Invoice, Regulations
+from django.core.cache import cache
 
+def generate_payment_number():
+        now = datetime.datetime.now()
+        year = now.year
+        # Utilisation du cache pour stocker le compteur
+        regulation_counter = cache.get('regulation_counter') or 0
+        regulation_counter += 1
+        cache.set('regulation_counter', regulation_counter)
+
+        return f"REGL{year}{regulation_counter}"
+    
+def generate_invoice_number():
+        now = datetime.datetime.now()
+        year = now.year
+        # Utilisation du cache pour stocker le compteur
+        invoice_counter = cache.get('invoice_counter') or 0
+        invoice_counter += 1
+        cache.set('invoice_counter', invoice_counter)
+        
+        return f"FA{year}{invoice_counter}"
 
 class InvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/factures.html"
     
     def get(self, request, *args, **kwargs):
-        invoices = Invoice.objects.all()
-        form = InvoiceForm()
+        invoices = Invoice.objects.filter(school=request.user.school)
+        form = InvoiceForm(request.user,)
         context = {'invoices':invoices, 'form':form}
         return render(request, template_name=self.template_name, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = InvoiceForm(request.POST)
+        form = InvoiceForm(request.user, request.POST)
         if form.is_valid():
             invoice_number = generate_invoice_number()
             career = form.cleaned_data['career']
             item = form.cleaned_data['item']
             student = form.cleaned_data['student']
             comment = form.cleaned_data['comment']
+            invoice_status = form.cleaned_data['invoice_status']
             
             # Utilisation des valeurs récupérées pour créer une nouvelle instance de la facture
             invoice = Invoice(
@@ -28,7 +50,9 @@ class InvoiceView(View):
                 career=career,
                 item=item,
                 student=student,
-                comment=comment
+                comment=comment,
+                school=request.user.school,
+                invoice_status=invoice_status
             )
             invoice.save()
             return redirect("accountant_dashboard:invoices")
@@ -48,7 +72,26 @@ class InvoiceDetailView(View):
     def get(self, request,pk, *args, **kwargs):
         invoice = get_object_or_404(Invoice, pk=pk)
         regulation = get_object_or_404(Regulations, invoice=invoice)
-        context = {'invoice':invoice, 'regulation':regulation}
+        context = {'invoice':invoice, 'regulation':'regulation'}
+        return render(request, template_name=self.template_name, context=context)
+
+class EditInvoiceView(View):
+    template_name = "accountant_dashboard/facture_comp/edit_facture.html"
+    
+    def get(self, request,pk, *args, **kwargs):
+        invoice = get_object_or_404(Invoice, pk=pk)
+        form = InvoiceForm(request.user, instance=invoice)
+        context = {'invoice':invoice, 'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        invoice = Invoice.objects.get(pk=pk)
+        form = InvoiceForm(request.user, request.POST, instance=invoice)
+        if form.is_valid():
+            form.save()
+            return redirect("accountant_dashboard:invoices")
+
+        context = {'invoice':invoice, 'form':form}
         return render(request, template_name=self.template_name, context=context)
 
 

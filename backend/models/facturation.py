@@ -107,11 +107,13 @@ class Invoice(models.Model):
     
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, blank=True, null=True)
     
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
+    
     #timeline = models.ForeignKey(TimeLine, on_delete=models.DO_NOTHING)
     
     choices = [('Entièrement payé', 'Entièrement payé'), ('Non payé', 'Non payé'), ('Avance', 'Avance')]
     
-    payment_status = models.CharField(max_length=20, choices=choices, blank=True)
+    invoice_status = models.CharField(max_length=20, choices=choices, blank=True)
     
     comment = models.TextField(blank=True)
     

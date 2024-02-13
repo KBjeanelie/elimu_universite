@@ -1,4 +1,7 @@
 from django import forms
+
+from backend.models.gestion_ecole import Career, StudentCareer
+from backend.models.user_account import Student
 from ..models.facturation import Invoice, Item, Regulations
 
 class ItemForm(forms.ModelForm):
@@ -45,9 +48,18 @@ class ItemForm(forms.ModelForm):
         }
 
 class InvoiceForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(InvoiceForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['career'].queryset = Career.objects.filter(sector__school=user.school)
+        self.fields['item'].queryset = Item.objects.filter(school=user.school)
+        student_ids = StudentCareer.objects.filter(academic_year__school=user.school, academic_year__status=True).values_list('student', flat=True).distinct()
+        self.fields['student'].queryset = Student.objects.filter(id__in=student_ids)
+    
     class Meta:
         model = Invoice
-        fields = ['student', 'career', 'item', 'payment_status', 'comment']
+        fields = ['student', 'career', 'item', 'invoice_status', 'comment']
         widgets = {
             'student': forms.Select(
                 attrs={
@@ -67,7 +79,7 @@ class InvoiceForm(forms.ModelForm):
                     'required': True
                 }
             ),
-            'payment_status': forms.Select(
+            'invoice_status': forms.Select(
                 attrs={
                     'class': 'form-control',
                 }
