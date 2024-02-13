@@ -8,12 +8,12 @@ class InformationsView(View):
     template_name = "accountant_dashboard/communication/informations.html"
     
     def get(self, request, *args, **kwargs):
-        object = {'informations': Information.objects.filter(status=True)}
+        object = {'informations': Information.objects.filter(status=True, school=request.user.school)}
         return render(request, template_name=self.template_name, context=object)
 
 class EventsView(View):
     template_name = "accountant_dashboard/communication/evenements.html"
     
     def get(self, request, *args, **kwargs):
-        object = {'events': Event.objects.filter(status=True)}
+        object = {'events': Event.objects.filter(status=True, school=request.user.school)}
         return render(request, template_name=self.template_name, context=object)

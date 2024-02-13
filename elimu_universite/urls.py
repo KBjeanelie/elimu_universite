@@ -16,7 +16,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     # re_path('api/', schema_view),
     path('', include('manager_dashboard.urls')),
-    #path('accountnant-dashboard/', include('accountant_dashboard.urls')),
+    path('accountnant-dashboard/', include('accountant_dashboard.urls')),
     path('elimu-universite/', include('backend.urls')),
     path('admin/', admin.site.urls),
     path('api-auth/', include('rest_framework.urls')),

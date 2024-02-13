@@ -12,12 +12,13 @@
                     <div class="page_title_left d-flex align-items-center">
                         <h3 class="f_s_25 f_w_700 dark_text mr_30">Catalogue des articles</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">/</a></li>
+                            <li class="breadcrumb-item"><a class='text-primary' href='{% url "accountant_dashboard:index" %}'> Accueil</a></li>
+                            <li class="breadcrumb-item"><a href=''> Catalogues des articles</a></li>
                         </ol>
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href='{% url "accountant_dashboard:add_item" %}' class="white_btn3">Ajouter</a>
+                            <a href='{% url "accountant_dashboard:add_item" %}' class="white_btn3">Ajouter un article</a>
                         </div>
                     </div>
                 </div>

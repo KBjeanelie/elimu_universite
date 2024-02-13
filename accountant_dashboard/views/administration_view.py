@@ -15,7 +15,9 @@ class EditItemView(View):
     
     def post(self, request, pk, *args, **kwargs):
         item = get_object_or_404(Item, pk=pk)
-        form = ItemForm(request.POST, instance=item)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = ItemForm(data, instance=item)
         if form.is_valid():
             form.save()
             return redirect('accountant_dashboard:items')  # Redirigez vers la page appropriée après la mise à jour réussie
@@ -31,11 +33,13 @@ class AddItemView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = ItemForm(request.POST)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = ItemForm(data)
         if form.is_valid():
             form.save()
             return redirect("accountant_dashboard:items")
-        form = ItemForm()
+        
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -43,14 +47,14 @@ class ItemView(View):
     template = "accountant_dashboard/administration/articles.html"
 
     def get(self, request, *args, **kwargs):
-        items = Item.objects.all().order_by('-created_at')
+        items = Item.objects.filter(school=request.user.school).order_by('-created_at')
         context = {'items': items}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Item, pk=pk)
         instance.delete()
-        items = Item.objects.all().order_by('-created_at')
+        items = Item.objects.filter(school=request.user.school).order_by('-created_at')
         context = {'items': items}
         return render(request, template_name=self.template, context=context)
     

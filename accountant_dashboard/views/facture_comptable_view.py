@@ -1,9 +1,7 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.facturation_forms import InvoiceForm, RegulationsForm
-
 from backend.models.facturation import Invoice, Regulations
-from module_invoice_and_accounting.views import generate_invoice_number, generate_payment_number
 
 
 class InvoiceView(View):

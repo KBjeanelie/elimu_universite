@@ -4,7 +4,7 @@ from ..models.facturation import Invoice, Item, Regulations
 class ItemForm(forms.ModelForm):
     class Meta:
         model = Item
-        fields = ['name', 'default_amount', 'defaut_quantity', 'is_active', 'analytic_code']
+        fields = ['name', 'default_amount', 'defaut_quantity', 'is_active', 'analytic_code', 'school']
         
         widgets = {
             'name' : forms.TextInput(
