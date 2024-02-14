@@ -1,8 +1,8 @@
 import datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from backend.forms.facturation_forms import InvoiceForm, RepaymentForm
-from backend.models.facturation import Invoice, Repayment
+from backend.forms.facturation_forms import InvoiceForm, RepaymentForm, SpendForm
+from backend.models.facturation import Invoice, Repayment, Spend
 from django.core.cache import cache
 
 def generate_payment_number():
@@ -24,6 +24,13 @@ def generate_invoice_number():
         cache.set('invoice_counter', invoice_counter)
         
         return f"FA{year}{invoice_counter}"
+
+class FinancialCommitmentView(View):
+    template_name = "accountant_dashboard/facture_comp/engagement_financier.html"
+    
+    def get(self, request, *args, **kwargs):
+        return render(request, template_name=self.template_name)
+
 
 class InvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/factures.html"
@@ -160,11 +167,63 @@ class RepaymentView(View):
     
 #===END
 
-class FinancialCommitmentView(View):
-    template_name = "accountant_dashboard/facture_comp/engagement_financier.html"
+class DepenseView(View):
+    template_name = "accountant_dashboard/rapport_financier/depenses.html"
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template_name)
+        spends = Spend.objects.filter(school=request.user.school).order_by('-created_at')
+        context = {'spends':spends}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Spend, pk=pk)
+        instance.delete()
+
+        spends = Spend.objects.filter(school=request.user.school).order_by('-created_at')
+        context = {'spends':spends}
+        return render(request, template_name=self.template_name, context=context)
+    
+
+class AddDepenseView(View):
+    template = "accountant_dashboard/rapport_financier/ajout_depense.html"
+    
+    def get(self, request, *args, **kwargs):
+        form = SpendForm(request.user)
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = SpendForm(request.user, data)
+        if form.is_valid():
+            form.save()
+            return redirect("accountant_dashboard:spend")
+        
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+
+class EditDepenseView(View):
+    template = "accountant_dashboard/rapport_financier/editer_depense.html"
+    
+    def get(self, request, pk, *args, **kwargs):
+        spend = Spend.objects.get(pk=pk)
+        form = SpendForm(request.user, instance=spend)
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        data = request.POST.copy()
+        spend = Spend.objects.get(pk=pk)
+        data['school'] = request.user.school
+        form = SpendForm(request.user, data, instance=spend)
+        if form.is_valid():
+            form.save()
+            return redirect("accountant_dashboard:spend")
+        
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+
 
 
 

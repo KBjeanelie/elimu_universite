@@ -187,3 +187,17 @@ class FinancialCommitment(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     
     updated_at = models.DateTimeField(auto_now=True)
+
+class Spend(models.Model):
+    
+    item = models.ForeignKey(Item, on_delete=models.SET_NULL, blank=True, null=True)
+    
+    amount = models.FloatField(default=0)
+    
+    comment = models.TextField(blank=True)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)

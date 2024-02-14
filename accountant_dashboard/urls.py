@@ -1,7 +1,7 @@
 from django.urls import path
 from accountant_dashboard.views.administration_view import AddItemView, EditItemView, ItemView
 from accountant_dashboard.views.communication_view import EventsView, InformationsView
-from accountant_dashboard.views.facture_comptable_view import AddRepaymentView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
+from accountant_dashboard.views.facture_comptable_view import AddDepenseView, AddRepaymentView, DepenseView, EditDepenseView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
 from accountant_dashboard.views.home_view import AccountantIndexView
 
 
@@ -26,6 +26,11 @@ urlpatterns = [
     path(route='factures-&-comptable/remboursements/ajouter/', view=AddRepaymentView.as_view(), name='add_repayment'),
     path(route='factures-&-comptable/remboursements/<int:pk>/editer/', view=EditRepaymentView.as_view(), name='edit_repayment'),
     path(route='factures-&-comptable/remboursements/<int:pk>/delete/', view=RepaymentView.as_view(), name='delete_repayment'),
+    
+    path(route='factures-&-comptable/rapport-des-depenses/', view=DepenseView.as_view(), name='spend'),
+    path(route='factures-&-comptable/rapport-des-depenses/ajouter/', view=AddDepenseView.as_view(), name='add_spend'),
+    path(route='factures-&-comptable/rapport-des-depenses/<int:pk>/editer/', view=EditDepenseView.as_view(), name='edit_spend'),
+    path(route='factures-&-comptable/rapport-des-depenses/<int:pk>/delete/', view=DepenseView.as_view(), name='delete_spend'),
     
     path(route='factures-&-comptable/engagement-financier/', view=FinancialCommitmentView.as_view(), name='financials'),
     

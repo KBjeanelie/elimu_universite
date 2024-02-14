@@ -2,7 +2,7 @@ from django import forms
 
 from backend.models.gestion_ecole import Career, StudentCareer
 from backend.models.user_account import Student
-from ..models.facturation import Invoice, Item, Repayment
+from ..models.facturation import Invoice, Item, Repayment, Spend
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -132,6 +132,38 @@ class RepaymentForm(forms.ModelForm):
             ),
             
             'repayment_method': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
+                }
+            ),
+            'amount': forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
+                }
+            ),
+            'comment': forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'cols':'3',
+                    'rows':'3'
+                }
+            )
+        }
+
+class SpendForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(SpendForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['item'].queryset = Item.objects.filter(school=user.school)
+    
+    class Meta:
+        model = Spend
+        fields = ['item', 'amount', 'comment',  'school']
+        widgets = {
+            'item': forms.Select(
                 attrs={
                     'class': 'form-control',
                     'required': True
