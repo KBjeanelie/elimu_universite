@@ -2,12 +2,17 @@ from django.urls import path
 from accountant_dashboard.views.administration_view import AddItemView, EditItemView, EditProfileView, ItemView, ProfileAppView
 from accountant_dashboard.views.communication_view import EventsView, InformationsView
 from accountant_dashboard.views.facture_comptable_view import AddDepenseView, AddRepaymentView, BalanceMonitoring, DepenseView, EditDepenseView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
-from accountant_dashboard.views.home_view import AccountantIndexView
+from accountant_dashboard.views.home_view import AccountantIndexView, PreRegistrationDetailView, PreRegistrationView
 
 
 app_name = 'accountant_dashboard'
 urlpatterns = [
     path(route="", view=AccountantIndexView.as_view(), name="index"),
+    path(route='gestion_universite/demande-de-préinscription/', view=PreRegistrationView.as_view(), name='pre_registrations'),
+    path(route='gestion_universite/demande-de-préinscription/<int:pk>/detail/', view=PreRegistrationDetailView.as_view(), name='pre_registrations_detail'),
+    path(route='gestion_universite/demande-de-préinscription/<int:pk>/check/', view=PreRegistrationDetailView.check, name='pre_registrations_check'),
+    path(route='gestion_universite/demande-de-préinscription/<int:pk>/delete/', view=PreRegistrationDetailView.delete, name='pre_registrations_delete'),
+    
     
     path(route='communication/infomations/', view=InformationsView.as_view(), name='infos'),
     path(route='communication/evenements/', view=EventsView.as_view(), name='events'),
