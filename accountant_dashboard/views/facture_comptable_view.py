@@ -1,8 +1,8 @@
 import datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from backend.forms.facturation_forms import InvoiceForm
-from backend.models.facturation import Invoice
+from backend.forms.facturation_forms import InvoiceForm, RepaymentForm
+from backend.models.facturation import Invoice, Repayment
 from django.core.cache import cache
 
 def generate_payment_number():
@@ -97,6 +97,68 @@ class EditInvoiceView(View):
         return render(request, template_name=self.template_name, context=context)
 
 
+#=============================== PARTIE CONCERNANT LES REMBOURSEMENTS ==========================
+class EditRepaymentView(View):
+    template = "accountant_dashboard/facture_comp/editer_remboursement.html"
+    def get(self, request, pk, *args, **kwargs):
+        repayment = get_object_or_404(Repayment, pk=pk)
+        form = RepaymentForm(request.user, instance=repayment)
+        context = {'form':form, 'repayment':repayment}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        repayment = get_object_or_404(Repayment, pk=pk)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = RepaymentForm(request.user, data, instance=repayment)
+        if form.is_valid():
+            form.save()
+            return redirect('accountant_dashboard:repayments')  # Redirigez vers la page appropriée après la mise à jour réussie
+        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        context = {'form': form, 'repayment': repayment}
+        return render(request, template_name=self.template, context=context)
+    
+class AddRepaymentView(View):
+    template = "accountant_dashboard/facture_comp/ajout_remboursement.html"
+    def get(self, request, *args, **kwargs):
+        form = RepaymentForm(request.user)
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        invoice = Invoice.objects.get(school=request.user.school, pk=data['invoice'])
+        data['amount'] = invoice.amount
+        form = RepaymentForm(request.user, data)
+        if form.is_valid():
+            form.save()
+            invoice.is_repayment = True
+            invoice.save()
+            return redirect("accountant_dashboard:repayments")
+        
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+
+class RepaymentView(View):
+    template = "accountant_dashboard/facture_comp/remboursements.html"
+
+    def get(self, request, *args, **kwargs):
+        repayments = Repayment.objects.filter(school=request.user.school).order_by('-created_at')
+        context = {'repayments': repayments}
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Repayment, pk=pk)
+        instance.invoice.is_repayment = False
+        instance.invoice.save()
+        instance.delete()
+        
+        repayments = Repayment.objects.filter(school=request.user.school).order_by('-created_at')
+        context = {'repayments': repayments}
+        return render(request, template_name=self.template, context=context)
+    
+#===END
 
 class FinancialCommitmentView(View):
     template_name = "accountant_dashboard/facture_comp/engagement_financier.html"

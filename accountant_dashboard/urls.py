@@ -1,7 +1,7 @@
 from django.urls import path
 from accountant_dashboard.views.administration_view import AddItemView, EditItemView, ItemView
 from accountant_dashboard.views.communication_view import EventsView, InformationsView
-from accountant_dashboard.views.facture_comptable_view import EditInvoiceView, FinancialCommitmentView, InvoiceDetailView, InvoiceView
+from accountant_dashboard.views.facture_comptable_view import AddRepaymentView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
 from accountant_dashboard.views.home_view import AccountantIndexView
 
 
@@ -21,6 +21,11 @@ urlpatterns = [
     path(route='factures-&-comptable/factures/<int:pk>/detail/', view=InvoiceDetailView.as_view(), name='invoice'),
     path(route='factures-&-comptable/factures/<int:pk>/editer/', view=EditInvoiceView.as_view(), name='invoice_edit'),
     path(route='factures-&-comptable/factures/<int:pk>/delete/', view=InvoiceView.as_view(), name='delete_invoice'),
+    
+    path(route='factures-&-comptable/remboursements/', view=RepaymentView.as_view(), name='repayments'),
+    path(route='factures-&-comptable/remboursements/ajouter/', view=AddRepaymentView.as_view(), name='add_repayment'),
+    path(route='factures-&-comptable/remboursements/<int:pk>/editer/', view=EditRepaymentView.as_view(), name='edit_repayment'),
+    path(route='factures-&-comptable/remboursements/<int:pk>/delete/', view=RepaymentView.as_view(), name='delete_repayment'),
     
     path(route='factures-&-comptable/engagement-financier/', view=FinancialCommitmentView.as_view(), name='financials'),
     

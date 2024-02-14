@@ -67,19 +67,26 @@
                                                 <td><h6>{{ invoice.career.title }}</h6></td>
                                                 <td><h6>{{ invoice.amount }} XAF</h6></td>
                                                 <td><h6>
-                                                    {% if invoice.invoice_status == 'Entièrement payé' %}
-                                                        <span class="badge rounded-pill bg-success">{{ invoice.invoice_status}}</span>
-                                                    {% elif  invoice.invoice_status == 'Non payé' %}
-                                                        <span class="badge rounded-pill bg-warning">{{ invoice.invoice_status}}</span>
+                                                    {% if invoice.is_repayment %}
+                                                        <span class="badge rounded-pill bg-danger">Remboursé</span>
                                                     {% else %}
-                                                        <span class="badge rounded-pill bg-danger">{{ invoice.invoice_status}}</span>
+                                                        {% if invoice.invoice_status == 'Entièrement payé' %}
+                                                            <span class="badge rounded-pill bg-success">{{ invoice.invoice_status}}</span>
+                                                        {% elif  invoice.invoice_status == 'Non payé' %}
+                                                            <span class="badge rounded-pill bg-warning">{{ invoice.invoice_status}}</span>
+                                                        {% else %}
+                                                            <span class="badge rounded-pill bg-danger">{{ invoice.invoice_status}}</span>
+                                                        {% endif %}
                                                     {% endif %}
                                                 </h6></td>
                                                 <td>
                                                     <div class="action_btns d-flex">
-                                                        <a href='{% url "accountant_dashboard:invoice" invoice.id %}' class="action_btn mr_10"> <i class="ti-eye"></i></a>
-                                                        <a href='{% url "accountant_dashboard:invoice_edit" invoice.id %}' class="action_btn mr_10"> <i class="ti-pencil"></i> </a>
-                                                        <a href="#" onclick="deleteInvoice({{invoice.id}})" class="action_btn mr_10"> <i class="ti-trash"></i> </a>
+                                                        {% if not invoice.is_repayment %}
+                                                            <a href='{% url "accountant_dashboard:invoice" invoice.id %}' class="action_btn mr_10"> <i class="ti-eye"></i></a>
+                                                            <a href='{% url "accountant_dashboard:invoice_edit" invoice.id %}' class="action_btn mr_10"> <i class="ti-pencil"></i> </a>
+                                                            <a href="#" onclick="deleteInvoice({{invoice.id}})" class="action_btn mr_10"> <i class="ti-trash"></i> </a>
+                                                        {% endif %}
+                                                        
                                                     </div>
                                                 </td>
                                             </tr>

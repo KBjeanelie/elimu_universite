@@ -68,7 +68,26 @@ from backend.models.user_account import Student
 #     def __str__(self):
 #         return f"Echéancier : {self.label}"
     
+
+# class Estimate(models.Model):
     
+#     estimate_number = models.CharField(max_length=50, unique=True)
+    
+#     date_estimate = models.DateField()
+    
+#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    
+#     career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    
+#     item = models.ForeignKey(Item, on_delete=models.DO_NOTHING)
+    
+#     timeline = models.ForeignKey(TimeLine, on_delete=models.DO_NOTHING)
+    
+#     created_at = models.DateTimeField(auto_now_add=True)
+    
+#     updated_at = models.DateTimeField(auto_now=True)
+
+
 class Item(models.Model):
     
     name = models.CharField(max_length=20)
@@ -117,6 +136,8 @@ class Invoice(models.Model):
     
     invoice_status = models.CharField(max_length=20, choices=choices, blank=True)
     
+    is_repayment = models.BooleanField(default=False)
+    
     comment = models.TextField(blank=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
@@ -127,23 +148,28 @@ class Invoice(models.Model):
         return f"N°{self.invoice_number}"
 
 
-# class Estimate(models.Model):
+class Repayment(models.Model):
     
-#     estimate_number = models.CharField(max_length=50, unique=True)
+    choices = [('Par chèque', 'Par chèque'), ('En espèce', 'En espèce')]
+    repayment_method = models.CharField(max_length=20, choices=choices)
     
-#     date_estimate = models.DateField()
+    amount = models.FloatField(default=0)
     
-#     student = models.ForeignKey(Student, on_delete=models.CASCADE)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     
-#     career = models.ForeignKey(Career, on_delete=models.CASCADE)
+    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
-#     item = models.ForeignKey(Item, on_delete=models.DO_NOTHING)
+    invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, blank=True, null=True)
     
-#     timeline = models.ForeignKey(TimeLine, on_delete=models.DO_NOTHING)
+    repayment_date = models.DateField(auto_now=True)
     
-#     created_at = models.DateTimeField(auto_now_add=True)
+    status = models.BooleanField(default=True)
     
-#     updated_at = models.DateTimeField(auto_now=True)
+    comment = models.TextField(blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True)
+    
+    updated_at = models.DateTimeField(auto_now=True)
 
 
 class FinancialCommitment(models.Model):

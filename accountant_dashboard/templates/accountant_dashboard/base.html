@@ -68,6 +68,21 @@
                 </a>
             </li>
 
+            <li class>
+                <a class="has-arrow" href="#" aria-expanded="false">
+                    <div class="nav_icon_small">
+                        <img src="{% static 'img/menu-icon/21.svg' %}" alt>
+                    </div>
+                    <div class="nav_title">
+                        <span>Rapport Financier </span>
+                    </div>
+                </a>
+                <ul>
+                    <li><a href=''> Compte de résultat </a></li>
+                    <li><a href=''> Rapport des dépenses </a></li>
+                    <li><a href=""> Bilan annuel </a></li>
+                </ul>
+            </li>
 
             <li class>
                 <a class="has-arrow" href="#" aria-expanded="false">
@@ -81,7 +96,8 @@
                 <ul>
                     <li><a href='{% url "accountant_dashboard:financials" %}'> Engagements financiers </a></li>
                     <li><a href='{% url "accountant_dashboard:invoices" %}'> Factures étudiants </a></li>
-                    <li><a href=""> Comptabilité étudiants </a></li>
+                    <li><a href='{% url "accountant_dashboard:repayments" %}'> Remboursement </a></li>
+                    <li><a href=""> Suivi des soldes </a></li>
                 </ul>
             </li>
 
