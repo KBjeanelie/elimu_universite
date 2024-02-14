@@ -225,7 +225,13 @@
                                         {% else %}
                                             <p>COMPTABLE</p>
                                         {% endif %}
-                                        <h5> {{user.username | capfirst}} </h5>
+                                        <h6 class='text-white'>
+                                            {% if user.management_profil %}
+                                            {{user.management_profil.firstname|capfirst}} {{user.management_profil.lastname|upper}}
+                                            {% else %}
+                                                {{user.username | capfirst}}
+                                            {% endif %}
+                                        </h6>
                                 </div>
                                 <div class="profile_info_details">
                                     <a href='{% url "accountant_dashboard:user_profile" %}'>Mon Profile </a>
