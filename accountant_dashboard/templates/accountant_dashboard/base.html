@@ -192,7 +192,7 @@
                                     Année academique :
                                     <span class="badge rounded-pill bg-primary">2023 - 2024</span>
                                 </li>
-                                <li>
+                                {% comment %} <li>
                                     <a class="bell_notification_clicker" href="#"> <img src="{% static 'img/icon/bell.svg' %}" alt><span>2</span></a>
                                     <div class="Menu_NOtification_Wrap">
                                         <div class="notification_Header"><h4>Notifications</h4></div>
@@ -213,7 +213,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li> {% endcomment %}
                             </div>
 
                             <div class="profile_info">
@@ -253,7 +253,7 @@
                 <div class="row">
                     <div class="col-lg-12">
                         <div class="footer_iner text-center">
-                            <p>2020 © eneo group - conçu par <a href="#"> <i class="ti-heart"></i> </a><a href="#"> Tableau de Bord</a></p>
+                            <p>{% now "Y" %} © eneo group - conçu par <a href="#"> <i class="ti-heart"></i> </a><a href="#"> Tableau de Bord</a></p>
                         </div>
                     </div>
                 </div>
