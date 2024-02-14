@@ -46,12 +46,12 @@
                                 {{ form.item }}
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="libelle">Status de la facture</label>
-                                {{ form.invoice_status }}
+                                <label class="form-label" for="libelle">Montant</label>
+                                {{ form.amount }}
                             </div>
                             <div class="mb-3">
-                                <label class="form-label" for="libelle">Commentaire</label>
-                                {{ form.comment }}
+                                <label class="form-label" for="libelle">Status de la facture</label>
+                                {{ form.invoice_status }}
                             </div>
                             <a  href='{% url "accountant_dashboard:invoices" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                             <button type="submit" class="btn btn-dark"> <i class="ti-save"></i> Enregistrer</button>

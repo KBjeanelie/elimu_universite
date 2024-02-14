@@ -25,7 +25,6 @@ admin.site.register(StudentDiscussionMedia)
 admin.site.register(Item)
 admin.site.register(Invoice)
 admin.site.register(FinancialCommitment)
-admin.site.register(Regulations)
 
 
 admin.site.register(Etablishment)

@@ -1,8 +1,8 @@
 import datetime
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-from backend.forms.facturation_forms import InvoiceForm, RegulationsForm
-from backend.models.facturation import Invoice, Regulations
+from backend.forms.facturation_forms import InvoiceForm
+from backend.models.facturation import Invoice
 from django.core.cache import cache
 
 def generate_payment_number():
@@ -40,6 +40,7 @@ class InvoiceView(View):
             invoice_number = generate_invoice_number()
             career = form.cleaned_data['career']
             item = form.cleaned_data['item']
+            amount = form.cleaned_data['amount']
             student = form.cleaned_data['student']
             comment = form.cleaned_data['comment']
             invoice_status = form.cleaned_data['invoice_status']
@@ -49,6 +50,7 @@ class InvoiceView(View):
                 invoice_number=invoice_number,
                 career=career,
                 item=item,
+                amount=amount,
                 student=student,
                 comment=comment,
                 school=request.user.school,
@@ -71,9 +73,9 @@ class InvoiceDetailView(View):
     
     def get(self, request,pk, *args, **kwargs):
         invoice = get_object_or_404(Invoice, pk=pk)
-        regulation = get_object_or_404(Regulations, invoice=invoice)
-        context = {'invoice':invoice, 'regulation':'regulation'}
+        context = {'invoice':invoice}
         return render(request, template_name=self.template_name, context=context)
+
 
 class EditInvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/edit_facture.html"
@@ -94,46 +96,6 @@ class EditInvoiceView(View):
         context = {'invoice':invoice, 'form':form}
         return render(request, template_name=self.template_name, context=context)
 
-
-
-class RegulationView(View):
-    template_name = "accountant_dashboard/facture_comp/reglements.html"
-    
-    def get(self, request, *args, **kwargs):
-        regulations = Regulations.objects.all()
-        form = RegulationsForm()
-        context = {'regulations':regulations, 'form':form}
-        return render(request, template_name=self.template_name, context=context)
-    
-    def post(self, request, *args, **kwargs):
-        form = RegulationsForm(request.POST)
-        
-        if form.is_valid():
-            payment_number = generate_payment_number()
-            invoice = form.cleaned_data['invoice']
-            student = form.cleaned_data['student']
-            payment_method = form.cleaned_data['payment_method']
-            amount_payment = form.cleaned_data['amount_payment']
-            comment = form.cleaned_data['comment']
-            
-            regulation = Regulations(
-                payment_number=payment_number,
-                invoice=invoice,
-                student=student,
-                payment_method=payment_method,
-                amount_payment=amount_payment,
-                comment=comment
-            )
-            
-            regulation.save()
-            return redirect("accountant_dashboard:regulations")
-        
-        return redirect("accountant_dashboard:invoices")
-    
-    def delete(self, request, pk, *args, **kwargs):
-        instance = get_object_or_404(Regulations, pk=pk)
-        instance.delete()
-        return render(request, template_name=self.template_name)
 
 
 class FinancialCommitmentView(View):

@@ -2,7 +2,7 @@ from django import forms
 
 from backend.models.gestion_ecole import Career, StudentCareer
 from backend.models.user_account import Student
-from ..models.facturation import Invoice, Item, Regulations
+from ..models.facturation import Invoice, Item
 
 class ItemForm(forms.ModelForm):
     class Meta:
@@ -59,9 +59,15 @@ class InvoiceForm(forms.ModelForm):
     
     class Meta:
         model = Invoice
-        fields = ['student', 'career', 'item', 'invoice_status', 'comment']
+        fields = ['student', 'career', 'amount', 'item', 'invoice_status', 'comment']
         widgets = {
             'student': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required': True
+                }
+            ),
+            'amount': forms.NumberInput(
                 attrs={
                     'class': 'form-control',
                     'required': True
@@ -87,48 +93,9 @@ class InvoiceForm(forms.ModelForm):
             'comment': forms.Textarea(
                 attrs={
                     'class': 'form-control',
-                    'cols':'5',
-                    'rows':'5'
+                    'cols':'3',
+                    'rows':'3'
                 }
             )
         }
 
-
-class RegulationsForm(forms.ModelForm):
-    class Meta:
-        model = Regulations
-        fields = ['invoice', 'student', 'payment_method', 'amount_payment', 'comment']
-        widgets = {
-            'invoice': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                    'required': True
-                }
-            ),
-            'student': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                    'required': True
-                }
-            ),
-            'amount_payment': forms.NumberInput(
-                attrs={
-                    'type':'number',
-                    'class': 'form-control',
-                    'required': True
-                }
-            ),
-            'payment_method': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                    'required': True
-                }
-            ),
-            'comment': forms.Textarea(
-                attrs={
-                    'class': 'form-control',
-                    'cols':'4',
-                    'rows':'2'
-                }
-            )
-        }

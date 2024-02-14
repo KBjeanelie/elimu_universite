@@ -101,6 +101,8 @@ class Invoice(models.Model):
     
     invoice_date = models.DateField(auto_now=True)
     
+    amount = models.FloatField(default=0)
+    
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     
     career = models.ForeignKey(Career, on_delete=models.SET_NULL, null=True)
@@ -123,29 +125,6 @@ class Invoice(models.Model):
     
     def __str__(self):
         return f"N°{self.invoice_number}"
-
-
-class Regulations(models.Model):
-    
-    payment_number = models.CharField(max_length=50, unique=True)
-    
-    invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, blank=True, null=True)
-    
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
-    
-    choices = [('Espèce', 'Espèce'), ('Chèque', 'Chèque')]
-    
-    payment_method = models.CharField(max_length=20, choices=choices, blank=True)
-    
-    date_payment = models.DateField(auto_now=True)
-    
-    amount_payment = models.IntegerField()
-    
-    comment = models.TextField(blank=True)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    updated_at = models.DateTimeField(auto_now=True)
 
 
 # class Estimate(models.Model):

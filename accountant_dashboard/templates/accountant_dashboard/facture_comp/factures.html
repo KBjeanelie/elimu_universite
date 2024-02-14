@@ -9,9 +9,9 @@
             <div class="col-12">
                 <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
                     <div class="page_title_left d-flex align-items-center">
-                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Factures des étudiants</h3>
+                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Factures Etudiants</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
-                            <li class="breadcrumb-item"><a href="javascript:void(0);">/</a></li>
+                            <li class="breadcrumb-item"><a class='text-primary' href='{% url "accountant_dashboard:index" %}'> Accueil</a></li>
                         </ol>
                     </div>
                     <div class="page_title_right">
@@ -53,8 +53,8 @@
                                             <th scope="col">Date de facture</th>
                                             <th scope="col">Étudiant</th>
                                             <th scope="col">Parcours</th>
+                                            <th scope="col">Montant</th>
                                             <th scope="col">Status</th>
-                                            <th scope="col">Commentaire</th>
                                             <th scope="col"></th>
                                         </tr>
                                     </thead>
@@ -65,8 +65,16 @@
                                                 <td><h6>{{ invoice.invoice_date }}</h6></td>
                                                 <td><h6>{{ invoice.student.fullname }}</h6></td>
                                                 <td><h6>{{ invoice.career.title }}</h6></td>
-                                                <td><h6><span class="badge rounded-pill bg-danger">{{ invoice.invoice_status}}</span></h6></td>
-                                                <td><h6>{{ invoice.comment | slice:"50" }}</h6></td>
+                                                <td><h6>{{ invoice.amount }} XAF</h6></td>
+                                                <td><h6>
+                                                    {% if invoice.invoice_status == 'Entièrement payé' %}
+                                                        <span class="badge rounded-pill bg-success">{{ invoice.invoice_status}}</span>
+                                                    {% elif  invoice.invoice_status == 'Non payé' %}
+                                                        <span class="badge rounded-pill bg-warning">{{ invoice.invoice_status}}</span>
+                                                    {% else %}
+                                                        <span class="badge rounded-pill bg-danger">{{ invoice.invoice_status}}</span>
+                                                    {% endif %}
+                                                </h6></td>
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         <a href='{% url "accountant_dashboard:invoice" invoice.id %}' class="action_btn mr_10"> <i class="ti-eye"></i></a>
@@ -114,6 +122,10 @@
                         {{form.student}}
                     </div>
                     <div class="mb-3">
+                        <label class="form-label" for="libelle">Montant</label>
+                        {{form.amount}}
+                    </div>
+                    <div class="mb-3">
                         <label class="form-label" for="libelle">Status de la facture</label>
                         {{form.invoice_status}}
                     </div>
@@ -124,7 +136,7 @@
                     
                 </div>
                 <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal"><i class="ti-close"></i> Close</button>
+                    <button type="button" class="btn btn-danger" data-bs-dismiss="modal"><i class="ti-close"></i> Close</button>
                     <button type="submit" class="btn btn-success"><i class="ti-save"></i> Save changes</button>
                 </div>
             </div>

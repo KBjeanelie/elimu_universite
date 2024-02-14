@@ -4,7 +4,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from manager_dashboard.views.gestion_evaluation_view import calculate_results
 from backend.models.evaluations import Assessment
-from backend.models.facturation import Invoice, Regulations
+from backend.models.facturation import Invoice
 from backend.forms.gestion_ecole_forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm, TeacherDocumentForm
 from backend.models.gestion_ecole import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject, TeacherDocument
 from backend.forms.user_account_forms import StudentForm, TeacherForm
