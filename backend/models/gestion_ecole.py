@@ -16,6 +16,7 @@ class Etablishment(models.Model):
     système = models.CharField(max_length=50, choices=systemes)
     status_fees = models.CharField(max_length=50, choices=statues)
     subscription_fees = models.FloatField(default=1000)
+    month = models.IntegerField(default=9)
     re_registration_fees = models.FloatField(default=800)
     
     def __str__(self):
@@ -36,6 +37,7 @@ class AcademicYear(models.Model):
 # Class representing Academic Level
 class Level(models.Model):
     label = models.CharField(max_length=50)
+    fees = models.IntegerField(default=1000)
     school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

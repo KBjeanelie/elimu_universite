@@ -38,7 +38,7 @@ class AcademicYearForm(forms.ModelForm):
 class LevelForm(forms.ModelForm):
     class Meta:
         model = Level
-        fields = ['label', 'school']
+        fields = ['label', 'fees', 'school']
         widgets = {
             'label' : forms.TextInput(
                 attrs={
@@ -47,6 +47,12 @@ class LevelForm(forms.ModelForm):
                     'name': 'label',
                     'maxLength':'50',
                     'placeholder': 'ex: 1er année',
+                    'required': True
+                }
+            ),
+            'fees' : forms.NumberInput(
+                attrs={
+                    'class': 'form-control',
                     'required': True
                 }
             ),

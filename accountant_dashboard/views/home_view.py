@@ -1,5 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from backend.models.facturation import FinancialCommitment
 
 from backend.models.gestion_ecole import AcademicYear, StudentCareer
 from backend.models.user_account import Student
@@ -65,6 +66,15 @@ class PreRegistrationDetailView(View):
         if student_career.student:
             student_career.student.is_valid = True
             student_career.student.save()
+            
+            #enregistrer un engagement financiers
+            amount_level = student_career.semester.level.fees * student_career.school.month
+            financialCommitment = FinancialCommitment.objects.create(
+                student=student_career.student,
+                school=student_career.school,
+                school_fees=amount_level
+            )
+            financialCommitment.save()
         return redirect('accountant_dashboard:pre_registrations')
     
     def delete(self, pk, *args, **kwargs):

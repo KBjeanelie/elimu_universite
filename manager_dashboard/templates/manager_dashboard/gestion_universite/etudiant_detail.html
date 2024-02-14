@@ -555,10 +555,8 @@
                                                 <table class="table lms_table_active ">
                                                     <thead>
                                                         <tr>
-                                                            <th scope="col">N°Reglement</th>
-                                                            <th scope="col">Date</th>
-                                                            <th scope="col">Mode de paiement</th>
                                                             <th scope="col">N°Facture</th>
+                                                            <th scope="col">Date</th>
                                                             <th scope="col">État</th>
                                                             <th scope="col">Crédité</th>
                                                         </tr>
@@ -566,12 +564,10 @@
                                                     <tbody>
                                                         {% for regulation in regulations %}
                                                         <tr>
-                                                            <td> {{regulation.payment_number}} </td>
-                                                            <td> {{regulation.date_payment}} </td>
-                                                            <td>{{regulation.payment_method}}</td>
-                                                            <td>{{regulation.invoice.invoice_number}}</td>
-                                                            <td><span class="badge rounded-pill bg-success">Entièrement payé</span></td>
-                                                            <td>{{regulation.amount_payment}}F CFA</td>
+                                                            <td> <h6>{{regulation.invoice_number}} </h6></td>
+                                                            <td> <h6>{{regulation.invoice_date}} </h6></td>
+                                                            <td><h6><span class="badge rounded-pill bg-success">{{regulation.invoice_status}}</span></h6></td>
+                                                            <td><h6>{{regulation.amount}}F CFA</h6></td>
                                                         </tr>
                                                         {% endfor %}
                                                     </tbody>

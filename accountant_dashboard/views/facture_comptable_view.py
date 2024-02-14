@@ -1,8 +1,9 @@
 import datetime
+from django.utils.timezone import now
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.facturation_forms import InvoiceForm, RepaymentForm, SpendForm
-from backend.models.facturation import Invoice, Repayment, Spend
+from backend.models.facturation import FinancialCommitment, Invoice, Repayment, Spend
 from django.core.cache import cache
 from django.db.models import Sum
 
@@ -26,11 +27,22 @@ def generate_invoice_number():
         
         return f"FA{year}{invoice_counter}"
 
+
 class FinancialCommitmentView(View):
     template_name = "accountant_dashboard/facture_comp/engagement_financier.html"
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template_name)
+        engagements = FinancialCommitment.objects.filter(school=request.user.school)
+        context = {'engagements':engagements}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def send(self, pk, *args, **kwargs):
+        engagement = FinancialCommitment.objects.get(pk=pk)
+        engagement.send_date = now()
+        engagement.is_send = True
+        engagement.save()
+        return redirect('accountant_dashboard:financials')
+        
 
 
 class InvoiceView(View):
@@ -231,23 +243,27 @@ class BalanceMonitoring(View):
     
     def get(self, request, *args, **kwargs):
         #recuperer l'ensemble des facture déjà totalement payé
-        invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé').order_by('-created_at')
+        invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé', is_repayment=False).order_by('-created_at')
 
         #recuperer le nombre total de facture payé
-        count_invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé').count()
+        count_invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé', is_repayment=False).count()
         
-        #somme des montant des facture payé
-        amount_payed = invoices.aggregate(total_montant=Sum('amount'))
-        
-        # Récupérer les factures qui ne sont pas entièrement payées
-        invoices_non_entierement_payees = Invoice.objects.filter(school=request.user.school).exclude(invoice_status='Entièrement payé')
-        somme_montant_factures = invoices_non_entierement_payees.aggregate(total_montant=Sum('amount'))
+        # Somme des montants des factures payées
+        amount_payed = invoices.aggregate(total_montant=Sum('amount'))['total_montant'] or 0
+
+        # Récupérer tous les engagements financiers
+        engagements = FinancialCommitment.objects.filter(school=request.user.school)
+        total_engagements = engagements.aggregate(total=Sum('school_fees'))['total'] or 0
+
+        # Calcul du montant impayé
+        not_payed = total_engagements - amount_payed
 
         context = {
             'invoices':invoices,
             'count_invoices':count_invoices,
             'amount_payed':amount_payed,
-            'somme_montant_factures':somme_montant_factures
+            'total_engagements':total_engagements,
+            'not_payed':not_payed
         }
         return render(request, template_name=self.template_name, context=context)
 

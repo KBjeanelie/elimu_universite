@@ -40,6 +40,7 @@ urlpatterns = [
     path(route='factures-&-comptable/rapport-des-depenses/<int:pk>/delete/', view=DepenseView.as_view(), name='delete_spend'),
     
     path(route='factures-&-comptable/engagement-financier/', view=FinancialCommitmentView.as_view(), name='financials'),
+    path(route='factures-&-comptable/engagement-financier/<int:pk>/send/', view=FinancialCommitmentView.send, name='send_financials'),
     
     path(route='rapport-financier/suivis-des-soldes/', view=BalanceMonitoring.as_view(), name='balances'),
     

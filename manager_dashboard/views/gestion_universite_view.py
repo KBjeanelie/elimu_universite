@@ -899,7 +899,7 @@ class StudentDetailView(View):
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         students_career = StudentCareer.objects.filter(student=student)
         student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year, is_valid=False)
-        regulations = Regulations.objects.filter(student=student).order_by('date_payment')
+        regulations = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé', student=student).order_by('-created_at')
         results = []
         monday_schedule = Schedule.objects.filter(career=student_career.career, day='lundi').order_by('start_hours')
         tueday_schedule = Schedule.objects.filter(career=student_career.career, day='mardi').order_by('start_hours')

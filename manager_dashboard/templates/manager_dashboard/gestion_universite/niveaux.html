@@ -31,12 +31,14 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Libelle</th>
+                                            <th scope="col">Frais mensuelles</th>
                                         </tr>
                                     </thead>
                                     <tbody id="elementList">
                                         {% for level in levels %}
                                             <tr data-id="{{ level.id }}">
                                                 <td> <h6> {{ level.label }} <h6></td>
+                                                    <td> <h6> {{ level.fees }}F FCA <h6></td>
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
@@ -67,6 +69,10 @@
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Libelle</label>
                                 {{ form.label }}
+                            </div>
+                            <div class="mb-3">
+                                <label class="form-label" for="libelle">Frais mensuelle</label>
+                                {{ form.fees }}
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>
