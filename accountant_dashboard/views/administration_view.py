@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
 from backend.forms.facturation_forms import ItemForm
+from backend.forms.user_account_forms import ManagementProfilForm
 from backend.models.facturation import Item
 
 #=============================== PARTIE CONCERNANT LES ARTICLES ==========================
@@ -59,3 +60,55 @@ class ItemView(View):
         return render(request, template_name=self.template, context=context)
     
 #===END
+
+
+
+class ProfileAppView(View):
+    template_name = "accountant_dashboard/administration/profil.html"
+
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if request.user.is_accountant or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
+    
+    
+    def get(self, request, *args, **kwargs):
+        form = ManagementProfilForm()
+        context = {'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = ManagementProfilForm()
+        context = {'form':form}
+        render(request, template_name=self.template_name, context=context)
+    
+class EditProfileView(View):
+    template_name = "accountant_dashboard/administration/edit_profile.html"
+
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if request.user.is_accountant or request.user.is_admin:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
+    
+    
+    def get(self, request, *args, **kwargs):
+        management_profil_instance = request.user.management_profil
+        form = ManagementProfilForm(instance=management_profil_instance)
+        context = {'form':form}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        management_profil_instance = request.user.management_profil
+        form = ManagementProfilForm(request.POST, instance=management_profil_instance)
+        if form.is_valid():
+            form.save()
+            print('ok')
+        return redirect('accountant_dashboard:user_profile')

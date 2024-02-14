@@ -182,7 +182,7 @@ class SettingAppView(View):
     
     def get(self, request, *args, **kwargs):
         return render(request, template_name=self.template_name)
-    
+
 class ProfileAppView(View):
     template_name = "manager_dashboard/administration/profil.html"
 

@@ -217,15 +217,19 @@
                             </div>
 
                             <div class="profile_info">
-                                <img src="{% static 'img/client_img.png' %}" alt="#">
+                                <img src="{% static 'img/membre.jpg' %}" width="50" height="50" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
-                                        <p>Comptable </p>
-                                        <h5>Elijah WALTER</h5>
+                                        {% if user.is_admin %}
+                                            <p>ADMINISTRATEUR</p>
+                                        {% else %}
+                                            <p>COMPTABLE</p>
+                                        {% endif %}
+                                        <h5> {{user.username | capfirst}} </h5>
                                 </div>
                                 <div class="profile_info_details">
-                                    <a href="#">MonProfile </a>
-                                    <a href="#">Se deconnecter</a>
+                                    <a href='{% url "accountant_dashboard:user_profile" %}'>Mon Profile </a>
+                                    <a href='{% url "backend:logout" %}'>Se deconnecter</a>
                                     </div>
                                 </div>
                             </div>
