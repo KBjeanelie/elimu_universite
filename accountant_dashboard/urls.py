@@ -1,7 +1,7 @@
 from django.urls import path
 from accountant_dashboard.views.administration_view import AddItemView, EditItemView, ItemView
 from accountant_dashboard.views.communication_view import EventsView, InformationsView
-from accountant_dashboard.views.facture_comptable_view import AddDepenseView, AddRepaymentView, DepenseView, EditDepenseView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
+from accountant_dashboard.views.facture_comptable_view import AddDepenseView, AddRepaymentView, BalanceMonitoring, DepenseView, EditDepenseView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
 from accountant_dashboard.views.home_view import AccountantIndexView
 
 
@@ -33,5 +33,7 @@ urlpatterns = [
     path(route='factures-&-comptable/rapport-des-depenses/<int:pk>/delete/', view=DepenseView.as_view(), name='delete_spend'),
     
     path(route='factures-&-comptable/engagement-financier/', view=FinancialCommitmentView.as_view(), name='financials'),
+    
+    path(route='rapport-financier/suivis-des-soldes/', view=BalanceMonitoring.as_view(), name='balances'),
     
 ]

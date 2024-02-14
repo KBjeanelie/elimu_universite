@@ -51,7 +51,8 @@ INSTALLED_APPS = [
     'rest_framework_swagger',
     #--------------- app for manager interface
     
-    'ckeditor'
+    'ckeditor',
+    'django.contrib.humanize',
 ]
 
 MIDDLEWARE = [

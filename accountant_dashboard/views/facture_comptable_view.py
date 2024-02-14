@@ -4,6 +4,7 @@ from django.views import View
 from backend.forms.facturation_forms import InvoiceForm, RepaymentForm, SpendForm
 from backend.models.facturation import Invoice, Repayment, Spend
 from django.core.cache import cache
+from django.db.models import Sum
 
 def generate_payment_number():
         now = datetime.datetime.now()
@@ -225,5 +226,29 @@ class EditDepenseView(View):
         return render(request, template_name=self.template, context=context)
 
 
+class BalanceMonitoring(View):
+    template_name = "accountant_dashboard/rapport_financier/suivi_solde.html"
+    
+    def get(self, request, *args, **kwargs):
+        #recuperer l'ensemble des facture déjà totalement payé
+        invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé').order_by('-created_at')
+
+        #recuperer le nombre total de facture payé
+        count_invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé').count()
+        
+        #somme des montant des facture payé
+        amount_payed = invoices.aggregate(total_montant=Sum('amount'))
+        
+        # Récupérer les factures qui ne sont pas entièrement payées
+        invoices_non_entierement_payees = Invoice.objects.filter(school=request.user.school).exclude(invoice_status='Entièrement payé')
+        somme_montant_factures = invoices_non_entierement_payees.aggregate(total_montant=Sum('amount'))
+
+        context = {
+            'invoices':invoices,
+            'count_invoices':count_invoices,
+            'amount_payed':amount_payed,
+            'somme_montant_factures':somme_montant_factures
+        }
+        return render(request, template_name=self.template_name, context=context)
 
 
