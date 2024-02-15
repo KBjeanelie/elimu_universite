@@ -1,6 +1,268 @@
 from django import forms
 from backend.models.gestion_ecole import *
 
+
+class StudentForm(forms.ModelForm):
+    class Meta:
+        model = Student
+        fields = ['lastname', 'firstname', 'status', 'blood_type', 'birthday_place', 'allergy', 'address', 'tel', 'city', 'sex', 'email', 'bithday', 'nationality', 'picture']
+        widgets = {
+            'lastname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nom',
+                    'required': True
+                }
+            ),
+            'firstname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Prenom',
+                    'required': True
+                }
+            ),
+            'birthday_place': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Lieu de naissance',
+                }
+            ),
+            'allergy': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'ex: noix de coco; lactose;',
+                }
+            ),
+            'address': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'adresse',
+                }
+            ),
+            'nationality': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nationalité',
+                }
+            ),
+            'tel': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Numéro de téléphone',
+                    'required': True
+                }
+            ),
+            'email': forms.EmailInput(
+                attrs={
+                    'type':'email',
+                    'class': 'form-control',
+                    'placeholder': 'email',
+                }
+            ),
+            'city': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'blood_type': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'sex': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                    'required':True
+                }
+            ),
+            'bithday':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                }
+            ),
+            'picture': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                }
+            ),
+            'status':forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                }
+            )
+        }
+
+class TeacherForm(forms.ModelForm):
+    class Meta:
+        model = Teacher
+        fields = ['lastname', 'firstname', 'address', 'tel', 'city', 'sex', 'bithday', 'nationality', 'email', 'status', 'last_diploma', 'picture', 'start_of_contrat', 'end_of_contrat', 'school']
+        widgets = {
+            'lastname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nom',
+                    'required': True
+                }
+            ),
+            'firstname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Prenom',
+                    'required': True
+                }
+            ),
+            'address': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'adresse',
+                }
+            ),
+            'last_diploma': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'nationality': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nationalité',
+                }
+            ),
+            'tel': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Numéro de téléphone',
+                    'required': True
+                }
+            ),
+            'email': forms.EmailInput(
+                attrs={
+                    'type':'email',
+                    'class': 'form-control',
+                    'placeholder': 'email',
+                    'required': True
+                }
+            ),
+            'city': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'sex': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'bithday':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                }
+            ),
+            'start_of_contrat':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                }
+            ),
+            'end_of_contrat':forms.DateInput(
+                attrs={
+                    'type':'date',
+                    "class": "form-control",
+                }
+            ),
+            'picture': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                }
+            ),
+            'status':forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
+                }
+            )
+        }
+
+class ManagementProfilForm(forms.ModelForm):
+    class Meta:
+        model = ManagementProfil
+        fields = ['lastname', 'firstname', 'address', 'tel', 'city', 'sex', 'email', 'bio', 'picture']
+        widgets = {
+            'lastname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Nom',
+                }
+            ),
+            'firstname': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Prenom',
+                }
+            ),
+            'address': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'adresse',
+                }
+            ),
+            'tel': forms.TextInput(
+                attrs={
+                    'type':'text',
+                    'class': 'form-control',
+                    'placeholder': 'Numéro de téléphone',
+                }
+            ),
+            'email': forms.EmailInput(
+                attrs={
+                    'type':'email',
+                    'class': 'form-control',
+                    'placeholder': 'email',
+                }
+            ),
+            'city': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'sex': forms.Select(
+                attrs={
+                    'class': 'form-control',
+                }
+            ),
+            'picture': forms.FileInput(
+                attrs={
+                    'type':'file',
+                    "class": "form-control",
+                }
+            ),
+            'bio':forms.Textarea(
+                attrs={
+                    'class': 'form-control',
+                    'rows':5,
+                }
+            )
+        }
+
+
 class AcademicYearForm(forms.ModelForm):
     class Meta:
         model = AcademicYear

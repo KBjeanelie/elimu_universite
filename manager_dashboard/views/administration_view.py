@@ -5,7 +5,7 @@ from backend.forms.evaluation_forms import TypeOfEvaluationForm
 from backend.forms.gestion_ecole_forms import DocumentTypeForm, SanctionAppreciationTypeForm
 from backend.models.evaluations import TypeOfEvaluation
 from backend.models.gestion_ecole import DocumentType, SanctionAppreciationType
-from backend.forms.user_account_forms import ManagementProfilForm
+from backend.forms.gestion_ecole_forms import ManagementProfilForm
 
 class TypeEvaluationView(View):
     template_name = "manager_dashboard/administration/type_evaluations.html"

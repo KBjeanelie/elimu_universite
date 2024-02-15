@@ -2,7 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 
 from backend.forms.facturation_forms import ItemForm
-from backend.forms.user_account_forms import ManagementProfilForm
+from backend.forms.gestion_ecole_forms import ManagementProfilForm
 from backend.models.facturation import Item
 
 #=============================== PARTIE CONCERNANT LES ARTICLES ==========================

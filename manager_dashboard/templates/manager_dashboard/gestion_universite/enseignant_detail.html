@@ -28,7 +28,7 @@
                                 {% if teacher.file_exists %}
                                     <img src="{{ teacher.picture.url }}" alt class="mx-auto d-block" height="300" />
                                 {% else %}
-                                    <img src="#" alt height="52" alt="No Picture">
+                                <img src="{% static 'img/staf/teacher.png' %}" alt class="mx-auto d-block" height="300" />
                                 {% endif %}
                             </div>
                             <div class="col-lg-6 align-self-center">

@@ -1,6 +1,5 @@
 import os
 from django.db import models
-from backend.models.user_account import Student, Teacher
 from elimu_universite import settings
 from elimu_universite.constant import days_of_the_weeks, hours_of_the_day, currencies, systemes, statues
 
@@ -21,6 +20,172 @@ class Etablishment(models.Model):
     
     def __str__(self):
         return f"Etablissement: {self.name}"
+
+
+last_diploma = (
+    ('Doctorat', 'Doctorat'),
+    ('Master', 'Master'),
+    ('Licence', 'Licence'),
+    ('DUT', 'DUT'),
+    ('Baccalauréat', 'Baccalauréat')
+)
+cities = (
+    ('pointe_noire', "Pointe Noire"),
+    ('brazzaville', "Brazzaville")
+)
+
+type_blood = (
+    ('O+', "O+"),
+    ('O-', "O-"),
+    ('A+', "A+"),
+    ('A-', "A-"),
+    ('B+', "B+"),
+    ('B-', "B-"),
+    ('AB+', "AB+"),
+    ('AB-', "AB-"),
+)
+
+sexes = (
+    ('masculin', 'Masculin'),
+    ('feminin', 'Féminin')
+)
+
+#=============================================================================================================================
+#=================================== CE SONT LES MODEL REPRÉSENTANT CHAQUE PROFIL UTILISATEUR DE L'APP =======================
+# Represent an objet of Student and his profil info
+class Student(models.Model):
+    
+    registration_number = models.CharField(max_length=255, unique=True)
+    
+    lastname = models.CharField(max_length=50, null=True, blank=True)
+    
+    firstname = models.CharField(max_length=50, null=True, blank=True)
+    
+    address = models.CharField(max_length=50, null=True, blank=True)
+    
+    tel = models.CharField(max_length=20, blank=True)
+    
+    city = models.CharField(max_length=17, choices=cities, blank=True)
+    
+    sex = models.CharField(max_length=10, choices=sexes, blank=True)
+    
+    email = models.CharField(max_length=120, unique=True, blank=True, null=True)
+    
+    bithday = models.DateField(null=True, blank=True)
+    
+    nationality = models.CharField(max_length=20, blank=True)
+    
+    blood_type = models.CharField(max_length=5, blank=True, null=True, choices=type_blood)
+    
+    birthday_place = models.CharField(max_length=100, blank=True, null=True)
+    
+    allergy = models.CharField(max_length=255, blank=True, null=True)
+    
+    picture = models.ImageField(upload_to="student_images", blank=True, null=True)
+    
+    status = models.BooleanField(default=False)
+    
+    is_valid = models.BooleanField(default=False)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    
+    def __str__(self):
+        return f"{self.registration_number} - {self.lastname} {self.firstname}"
+    
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"
+    
+    def file_exists(self):
+        if self.picture:
+            return os.path.exists(settings.MEDIA_ROOT / str(self.picture))
+        return False
+
+
+# Represent an objet of Teacher and his profil info
+class Teacher(models.Model):
+    
+    lastname = models.CharField(max_length=50, blank=True)
+    
+    firstname = models.CharField(max_length=50, blank=True)
+    
+    address = models.CharField(max_length=50, blank=True)
+    
+    tel = models.CharField(max_length=20, blank=True)
+    
+    city = models.CharField(max_length=17, choices=cities, blank=True)
+    
+    sex = models.CharField(max_length=10, choices=sexes, blank=True)
+    
+    bithday = models.DateField(blank=True, null=True)
+    
+    nationality = models.CharField(max_length=20, blank=True)
+    
+    email = models.CharField(max_length=120, unique=True, blank=True)
+    
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True, blank=True)
+    
+    status = models.CharField(max_length=20, blank=True)
+    
+    last_diploma = models.CharField(max_length=20, choices=last_diploma, blank=True,)
+    
+    picture = models.ImageField(upload_to="teacher_images", blank=True, null=True)
+    
+    type_of_counter = models.CharField(max_length=20, blank=True)
+    
+    start_of_contrat = models.DateField(blank=True, null=True)
+    
+    end_of_contrat = models.DateField(blank=True, null=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+    
+    def __str__(self):
+        return f"Enseignant : {self.lastname} - {self.firstname}"
+    
+    def fullname(self):
+        return f"{self.firstname} {self.lastname}"
+    
+    def file_exists(self):
+        if self.picture:
+            return os.path.exists(settings.MEDIA_ROOT / str(self.picture))
+        return False
+
+
+
+# Represent an objet of team manager and his profil info
+class ManagementProfil(models.Model):
+
+    lastname = models.CharField(max_length=50, blank=True)
+    
+    firstname = models.CharField(max_length=50, blank=True)
+    
+    address = models.CharField(max_length=50, blank=True)
+    
+    tel = models.CharField(max_length=20, blank=True)
+    
+    city = models.CharField(max_length=17, choices=cities, blank=True)
+    
+    sex = models.CharField(max_length=10, choices=sexes, blank=True)
+    
+    email = models.CharField(max_length=120, unique=True, blank=True, null=True)
+    
+    picture = models.ImageField(upload_to="managements_images", blank=True, null=True)
+    
+    bio = models.TextField(blank=True)
+    
+    created_at = models.DateTimeField(auto_now_add=True, null=True)
+    
+    updated_at = models.DateTimeField(auto_now=True, null=True)
+#===END
+
+
+
+
+
+
 
 # Class representing Academic Year
 class AcademicYear(models.Model):

@@ -5,10 +5,38 @@ from django.views import View
 from manager_dashboard.views.gestion_evaluation_view import calculate_results
 from backend.models.evaluations import Assessment
 from backend.models.facturation import Invoice
-from backend.forms.gestion_ecole_forms import AcademicYearForm, CareerForm, GroupSubjectForm, LevelForm, ProgramForm, SanctionAppreciationForm, SectorForm, SemesterForm, StudentDocumentForm, SubjectForm, TeacherDocumentForm
-from backend.models.gestion_ecole import AcademicYear, Career, GroupSubject, Level, Program, SanctionAppreciation, Schedule, Sector, Semester, StudentCareer, StudentDocument, Subject, TeacherDocument
-from backend.forms.user_account_forms import StudentForm, TeacherForm
-from backend.models.user_account import Student, Teacher
+from backend.forms.gestion_ecole_forms import (
+    AcademicYearForm,
+    CareerForm, 
+    GroupSubjectForm, 
+    LevelForm, 
+    ProgramForm, 
+    SanctionAppreciationForm, 
+    SectorForm, 
+    SemesterForm, 
+    StudentDocumentForm, 
+    SubjectForm, 
+    TeacherDocumentForm, 
+    StudentForm, 
+    TeacherForm
+)
+from backend.models.gestion_ecole import (
+    AcademicYear, 
+    Career, 
+    GroupSubject, 
+    Level, 
+    Program, 
+    SanctionAppreciation, 
+    Schedule, 
+    Sector, 
+    Semester, 
+    StudentCareer, 
+    StudentDocument, 
+    Subject, 
+    TeacherDocument, 
+    Student, 
+    Teacher
+)
 from django.core.cache import cache
 from django.db import transaction
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
@@ -665,6 +693,7 @@ class EditTeacherView(View):
         if 'end_of_contrat' not in request.POST or not request.POST['end_of_contrat']:
             mutable_data['end_of_contrat'] = end_of_contrat
         
+        mutable_data['school'] = request.user.school
         form = TeacherForm(mutable_data, mutable_files, instance=teacher)
         
         if form.is_valid():
@@ -691,15 +720,18 @@ class AddTeacherView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = TeacherForm(request.POST, request.FILES)
+        data = request.POST.copy()
+        data['school'] = request.user.school
+        form = TeacherForm(data, request.FILES)
+        print(form)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:teachers")
-        form = TeacherForm()
+        
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
-class TeacherView(View):
+class TeacherView(View):    
     template = "manager_dashboard/gestion_universite/enseignants.html"
 
     def dispatch(self,request, *args, **kwargs):
@@ -712,14 +744,15 @@ class TeacherView(View):
         return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
-        teachers = Teacher.objects.all().order_by('-created_at')
+        teachers = Teacher.objects.filter(school=request.user.school).order_by('-created_at')
         context = {'teachers': teachers}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Teacher, pk=pk)
         instance.delete()
-        teachers = Teacher.objects.all().order_by('-created_at')
+        
+        teachers = Teacher.objects.filter(school=request.user.school).order_by('-created_at')
         context = {'teachers': teachers}
         return render(request, template_name=self.template, context=context)
 
