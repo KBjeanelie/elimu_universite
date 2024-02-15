@@ -183,7 +183,7 @@ class ListAllTeacherAccount(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        teachers_account = User.objects.filter(is_teacher=True)
+        teachers_account = User.objects.filter(is_teacher=True, school=request.user.school)
         context_object = {'teachers_account': teachers_account}
         return render(request, template_name=self.template, context=context_object)
 
@@ -269,7 +269,7 @@ class ListAllStudentAccount(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        students_account = User.objects.filter(is_student=True)
+        students_account = User.objects.filter(is_student=True, school=request.user.school)
         context_object = {'students_account': students_account}
         return render(request, template_name=self.template, context=context_object)
     

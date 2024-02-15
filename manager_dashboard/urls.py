@@ -118,7 +118,7 @@ urlpatterns = [
     
     path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
     path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
-    path(route='comptes/compte_enseignants/<int:pk>/delete/', view=AddTeacherAccount.as_view(), name='delete_teacher_account'),
+    path(route='comptes/compte_enseignants/<int:pk>/delete/', view=ListAllTeacherAccount.as_view(), name='delete_teacher_account'),
     path(route='comptes/compte_enseignants/<int:pk>/edit/', view=EditTeacherAccountView.as_view(), name='edit_teacher_account'),
     
     path(route='comptes/compte_etudiants/', view=ListAllStudentAccount.as_view(), name='students_account'),
