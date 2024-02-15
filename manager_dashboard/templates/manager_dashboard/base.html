@@ -80,17 +80,17 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href='{% url "manager_dashboard:trombinoscopes" %}'>Trombinoscope</a></li>
-                    <li><a href='{% url "manager_dashboard:teachers" %}'>Enseignant</a></li>
-                    <li><a href='{% url "manager_dashboard:students" %}'>Etudiant</a></li>
-                    <li><a href='{% url "manager_dashboard:years" %}'>Année academique</a></li>
-                    <li><a href='{% url "manager_dashboard:levels" %}'>Niveau</a></li>
-                    <li><a href='{% url "manager_dashboard:semesters" %}'>Semestre</a></li>
-                    <li><a href='{% url "manager_dashboard:sectors" %}'>Filière</a></li>
+                    <li><a href='{% url "manager_dashboard:trombinoscopes" %}'>Trombinoscopes</a></li>
+                    <li><a href='{% url "manager_dashboard:teachers" %}'>Enseignants</a></li>
+                    <li><a href='{% url "manager_dashboard:students" %}'>Etudiants</a></li>
+                    <li><a href='{% url "manager_dashboard:years" %}'>Années academiques</a></li>
+                    <li><a href='{% url "manager_dashboard:levels" %}'>Niveaux</a></li>
+                    <li><a href='{% url "manager_dashboard:semesters" %}'>Semestres</a></li>
+                    <li><a href='{% url "manager_dashboard:sectors" %}'>Filières</a></li>
                     <li><a href='{% url "manager_dashboard:careers" %}'>Parcours</a></li>
-                    <li><a href='{% url "manager_dashboard:group_subjects" %}'>Groupe de Matière</a></li>
-                    <li><a href='{% url "manager_dashboard:subjects" %}'>Matière</a></li>
-                    <li><a href='{% url "manager_dashboard:programs" %}'>Programme</a></li>
+                    <li><a href='{% url "manager_dashboard:group_subjects" %}'>Groupes de Matières</a></li>
+                    <li><a href='{% url "manager_dashboard:subjects" %}'>Matières</a></li>
+                    <li><a href='{% url "manager_dashboard:programs" %}'>Programmes</a></li>
                     <li><a href='{% url "manager_dashboard:sanction_appreciations" %}'>Sanction & Appreciation</a></li>
                     <!-- <li><a href="gestion_universite/suivis.html">Indicateur & Suivis</a></li> -->
                 </ul>
@@ -118,7 +118,7 @@
                         <img src="{% static 'img/menu-icon/11.svg' %}" alt>
                     </div>
                     <div class="nav_title">
-                        <span>Contenu pédagogique </span>
+                        <span>Contenus pédagogiques </span>
                     </div>
                 </a>
                 <ul>
@@ -134,7 +134,7 @@
                         <img src="{% static 'img/menu-icon/8.svg' %}" alt>
                     </div>
                     <div class="nav_title">
-                        <span>Communication </span>
+                        <span>Communications </span>
                     </div>
                 </a>
                 <ul>
@@ -142,7 +142,7 @@
                     <!-- <li><a href="communication/notifications.html">Notifications</a></li> -->
                     <li><a href='{% url "manager_dashboard:informations" %}'>Informations</a></li>
                     <li><a href='{% url "manager_dashboard:events" %}'>Évenements</a></li>
-                    <li><a href='{% url "manager_dashboard:discussion_group" %}'>Groupe de discussions</a></li>
+                    <li><a href='{% url "manager_dashboard:discussion_group" %}'>Groupes de discussions</a></li>
                 </ul>
             </li>
 
@@ -152,7 +152,7 @@
                         <img src="{% static 'img/menu-icon/20.svg' %}" alt>
                     </div>
                     <div class="nav_title">
-                        <span>Evaluation & Bulletin </span>
+                        <span>Evaluations & Bulletins </span>
                     </div>
                 </a>
                 <ul>
@@ -173,8 +173,9 @@
                 </a>
                 <ul>
                     <li><a href='{% url "manager_dashboard:academic_result" %}'>Résultat academique</a></li>
-                    <!--<li><a href=''>Statistique anterieur</a></li> 
-                    <li><a href="">Absences de l'équipe</a></li> -->
+                    <li><a href="">Transition de niveau</a></li>
+                    <!--<li><a href=''>Statistique anterieur</a></li> -->
+                    
                 </ul>
             </li>
 
@@ -204,10 +205,10 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href="{% url 'manager_dashboard:type_evaluation' %}">Type d'Évaluations</a></li>
-                    <li><a href="{% url 'manager_dashboard:type_documents' %}">Type de documents</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_evaluation' %}">Types d'Évaluations</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_documents' %}">Types de documents</a></li>
                     <!-- <li><a href="">Type de présence</a></li> -->
-                    <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Type de sanctions</a></li>
+                    <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Types de sanctions</a></li>
                     {% comment %} <li><a href="administration/type_comptes.html">Type de comptes</a></li> {% endcomment %}
                     <!-- <li><a href="administration/types_conges.html">Type de congé</a></li> -->
                     <li><a href="{% url 'manager_dashboard:reglage_general' %}">Réglages généraux</a></li>
