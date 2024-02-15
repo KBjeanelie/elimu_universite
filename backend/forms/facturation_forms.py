@@ -1,6 +1,6 @@
 from django import forms
 
-from backend.models.gestion_ecole import Career, StudentCareer
+from backend.models.gestion_ecole import AcademicYear, Career, StudentCareer
 from backend.models.user_account import Student
 from ..models.facturation import Invoice, Item, Repayment, Spend
 
@@ -105,23 +105,16 @@ class RepaymentForm(forms.ModelForm):
     def __init__(self, user, *args, **kwargs):
         super(RepaymentForm, self).__init__(*args, **kwargs)
         # Filtrer les niveaux en fonction de l'utilisateur connecté
-        self.fields['invoice'].queryset = Invoice.objects.filter(school=user.school)
-        student_ids = StudentCareer.objects.filter(academic_year__school=user.school, academic_year__status=True).values_list('student', flat=True).distinct()
-        self.fields['student'].queryset = Student.objects.filter(id__in=student_ids)
+        academic_year = AcademicYear.objects.get(school=user.school, status=True)
+        self.fields['invoice'].queryset = Invoice.objects.filter(academic_year=academic_year)
     
     class Meta:
         model = Repayment
-        fields = ['student', 'invoice', 'amount', 'repayment_method',  'comment', 'status', 'school']
+        fields = ['invoice', 'amount', 'repayment_method',  'comment', 'status', 'academic_year']
         widgets = {
             'status': forms.CheckboxInput(
                 attrs={
                     'class': 'form-check-input',
-                }
-            ),
-            'student': forms.Select(
-                attrs={
-                    'class': 'form-control',
-                    'required': True
                 }
             ),
             'invoice': forms.Select(
@@ -161,7 +154,7 @@ class SpendForm(forms.ModelForm):
     
     class Meta:
         model = Spend
-        fields = ['item', 'amount', 'comment',  'school']
+        fields = ['item', 'amount', 'comment',  'academic_year']
         widgets = {
             'item': forms.Select(
                 attrs={

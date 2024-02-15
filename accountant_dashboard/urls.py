@@ -2,7 +2,7 @@ from django.urls import path
 from accountant_dashboard.views.administration_view import AddItemView, EditItemView, EditProfileView, ItemView, ProfileAppView
 from accountant_dashboard.views.communication_view import EventsView, InformationsView
 from accountant_dashboard.views.facture_comptable_view import AddDepenseView, AddRepaymentView, BalanceMonitoring, DepenseView, EditDepenseView, EditInvoiceView, EditRepaymentView, FinancialCommitmentView, InvoiceDetailView, InvoiceView, RepaymentView
-from accountant_dashboard.views.home_view import AccountantIndexView, PreRegistrationDetailView, PreRegistrationView
+from accountant_dashboard.views.home_view import AccountantIndexView, NotAcademicYearFound, PreRegistrationDetailView, PreRegistrationView
 
 
 app_name = 'accountant_dashboard'
@@ -43,5 +43,7 @@ urlpatterns = [
     path(route='factures-&-comptable/engagement-financier/<int:pk>/send/', view=FinancialCommitmentView.send, name='send_financials'),
     
     path(route='rapport-financier/suivis-des-soldes/', view=BalanceMonitoring.as_view(), name='balances'),
+    
+    path(route='no-academic-year-found/', view=NotAcademicYearFound.as_view(), name='no_year'),
     
 ]

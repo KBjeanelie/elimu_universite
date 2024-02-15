@@ -1,5 +1,5 @@
 from django.db import models
-from backend.models.gestion_ecole import Career, Etablishment
+from backend.models.gestion_ecole import AcademicYear, Career, Etablishment
 from backend.models.user_account import Student
 
 # Create your models here.
@@ -128,7 +128,7 @@ class Invoice(models.Model):
     
     item = models.ForeignKey(Item, on_delete=models.SET_NULL, blank=True, null=True)
     
-    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, null=True)
     
     #timeline = models.ForeignKey(TimeLine, on_delete=models.DO_NOTHING)
     
@@ -155,9 +155,7 @@ class Repayment(models.Model):
     
     amount = models.FloatField(default=0)
     
-    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
-    
-    student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, null=True)
     
     invoice = models.ForeignKey(Invoice, on_delete=models.SET_NULL, blank=True, null=True)
     
@@ -182,7 +180,7 @@ class FinancialCommitment(models.Model):
     
     is_send = models.BooleanField(default=False)
     
-    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     
@@ -196,7 +194,7 @@ class Spend(models.Model):
     
     comment = models.TextField(blank=True)
     
-    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
+    academic_year = models.ForeignKey(AcademicYear, on_delete=models.CASCADE, null=True)
     
     created_at = models.DateTimeField(auto_now_add=True)
     

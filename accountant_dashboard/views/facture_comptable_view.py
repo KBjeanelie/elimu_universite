@@ -6,6 +6,7 @@ from backend.forms.facturation_forms import InvoiceForm, RepaymentForm, SpendFor
 from backend.models.facturation import FinancialCommitment, Invoice, Repayment, Spend
 from django.core.cache import cache
 from django.db.models import Sum
+from backend.models.gestion_ecole import AcademicYear
 
 def generate_payment_number():
         now = datetime.datetime.now()
@@ -31,8 +32,22 @@ def generate_invoice_number():
 class FinancialCommitmentView(View):
     template_name = "accountant_dashboard/facture_comp/engagement_financier.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
-        engagements = FinancialCommitment.objects.filter(school=request.user.school)
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        engagements = FinancialCommitment.objects.filter(academic_year=academic_year)
         context = {'engagements':engagements}
         return render(request, template_name=self.template_name, context=context)
     
@@ -48,13 +63,28 @@ class FinancialCommitmentView(View):
 class InvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/factures.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
-        invoices = Invoice.objects.filter(school=request.user.school)
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        invoices = Invoice.objects.filter(academic_year=academic_year)
         form = InvoiceForm(request.user,)
         context = {'invoices':invoices, 'form':form}
         return render(request, template_name=self.template_name, context=context)
     
     def post(self, request, *args, **kwargs):
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
         form = InvoiceForm(request.user, request.POST)
         if form.is_valid():
             invoice_number = generate_invoice_number()
@@ -73,8 +103,8 @@ class InvoiceView(View):
                 amount=amount,
                 student=student,
                 comment=comment,
-                school=request.user.school,
-                invoice_status=invoice_status
+                invoice_status=invoice_status,
+                academic_year=academic_year
             )
             invoice.save()
             return redirect("accountant_dashboard:invoices")
@@ -84,6 +114,7 @@ class InvoiceView(View):
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Invoice, pk=pk)
         instance.delete()
+        
         invoices = Invoice.objects.all().order_by('-created_at')
         context = {'invoices':invoices}
         return render(request, template_name=self.template_name, context=context)
@@ -91,7 +122,20 @@ class InvoiceView(View):
 class InvoiceDetailView(View):
     template_name = "accountant_dashboard/facture_comp/facture-info.html"
     
-    def get(self, request,pk, *args, **kwargs):
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, pk, *args, **kwargs):
         invoice = get_object_or_404(Invoice, pk=pk)
         context = {'invoice':invoice}
         return render(request, template_name=self.template_name, context=context)
@@ -99,6 +143,19 @@ class InvoiceDetailView(View):
 
 class EditInvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/edit_facture.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request,pk, *args, **kwargs):
         invoice = get_object_or_404(Invoice, pk=pk)
@@ -120,6 +177,21 @@ class EditInvoiceView(View):
 #=============================== PARTIE CONCERNANT LES REMBOURSEMENTS ==========================
 class EditRepaymentView(View):
     template = "accountant_dashboard/facture_comp/editer_remboursement.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    
     def get(self, request, pk, *args, **kwargs):
         repayment = get_object_or_404(Repayment, pk=pk)
         form = RepaymentForm(request.user, instance=repayment)
@@ -127,28 +199,47 @@ class EditRepaymentView(View):
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, pk, *args, **kwargs):
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
         repayment = get_object_or_404(Repayment, pk=pk)
         data = request.POST.copy()
-        data['school'] = request.user.school
+        data['academic_year'] = academic_year
+        invoice = Invoice.objects.get(academic_year=academic_year, pk=data['invoice'])
+        data['amount'] = invoice.amount
         form = RepaymentForm(request.user, data, instance=repayment)
         if form.is_valid():
             form.save()
-            return redirect('accountant_dashboard:repayments')  # Redirigez vers la page appropriée après la mise à jour réussie
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+            return redirect('accountant_dashboard:repayments')
+        else:
+            print(form.errors)
         context = {'form': form, 'repayment': repayment}
         return render(request, template_name=self.template, context=context)
     
 class AddRepaymentView(View):
     template = "accountant_dashboard/facture_comp/ajout_remboursement.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         form = RepaymentForm(request.user)
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
         data = request.POST.copy()
-        data['school'] = request.user.school
-        invoice = Invoice.objects.get(school=request.user.school, pk=data['invoice'])
+        data['academic_year'] = academic_year
+        invoice = Invoice.objects.get(academic_year=academic_year, pk=data['invoice'])
         data['amount'] = invoice.amount
         form = RepaymentForm(request.user, data)
         if form.is_valid():
@@ -162,9 +253,23 @@ class AddRepaymentView(View):
 
 class RepaymentView(View):
     template = "accountant_dashboard/facture_comp/remboursements.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
 
     def get(self, request, *args, **kwargs):
-        repayments = Repayment.objects.filter(school=request.user.school).order_by('-created_at')
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        repayments = Repayment.objects.filter(academic_year=academic_year).order_by('-created_at')
         context = {'repayments': repayments}
         return render(request, template_name=self.template, context=context)
     
@@ -174,7 +279,8 @@ class RepaymentView(View):
         instance.invoice.save()
         instance.delete()
         
-        repayments = Repayment.objects.filter(school=request.user.school).order_by('-created_at')
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        repayments = Repayment.objects.filter(academic_year=academic_year).order_by('-created_at')
         context = {'repayments': repayments}
         return render(request, template_name=self.template, context=context)
     
@@ -183,22 +289,50 @@ class RepaymentView(View):
 class DepenseView(View):
     template_name = "accountant_dashboard/rapport_financier/depenses.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
-        spends = Spend.objects.filter(school=request.user.school).order_by('-created_at')
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        spends = Spend.objects.filter(academic_year=academic_year).order_by('-created_at')
         context = {'spends':spends}
         return render(request, template_name=self.template_name, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(Spend, pk=pk)
         instance.delete()
-
-        spends = Spend.objects.filter(school=request.user.school).order_by('-created_at')
+        
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        spends = Spend.objects.filter(academic_year=academic_year).order_by('-created_at')
         context = {'spends':spends}
         return render(request, template_name=self.template_name, context=context)
     
 
 class AddDepenseView(View):
     template = "accountant_dashboard/rapport_financier/ajout_depense.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
     
     def get(self, request, *args, **kwargs):
         form = SpendForm(request.user)
@@ -207,7 +341,8 @@ class AddDepenseView(View):
     
     def post(self, request, *args, **kwargs):
         data = request.POST.copy()
-        data['school'] = request.user.school
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        data['academic_year'] = academic_year
         form = SpendForm(request.user, data)
         if form.is_valid():
             form.save()
@@ -219,6 +354,19 @@ class AddDepenseView(View):
 class EditDepenseView(View):
     template = "accountant_dashboard/rapport_financier/editer_depense.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, pk, *args, **kwargs):
         spend = Spend.objects.get(pk=pk)
         form = SpendForm(request.user, instance=spend)
@@ -228,7 +376,8 @@ class EditDepenseView(View):
     def post(self, request, pk, *args, **kwargs):
         data = request.POST.copy()
         spend = Spend.objects.get(pk=pk)
-        data['school'] = request.user.school
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        data['academic_year'] = academic_year
         form = SpendForm(request.user, data, instance=spend)
         if form.is_valid():
             form.save()
@@ -241,18 +390,32 @@ class EditDepenseView(View):
 class BalanceMonitoring(View):
     template_name = "accountant_dashboard/rapport_financier/suivi_solde.html"
     
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        if not request.user.is_accountant:
+            return redirect('backend:logout')
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('accountant_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
     def get(self, request, *args, **kwargs):
         #recuperer l'ensemble des facture déjà totalement payé
-        invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé', is_repayment=False).order_by('-created_at')
+        academic_year = AcademicYear.objects.get(school=request.user.school, status=True)
+        invoices = Invoice.objects.filter(academic_year=academic_year, invoice_status='Entièrement payé', is_repayment=False).order_by('-created_at')
 
         #recuperer le nombre total de facture payé
-        count_invoices = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé', is_repayment=False).count()
+        count_invoices = Invoice.objects.filter(academic_year=academic_year, invoice_status='Entièrement payé', is_repayment=False).count()
         
         # Somme des montants des factures payées
         amount_payed = invoices.aggregate(total_montant=Sum('amount'))['total_montant'] or 0
 
         # Récupérer tous les engagements financiers
-        engagements = FinancialCommitment.objects.filter(school=request.user.school)
+        engagements = FinancialCommitment.objects.filter(academic_year=academic_year)
         total_engagements = engagements.aggregate(total=Sum('school_fees'))['total'] or 0
 
         # Calcul du montant impayé

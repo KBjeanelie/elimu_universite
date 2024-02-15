@@ -61,7 +61,7 @@
                                     <tbody id="elementList">
                                         {% for repayment in repayments %}
                                             <tr data-id="{{ repayment.id }}">
-                                                <td><h6> {{ repayment.student.lastname |upper }} {{ repayment.student.firstname |capfirst}}</h6></td>
+                                                <td><h6> {{ repayment.invoice.student.lastname |upper }} {{ repayment.invoice.student.firstname |capfirst}}</h6></td>
                                                 <td><h6> {{ repayment.invoice.invoice_number }} </h6></td>
                                                 <td><h6> {{ repayment.amount }} </h6></td>
                                                 <td><h6><span class="badge rounded-pill bg-warning">{{ repayment.repayment_method }}</span></h6></td>
