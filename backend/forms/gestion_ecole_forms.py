@@ -262,7 +262,6 @@ class ManagementProfilForm(forms.ModelForm):
             )
         }
 
-
 class AcademicYearForm(forms.ModelForm):
     class Meta:
         model = AcademicYear
@@ -350,6 +349,12 @@ class SemesterForm(forms.ModelForm):
         }
 
 class ProgramForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(ProgramForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['person_in_charge'].queryset = Teacher.objects.filter(school=user.school)
+    
     class Meta:
         model = Program
         fields = ['title', 'description', 'program_date', 'person_in_charge', 'file', 'school']

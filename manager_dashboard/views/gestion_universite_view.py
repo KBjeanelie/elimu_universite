@@ -461,7 +461,7 @@ class EditProgramView(View):
     
     def get(self, request, pk, *args, **kwargs):
         program = get_object_or_404(Program, pk=pk)
-        form = ProgramForm(instance=program)
+        form = ProgramForm(request.user, instance=program)
         context = {'form':form, 'program':program}
         return render(request, template_name=self.template, context=context)
     
@@ -480,7 +480,7 @@ class EditProgramView(View):
             mutable_data['program_date'] = old_date
             
         mutable_data['school'] = request.user.school
-        form = ProgramForm(mutable_data, mutable_files, instance=program)
+        form = ProgramForm(request.user, mutable_data, mutable_files, instance=program)
         
         if form.is_valid():
             form.save()
@@ -488,7 +488,6 @@ class EditProgramView(View):
         
         context = {'form':form, 'program':program}
         return render(request, template_name=self.template, context=context)
-
 
 class AddProgramView(View):
     template = "manager_dashboard/gestion_universite/ajout_programme.html"
@@ -503,14 +502,14 @@ class AddProgramView(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        form = ProgramForm()
+        form = ProgramForm(request.user)
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
         data = request.POST.copy()
         data['school'] = request.user.school
-        form = ProgramForm(data)
+        form = ProgramForm(request.user, data)
         if form.is_valid():
             form.save()
             return redirect("manager_dashboard:programs")

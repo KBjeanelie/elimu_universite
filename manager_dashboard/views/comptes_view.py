@@ -93,15 +93,17 @@ class ListAllDirectionAccount(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        managers_and_accountants = User.objects.filter(is_manager=True) | User.objects.filter(is_accountant=True)
-        print(managers_and_accountants)
+        managers_and_accountants = User.objects.filter(is_manager=True, school=request.user.school) | User.objects.filter(is_accountant=True, school=request.user.school)
         context_object = {'managers_and_accountants': managers_and_accountants}
         return render(request, template_name=self.template, context=context_object)
 
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(User, pk=pk)
         instance.delete()
-        return JsonResponse({'message': 'Élément supprimé avec succès'})
+        
+        managers_and_accountants = User.objects.filter(is_manager=True, school=request.user.school) | User.objects.filter(is_accountant=True, school=request.user.school)
+        context_object = {'managers_and_accountants': managers_and_accountants}
+        return render(request, template_name=self.template, context=context_object)
 #===END
 
 

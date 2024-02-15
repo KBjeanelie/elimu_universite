@@ -57,9 +57,9 @@
                                             <th scope="col">Status</th>
                                         </tr>
                                     </thead>
-                                    <tbody>
+                                    <tbody id='elementList'>
                                         {% for account in managers_and_accountants %}
-                                        <tr>
+                                        <tr data-id='{{account.id}}'>
                                             <td> <h6> {{account.username}} </h6> </td>
                                             <td><h6> {{account.management_profil.email}} </h6></td>
                                             <td><h6>************</h6></td>
@@ -74,8 +74,8 @@
                                             <td><a class="status_btn">Active</a></td>
                                             <td>
                                                 <div class="action_btns d-flex">
-                                                    <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
-                                                    <a href="#" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                    <a href='{% url "manager_dashboard:director_edit" account.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>
+                                                    <a href="#" onclick="deleteDirectorAccount({{account.id}})" class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                 </div>
                                             </td>
                                         </tr>
@@ -90,4 +90,44 @@
         </div>
     </div>
 </div>
+
+
+<script>
+
+    // Supprimer un élément
+    function deleteDirectorAccount(account_id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `${account_id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`tr[data-id="${account_id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    </script>
 {% endblock content %}

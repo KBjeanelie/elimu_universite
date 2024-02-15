@@ -4,7 +4,7 @@ from django.urls import path
 from elimu_universite import settings
 from manager_dashboard.views.administration_view import EditProfileView, ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeEvaluationDeleteView, TypeEvaluationView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EditInformationView, EventDetail, EventView, GroupDiscussionView, InformationDetail, InformationView
-from manager_dashboard.views.comptes_view import AddDirectionAccount, AddStudentAccount, AddTeacherAccount, EditStudentAccountView, EditTeacherAccountView, ListAllDirectionAccount, ListAllStudentAccount, ListAllTeacherAccount
+from manager_dashboard.views.comptes_view import AddDirectionAccount, AddStudentAccount, AddTeacherAccount, EditDirectionAccountView, EditStudentAccountView, EditTeacherAccountView, ListAllDirectionAccount, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
 from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BulletinDetailView, BullettinView, EditAssessmentView, NoteTableView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
@@ -113,6 +113,8 @@ urlpatterns = [
     #=================== THIS ROUTE IS FOR Compte MODULE ===============================#
     path(route='comptes/compte_directions/', view=ListAllDirectionAccount.as_view(), name='directors'),
     path(route='comptes/compte_directions/ajouter/', view=AddDirectionAccount.as_view(), name='director_add'),
+    path(route='comptes/compte_directions/<int:pk>/delete/', view=ListAllDirectionAccount.as_view(), name='director_delete'),
+    path(route='comptes/compte_directions/<int:pk>/editer/', view=EditDirectionAccountView.as_view(), name='director_edit'),
     
     path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
     path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
