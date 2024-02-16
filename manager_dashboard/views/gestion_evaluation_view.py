@@ -438,53 +438,6 @@ class AverageTableView(View):
         except (Semester.DoesNotExist, Career.DoesNotExist, Subject.DoesNotExist) as e:
             return HttpResponse(f"Erreur: {e}")
 
-
-class BullettinView(View):
-    template = 'manager_dashboard/evaluations/bulletins.html'
-    
-    def dispatch(self,request, *args, **kwargs):
-        if not request.user.is_authenticated:
-            return redirect('backend:login')
-        
-        try:
-            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
-        except AcademicYear.DoesNotExist:
-            return redirect('manager_dashboard:no_year')
-        
-        return super().dispatch(request, *args, **kwargs)
-    
-    def get(self, request, *args, **kwargs):
-        semesters = Semester.objects.filter(level__school=request.user.school)
-        careers = Career.objects.filter(sector__school=request.user.school)
-        context = {
-            'semesters': semesters,
-            'careers': careers,
-        }
-        return render(request, template_name=self.template, context=context)
-    
-    def post(self, request, *args, **kwargs):
-        semester_id = request.POST['semester']
-        career_id = request.POST['career']
-
-        results = calculate_results(semester_id=semester_id, career_id=career_id, user=request.user)
-        semesters = Semester.objects.filter(level__school=request.user.school)
-        careers = Career.objects.filter(sector__school=request.user.school)
-        
-        if results:
-            context = {
-                'semesters': semesters,
-                'careers': careers,
-                'results': results,
-            }
-        else:
-            context = {
-                'semesters': semesters,
-                'careers': careers,
-            }
-
-        return render(request, template_name=self.template, context=context)
-
-
 class BulletinDetailView(View):
     template_name = 'manager_dashboard/evaluations/bulletin_detail.html'
     

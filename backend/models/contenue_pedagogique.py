@@ -1,31 +1,43 @@
+import os
 from django.db import models
 from backend.models.gestion_ecole import Career, Etablishment, Sector
 from backend.models.user_account import Teacher
+from elimu_universite import settings
 
 class eBook(models.Model):
-    
-    title = models.CharField(max_length=120)
-    
-    author = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
-    
-    sector = models.ForeignKey(Sector, on_delete=models.CASCADE, blank=True, null=True)
-    
-    career = models.ForeignKey(Career, on_delete=models.CASCADE, blank=True, null=True)
-    
-    photo_cover = models.ImageField(upload_to='images_ebook')
-    
-    attachement = models.FileField(upload_to='ebook_folder')
-    
-    is_private = models.BooleanField(default=False)
-    
-    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
-    
-    created_at = models.DateTimeField(auto_now_add=True)
-    
-    updated_at = models.DateTimeField(auto_now=True)
-    
-    def __str__(self):
-        return f"file : {self.title}"
+        
+        title = models.CharField(max_length=120)
+
+        author = models.ForeignKey(Teacher, on_delete=models.CASCADE, blank=True, null=True)
+
+        sector = models.ForeignKey(Sector, on_delete=models.CASCADE, blank=True, null=True)
+
+        career = models.ForeignKey(Career, on_delete=models.CASCADE, blank=True, null=True)
+
+        photo_cover = models.ImageField(upload_to='images_ebook')
+
+        attachement = models.FileField(upload_to='ebook_folder')
+
+        is_private = models.BooleanField(default=False)
+
+        school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
+
+        created_at = models.DateTimeField(auto_now_add=True)
+
+        updated_at = models.DateTimeField(auto_now=True)
+
+        def __str__(self):
+                return f"file : {self.title}"
+
+        def delete(self, *args, **kwargs):
+                # Supprimer le fichier associé s'il existe
+                if self.photo_cover and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.photo_cover))):
+                        os.remove(os.path.join(settings.MEDIA_ROOT, str(self.photo_cover)))
+                if self.attachement and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.attachement))):
+                        os.remove(os.path.join(settings.MEDIA_ROOT, str(self.attachement)))
+
+                # Supprimer l'objet
+                super(eBook, self).delete(*args, **kwargs)
 
 
 
@@ -92,7 +104,7 @@ class eBook(models.Model):
 #     updated_at = models.DateTimeField(auto_now=True)
     
 #     def __str__(self):
-        return f"file : {self.label}"
+#        return f"file : {self.label}"
     
 # Class representing an eBook
 

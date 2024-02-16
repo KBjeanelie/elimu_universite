@@ -33,6 +33,14 @@ class Information(models.Model):
         if self.file:
             return os.path.exists(settings.MEDIA_ROOT / str(self.file))
         return False
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.file and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.file))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.file)))
+        
+        # Supprimer l'objet
+        super(Information, self).delete(*args, **kwargs)
 
 
 class Event(models.Model):
@@ -64,6 +72,16 @@ class Event(models.Model):
         if self.file:
             return os.path.exists(settings.MEDIA_ROOT / str(self.file))
         return False
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.file and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.file))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.file)))
+        if self.photo and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.photo))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.photo)))
+        
+        # Supprimer l'objet
+        super(Event, self).delete(*args, **kwargs)
 
 
 class EventParticipate(models.Model):

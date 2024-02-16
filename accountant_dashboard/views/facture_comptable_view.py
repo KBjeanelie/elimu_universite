@@ -59,7 +59,6 @@ class FinancialCommitmentView(View):
         return redirect('accountant_dashboard:financials')
         
 
-
 class InvoiceView(View):
     template_name = "accountant_dashboard/facture_comp/factures.html"
     

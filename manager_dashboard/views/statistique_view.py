@@ -1,8 +1,11 @@
-from django.shortcuts import redirect, render
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
+from backend.forms.evaluation_forms import ReportCardForm
+from backend.models.evaluations import ReportCard
 from manager_dashboard.views.gestion_evaluation_view import calculate_results, get_all_results
 from backend.models.gestion_ecole import AcademicYear, Career, Semester, StudentCareer
-from django.http import Http404
+from django.http import Http404, JsonResponse
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class NotAcademicYearFound(View):
     template_name = "manager_dashboard/statistique/no_academique.html"
@@ -78,3 +81,130 @@ class ResultatAcademique(View):
             'results':results
         })
         return render(request, template_name=self.template_name, context=context)
+
+class EditReportCardView(View):
+    template = 'manager_dashboard/statistique/editer_bulletin.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, pk, *args, **kwargs):
+        evaluation = get_object_or_404(ReportCard, pk=pk)
+        form = ReportCardForm(request.user, instance=evaluation)
+        context = {'form': form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        evaluation = get_object_or_404(ReportCard, pk=pk)
+        year = get_object_or_404(AcademicYear, status=True, school=request.user.school)
+        mutable_data = request.POST.copy()
+        mutable_data['academic_year'] = year
+        mutable_files = request.FILES.copy()
+        if 'file' not in mutable_files or not mutable_files['file']:
+            mutable_files['file'] = None
+            
+        form = ReportCardForm(request.user, mutable_data, mutable_files, instance=evaluation)
+        
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:bulletins')
+        
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+
+class AddReportCardView(View):
+    template = 'manager_dashboard/statistique/ajouter_bulletin.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        form = ReportCardForm(request.user)
+        context = {'form': form}
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        year = get_object_or_404(AcademicYear, status=True, school=request.user.school)
+        mutable_data = request.POST.copy()
+        mutable_data['academic_year'] = year
+        form = ReportCardForm(request.user, mutable_data, request.FILES)
+        if form.is_valid():
+            form.save()
+            return redirect('manager_dashboard:bulletins')
+        print(form.errors)
+        context = {'form':form}
+        return render(request, template_name=self.template, context=context)
+    
+class ReportCardView(View):
+    template = 'manager_dashboard/statistique/bulletins.html'
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request, *args, **kwargs):
+        year = AcademicYear.objects.get(status=True, school=request.user.school)
+        results = ReportCard.objects.filter(academic_year=year).order_by('-created_at')
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
+        
+        context = {
+            'semesters': semesters,
+            'careers': careers,
+            'results': results
+        }
+        
+        return render(request, template_name=self.template, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        year = AcademicYear.objects.get(status=True, school=request.user.school)
+        semester_id = request.POST['semester']
+        career_id = request.POST['career']
+
+        results = ReportCard.objects.filter(semester__id=semester_id, career__id=career_id, academic_year=year)
+        
+        semesters = Semester.objects.filter(level__school=request.user.school)
+        careers = Career.objects.filter(sector__school=request.user.school)
+        
+        if results:
+            context = {
+                'semesters': semesters,
+                'careers': careers,
+                'results': results,
+            }
+        else:
+            context = {
+                'semesters': semesters,
+                'careers': careers,
+            }
+
+        return render(request, template_name=self.template, context=context)
+    
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(ReportCard, pk=pk)
+        instance.delete()
+        return JsonResponse({'message': 'Élément supprimé avec succès'})
+

@@ -1,16 +1,17 @@
 from django.conf.urls.static import static
 from django.urls import path
+from accountant_dashboard.views.home_view import NotAcademicYearFound
 
 from elimu_universite import settings
 from manager_dashboard.views.administration_view import EditProfileView, ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeEvaluationDeleteView, TypeEvaluationView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
 from manager_dashboard.views.communication_view import AddEventView, AddInformationView, EditEventView, EditInformationView, EventDetail, EventView, GroupDiscussionView, InformationDetail, InformationView
 from manager_dashboard.views.comptes_view import AddDirectionAccount, AddStudentAccount, AddTeacherAccount, EditDirectionAccountView, EditStudentAccountView, EditTeacherAccountView, ListAllDirectionAccount, ListAllStudentAccount, ListAllTeacherAccount
 from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook, eBookView
-from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BulletinDetailView, BullettinView, EditAssessmentView, NoteTableView
+from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BulletinDetailView, EditAssessmentView, NoteTableView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView
-from manager_dashboard.views.statistique_view import CloseAcademicYear, NotAcademicYearFound, ResultatAcademique
+from manager_dashboard.views.statistique_view import CloseAcademicYear, ResultatAcademique, ReportCardView, AddReportCardView, EditReportCardView
 
 
 app_name = 'manager_dashboard'
@@ -100,7 +101,6 @@ urlpatterns = [
     #===END
     
     #============================ THIS ROUTE SI FOR BULLETIN & EVALUATIONS ==================================
-    path(route='bulletins-&-évaluations/bulletins/', view=BullettinView.as_view(), name='bulletins'),
     path(route='bulletins-&-évaluations/bulletins/<int:pk>/detail/', view=BulletinDetailView.as_view(), name='bulletin_detail'),
     path(route='bulletins-&-évaluations/tableau-des-notes/', view=NoteTableView.as_view(), name='table_notes'),
     path(route='bulletins-&-évaluations/tableau-des-moyennes/', view=AverageTableView.as_view(), name='averages'),
@@ -144,6 +144,10 @@ urlpatterns = [
     #===================================== THIS ROUTE IS FOR STATISTIQUE MODULE ======================
     path(route='rapport-&-statistique/resultat-academique/', view=ResultatAcademique.as_view(), name='academic_result'),
     path(route='rapport-&-statistique/resultat-academique/close/', view=CloseAcademicYear.as_view(), name='close_year'),
+    path(route="rapport-&-statistique/resultat-academique/bulletins/", view=ReportCardView.as_view(), name="bulletins"),
+    path(route="rapport-&-statistique/resultat-academique/bulletins/ajouter/", view=AddReportCardView.as_view(), name="add_bulletin"),
+    path(route="rapport-&-statistique/resultat-academique/bulletins/<int:pk>/editer/", view=EditReportCardView.as_view(), name="editer_bulletin"),
+    path(route="rapport-&-statistique/resultat-academique/bulletins/<int:pk>/delete/", view=ReportCardView.as_view(), name="delete_bulletin"),
     
     path(route='no-academic-year-found/', view=NotAcademicYearFound.as_view(), name='no_year'),
 ]

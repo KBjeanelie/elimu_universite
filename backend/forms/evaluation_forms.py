@@ -86,6 +86,14 @@ class AssessmentForm(forms.ModelForm):
         }
 
 class ReportCardForm(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super(ReportCardForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['semester'].queryset = Semester.objects.filter(level__school=user.school)
+        self.fields['career'].queryset = Career.objects.filter(sector__school=user.school)
+        student_ids = StudentCareer.objects.filter(academic_year__school=user.school, academic_year__status=True).values_list('student', flat=True).distinct()
+        self.fields['student'].queryset = Student.objects.filter(id__in=student_ids)
+        
     class Meta:
         model = ReportCard
-        fields = ['note', 'file', 'student', 'career', 'semester', 'academic_year']
+        fields = ['average', 'file', 'student', 'career', 'semester', 'academic_year']

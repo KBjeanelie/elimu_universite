@@ -181,7 +181,7 @@ class ListAllTeacherAccount(View):
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
-    
+        
     def get(self, request, *args, **kwargs):
         teachers_account = User.objects.filter(is_teacher=True, school=request.user.school)
         context_object = {'teachers_account': teachers_account}

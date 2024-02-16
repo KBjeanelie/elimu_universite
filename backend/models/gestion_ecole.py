@@ -101,6 +101,14 @@ class Student(models.Model):
         if self.picture:
             return os.path.exists(settings.MEDIA_ROOT / str(self.picture))
         return False
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.picture and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.picture))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.picture)))
+        
+        # Supprimer l'objet
+        super(Student, self).delete(*args, **kwargs)
 
 
 # Represent an objet of Teacher and his profil info
@@ -152,6 +160,14 @@ class Teacher(models.Model):
         if self.picture:
             return os.path.exists(settings.MEDIA_ROOT / str(self.picture))
         return False
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.picture and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.picture))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.picture)))
+        
+        # Supprimer l'objet
+        super(Teacher, self).delete(*args, **kwargs)
 
 
 
@@ -179,6 +195,14 @@ class ManagementProfil(models.Model):
     created_at = models.DateTimeField(auto_now_add=True, null=True)
     
     updated_at = models.DateTimeField(auto_now=True, null=True)
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.picture and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.picture))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.picture)))
+        
+        # Supprimer l'objet
+        super(ManagementProfil, self).delete(*args, **kwargs)
 #===END
 
 
@@ -236,6 +260,14 @@ class Program(models.Model):
         if self.file:
             return os.path.exists(settings.MEDIA_ROOT / str(self.file))
         return False
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.file and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.file))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.file)))
+        
+        # Supprimer l'objet
+        super(Program, self).delete(*args, **kwargs)
 
 # Class representing Document Type
 class DocumentType(models.Model):
@@ -266,6 +298,14 @@ class StudentDocument(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"Document: {self.title}"
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.file and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.file))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.file)))
+        
+        # Supprimer l'objet
+        super(StudentDocument, self).delete(*args, **kwargs)
 
 class TeacherDocument(models.Model):
     title = models.CharField(max_length=50)
@@ -276,6 +316,14 @@ class TeacherDocument(models.Model):
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
         return f"Document: {self.title}"
+    
+    def delete(self, *args, **kwargs):
+        # Supprimer le fichier associé s'il existe
+        if self.file and os.path.exists(os.path.join(settings.MEDIA_ROOT, str(self.file))):
+            os.remove(os.path.join(settings.MEDIA_ROOT, str(self.file)))
+        
+        # Supprimer l'objet
+        super(TeacherDocument, self).delete(*args, **kwargs)
 
 # Class representing Group Subject
 class GroupSubject(models.Model):
