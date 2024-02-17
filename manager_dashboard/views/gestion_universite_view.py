@@ -148,14 +148,14 @@ class AcademicYearView(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        academic_years = AcademicYear.objects.all().order_by('-label')
+        academic_years = AcademicYear.objects.filter(school=request.user.school).order_by('-label')
         context = {'academic_years': academic_years}
         return render(request, template_name=self.template, context=context)
     
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(AcademicYear, pk=pk)
         instance.delete()
-        academic_years = AcademicYear.objects.all().order_by('-created_at')
+        academic_years = AcademicYear.objects.filter(school=request.user.school).order_by('-label')
         context = {'academic_years': academic_years}
         return render(request, template_name=self.template, context=context)
 #===END
@@ -931,7 +931,7 @@ class StudentDetailView(View):
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         students_career = StudentCareer.objects.filter(student=student)
         student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year, is_valid=False)
-        regulations = Invoice.objects.filter(school=request.user.school, invoice_status='Entièrement payé', student=student).order_by('-created_at')
+        regulations = Invoice.objects.filter(academic_year=academic_year, invoice_status='Entièrement payé', student=student).order_by('-created_at')
         results = []
         monday_schedule = Schedule.objects.filter(career=student_career.career, day='lundi').order_by('start_hours')
         tueday_schedule = Schedule.objects.filter(career=student_career.career, day='mardi').order_by('start_hours')
