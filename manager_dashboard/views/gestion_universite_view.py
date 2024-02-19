@@ -929,7 +929,7 @@ class StudentDetailView(View):
         invoices_student = Invoice.objects.filter(student=student)
         controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
-        students_career = StudentCareer.objects.filter(student=student)
+        students_career = StudentCareer.objects.filter(student=student, school=request.user.school)
         student_career = get_object_or_404(StudentCareer, student=student, academic_year=academic_year, is_valid=False)
         regulations = Invoice.objects.filter(academic_year=academic_year, invoice_status='Entièrement payé', student=student).order_by('-created_at')
         results = []

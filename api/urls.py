@@ -1,25 +1,14 @@
-from django.urls import path, include
-from rest_framework import routers
-from api.views.contenue_pedagogique_views import eBookViewSet
-from api.views.user_account_view import AccountantAccountView, ManagementProfilViewSet, ManagerAccountView, StudentAccountView, StudentViewSet, TeacherAccountView, TeacherViewSet
-from api.views.views import AssessmentList
-
-router = routers.DefaultRouter()
-# router.register(r'folders', FolderViewSet)
-# router.register(r'files', FileViewSet)
-# router.register(r'book_categories', BookCategoryViewSet)
-# router.register(r'books', BookViewSet)
-router.register(r'ebooks', eBookViewSet)
-router.register(r'students', StudentViewSet)
-router.register(r'teachers', TeacherViewSet)
-router.register(r'management_profil', ManagementProfilViewSet)
+from django.urls import path
+from api.views.views import AssessmentList, FinancialCommitmentList, SchedulesList, StudentSchoolCareer, eBookList, InvoiceList, InformationList, EventList
 
 
 urlpatterns = [
-    # path('files-in-folder/<int:folder_id>/', FileByFolderListView.as_view())
+    path('schedules/', SchedulesList.as_view(), name='schedule-list'),
     path('assessments/', AssessmentList.as_view(), name='assessment-list'),
-    path('student-account-view/', StudentAccountView.as_view(), name="student-account-view"),
-    path('teacher-account-view/', TeacherAccountView.as_view(), name="teacher-account-view"),
-    path('manager-account-view/', ManagerAccountView.as_view(), name="manager-account-view"),
-    path('accountant-account-view/', AccountantAccountView.as_view(), name="accountant-account-view"),
+    path('invoices/', InvoiceList.as_view(), name='invoice-list'),
+    path('ebooks/', eBookList.as_view(), name='ebook-list'),
+    path('informations/', InformationList.as_view(), name='informations-list'),
+    path('events/', EventList.as_view(), name='events-list'),
+    path('engagements/', FinancialCommitmentList.as_view(), name='engagements-list'),
+    path('parcours/', StudentSchoolCareer.as_view()),
 ]
