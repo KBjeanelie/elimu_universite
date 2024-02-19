@@ -37,12 +37,14 @@
                                         {% for group in groups %}
                                             <tr data-id="{{ group.id }}">
                                                 <td><h6> {{ group.title }} </h6></td>
+                                                {% if not user.is_admin %}
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
                                                         <a href="#" onclick='deleteGroupSubject({{ group.id }})' class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                     </div>
                                                 </td>
+                                                {% endif %}
                                             </tr>
                                         {% endfor %}
                                     </tbody>
@@ -52,6 +54,7 @@
                     </div>
                 </div>
             </div>
+            {% if not user.is_admin %}
             <div class="col-6">
                 <div class="white_card card_height_100 mb_30">
                     <div class="white_card_header">
@@ -73,6 +76,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

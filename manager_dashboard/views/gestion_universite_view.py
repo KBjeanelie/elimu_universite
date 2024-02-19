@@ -649,7 +649,7 @@ class TrombinoscopeView(View):
 
     def get(self, request, *args, **kwargs):
         students = Student.objects.all()
-        teachers = Teacher.objects.all()
+        teachers = Teacher.objects.filter(school=request.user.school)
         context = {'students': students, 'teachers':teachers}
         return render(request, template_name=self.template, context=context)
 

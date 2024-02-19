@@ -189,9 +189,12 @@
                     </div>
                 </a>
                 <ul>
-                    <li><a href='{% url "manager_dashboard:directors" %}'>Équipe de direction</a></li>
-                    <li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>
-                    <li><a href="{% url 'manager_dashboard:students_account' %}"">Comptes étudiants</a></li>
+                    {% if user.is_admin %}
+                        <li><a href='{% url "manager_dashboard:directors" %}'>Équipe de direction</a></li>
+                    {% else %}
+                        <li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>
+                        <li><a href="{% url 'manager_dashboard:students_account' %}"">Comptes étudiants</a></li>
+                    {% endif %}
                 </ul>
             </li>
 
@@ -211,7 +214,9 @@
                     <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Types de sanctions</a></li>
                     {% comment %} <li><a href="administration/type_comptes.html">Type de comptes</a></li> {% endcomment %}
                     <!-- <li><a href="administration/types_conges.html">Type de congé</a></li> -->
+                    {% if user.is_admin %}
                     <li><a href="{% url 'manager_dashboard:reglage_general' %}">Réglages généraux</a></li>
+                    {% endif %}
                     
                 </ul>
             </li>

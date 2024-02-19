@@ -42,7 +42,9 @@
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
+                                                        {% if not user.is_admin %}
                                                         <a href="#" onclick='deleteGroupDiscussion({{ group_discussion.id }})' class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                        {% endif %}
                                                     </div>
                                                 </td>
                                             </tr>
@@ -54,6 +56,7 @@
                     </div>
                 </div>
             </div>
+            {% if not user.is_admin %}
             <div class="col-6">
                 <div class="white_card card_height_100 mb_30">
                     <div class="white_card_header">
@@ -79,6 +82,7 @@
                     </div>
                 </div>
             </div>
+            {% endif %}
         </div>
     </div>
 </div>

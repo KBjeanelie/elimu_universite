@@ -14,11 +14,13 @@
                             <li class="breadcrumb-item"><a>Evenements</a></li>
                         </ol>
                     </div>
+                    {% if not user.is_admin %}
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
                             <a href='{% url "manager_dashboard:add_event" %}' class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter un evenement</a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
@@ -72,13 +74,17 @@
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         <a href='{% url "manager_dashboard:event" event.id %}' class="action_btn mr_10"> <i class="fas fa-eye"></i> </a>
+                                                        {% if not user.is_admin %}
                                                         <a href="{% url 'manager_dashboard:edit_event' event.id %}" class="action_btn mr_10"> <i class="fas fa-edit"></i> </a>
+                                                        {% endif %}
                                                         {% if event.file_exists %}
                                                             <a href="{{ event.file.url }}" target="_blank" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
                                                         {% else %}
                                                             <a href="#" class="action_btn mr_10"> <i class="fas fa-download"></i> </a>
                                                         {% endif %}
+                                                        {% if not user.is_admin %}
                                                         <a href="#" onclick="deleteEvent({{ event.id }})" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                        {% endif %}
                                                     </div>
                                                 </td>
                                             </tr>

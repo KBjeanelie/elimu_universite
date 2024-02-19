@@ -14,11 +14,13 @@
                             <li class="breadcrumb-item"><a href=''>Emplois du temps</a></li>
                         </ol>
                     </div>
+                    {% if not user.is_admin %}
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
                             <a href='{% url "manager_dashboard:add_time" %}' class="white_btn3">Ajouter</a>
                         </div>
                     </div>
+                    {% endif %}
                 </div>
             </div>
         </div>
