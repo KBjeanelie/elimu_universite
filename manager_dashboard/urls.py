@@ -1,6 +1,5 @@
 from django.conf.urls.static import static
 from django.urls import path
-from accountant_dashboard.views.home_view import NotAcademicYearFound
 
 from elimu_universite import settings
 from manager_dashboard.views.administration_view import EditProfileView, ProfileAppView, TypeDocumentDeleteView, TypeDocumentView, TypeEvaluationDeleteView, TypeEvaluationView, TypeSanctionDeleteView, TypeSanctionView, SettingAppView, get_last_document_type, get_last_sanction_type
@@ -10,7 +9,7 @@ from manager_dashboard.views.contenu_pedagogique_view import AddeBook, EditEbook
 from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, AssessmentView, AverageTableView, BulletinDetailView, EditAssessmentView, NoteTableView
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
-from manager_dashboard.views.home_view import ManagerIndexView
+from manager_dashboard.views.home_view import ManagerIndexView, NotAcademicYearFound
 from manager_dashboard.views.statistique_view import CloseAcademicYear, ResultatAcademique, ReportCardView, AddReportCardView, EditReportCardView
 
 
