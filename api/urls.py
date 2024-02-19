@@ -3,12 +3,12 @@ from api.views.views import AssessmentList, FinancialCommitmentList, SchedulesLi
 
 
 urlpatterns = [
-    path('schedules/', SchedulesList.as_view(), name='schedule-list'),
-    path('assessments/', AssessmentList.as_view(), name='assessment-list'),
-    path('invoices/', InvoiceList.as_view(), name='invoice-list'),
-    path('ebooks/', eBookList.as_view(), name='ebook-list'),
-    path('informations/', InformationList.as_view(), name='informations-list'),
-    path('events/', EventList.as_view(), name='events-list'),
-    path('engagements/', FinancialCommitmentList.as_view(), name='engagements-list'),
+    path('schedules/', SchedulesList.as_view()),
+    path('assessments/', AssessmentList.as_view()),
+    path('invoices/', InvoiceList.as_view()),
+    path('ebooks/', eBookList.as_view()),
+    path('informations/', InformationList.as_view()),
+    path('events/', EventList.as_view()),
+    path('engagements/', FinancialCommitmentList.as_view()),
     path('parcours/', StudentSchoolCareer.as_view()),
 ]
