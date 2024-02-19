@@ -1,6 +1,6 @@
 from rest_framework import viewsets
-from educational_content.models import eBook
 from api.serializers.contenu_pedagogique_serializer import eBookSerializer
+from backend.models.contenue_pedagogique import eBook
 
 # class FolderViewSet(viewsets.ModelViewSet):
 #     queryset = Folder.objects.all()
