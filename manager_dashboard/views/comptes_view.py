@@ -8,7 +8,7 @@ from backend.models.user_account import ManagementProfil, User
 
 #========================== PARTIE CONCERNANT LA GESTION DE COMPTE ENSEIGNANT
 class EditDirectionAccountView(View):
-    template = "manager_dashboard/comptes/editer_compte_enseignant.html"
+    template = "manager_dashboard/comptes/compte_direction.html"
     
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:

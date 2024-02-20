@@ -10,7 +10,7 @@ from manager_dashboard.views.gestion_evaluation_view import AddAssessmentView, A
 from manager_dashboard.views.gestion_temps_view import AddScheduleView, ScheduleView
 from manager_dashboard.views.gestion_universite_view import AcademicYearView, AddAcademicYearView, AddProgramView, AddSanctionView, AddStudentView, AddSubjectView, AddTeacherView, CareerView, EditAcademicYearView, EditProgramView, EditSanctionView, EditStudentView, EditSubjectView, EditTeacherView, GroupSubjectView, LevelView, ProgramView, SanctionAppreciationView, SectorView, SemesterView, StudentDetailView, StudentsView, SubjectView, TeacherDetailView, TeacherView, TrombinoscopeView
 from manager_dashboard.views.home_view import ManagerIndexView, NotAcademicYearFound
-from manager_dashboard.views.statistique_view import CloseAcademicYear, ResultatAcademique, ReportCardView, AddReportCardView, EditReportCardView
+from manager_dashboard.views.statistique_view import AddNextLevelView, CloseAcademicYear, NextLevelView, ResultatAcademique, ReportCardView, AddReportCardView, EditReportCardView
 
 
 app_name = 'manager_dashboard'
@@ -101,6 +101,7 @@ urlpatterns = [
     
     #============================ THIS ROUTE SI FOR BULLETIN & EVALUATIONS ==================================
     path(route='bulletins-&-évaluations/bulletins/<int:pk>/detail/', view=BulletinDetailView.as_view(), name='bulletin_detail'),
+    path(route='bulletins-&-évaluations/bulletins/<int:pk>/detail/valided/', view=BulletinDetailView.check, name='bulletin_valid'),
     path(route='bulletins-&-évaluations/tableau-des-notes/', view=NoteTableView.as_view(), name='table_notes'),
     path(route='bulletins-&-évaluations/tableau-des-moyennes/', view=AverageTableView.as_view(), name='averages'),
     path(route='bulletins-&-évaluations/evaluations/', view=AssessmentView.as_view(), name='evaluations'),
@@ -113,7 +114,7 @@ urlpatterns = [
     path(route='comptes/compte_directions/', view=ListAllDirectionAccount.as_view(), name='directors'),
     path(route='comptes/compte_directions/ajouter/', view=AddDirectionAccount.as_view(), name='director_add'),
     path(route='comptes/compte_directions/<int:pk>/delete/', view=ListAllDirectionAccount.as_view(), name='director_delete'),
-    path(route='comptes/compte_directions/<int:pk>/editer/', view=EditDirectionAccountView.as_view(), name='director_edit'),
+    path(route='comptes/compte_directions/<int:pk>/editer/', view=ListAllDirectionAccount.as_view(), name='director_edit'),
     
     path(route='comptes/compte_enseignants/', view=ListAllTeacherAccount.as_view(), name='teachers_account'),
     path(route='comptes/compte_enseignants/ajouter/', view=AddTeacherAccount.as_view(), name='add_teacher_account'),
@@ -147,6 +148,9 @@ urlpatterns = [
     path(route="rapport-&-statistique/resultat-academique/bulletins/ajouter/", view=AddReportCardView.as_view(), name="add_bulletin"),
     path(route="rapport-&-statistique/resultat-academique/bulletins/<int:pk>/editer/", view=EditReportCardView.as_view(), name="editer_bulletin"),
     path(route="rapport-&-statistique/resultat-academique/bulletins/<int:pk>/delete/", view=ReportCardView.as_view(), name="delete_bulletin"),
+    path(route='rapport-&-statistique/monter-en-niveau/', view=NextLevelView.as_view(), name='next_level'),
+    path(route='rapport-&-statistique/monter-en-niveau/<int:pk>/unChecked/', view=NextLevelView.unChecked, name='past_level'),
+    path(route='rapport-&-statistique/monter-en-niveau/<int:pk>/ajouter/', view=AddNextLevelView.as_view(), name='add_next_level'),
     
     path(route='no-academic-year-found/', view=NotAcademicYearFound.as_view(), name='no_year'),
 ]

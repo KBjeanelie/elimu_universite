@@ -173,7 +173,9 @@
                 </a>
                 <ul>
                     <li><a href='{% url "manager_dashboard:academic_result" %}'>Résultat academique</a></li>
-                    <li><a href="">Monté en niveau</a></li>
+                    {% if not user.is_admin %}
+                        <li><a href='{% url "manager_dashboard:next_level" %}'>Monté en niveau</a></li>
+                    {% endif %}
                     <!--<li><a href=''>Statistique anterieur</a></li> -->
                     
                 </ul>

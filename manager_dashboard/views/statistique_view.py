@@ -39,7 +39,7 @@ class ResultatAcademique(View):
         semesters = Semester.objects.filter(level__school=self.request.user.school)
         careers = Career.objects.filter(sector__school=self.request.user.school)
         academic_year = AcademicYear.objects.filter(status=True, school=self.request.user.school).first()
-        total_student = StudentCareer.objects.filter(academic_year=academic_year).count()
+        total_student = StudentCareer.objects.filter(academic_year=academic_year, is_next=False).count()
         results = get_all_results(request.user)
         admis, echouer = 0, 0
         
@@ -208,3 +208,110 @@ class ReportCardView(View):
         instance.delete()
         return JsonResponse({'message': 'Élément supprimé avec succès'})
 
+class NextLevelView(View):
+    template_name = "manager_dashboard/statistique/monter_niveau.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        if request.user.is_admin:
+            return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get_context_data(self, request, **kwargs):
+        semesters = Semester.objects.filter(level__school=self.request.user.school)
+        careers = Career.objects.filter(sector__school=self.request.user.school)
+        academic_year = AcademicYear.objects.filter(status=True, school=self.request.user.school).first()
+        
+        student_validated = StudentCareer.objects.filter(is_valid=True, is_registered=True, is_next=False, academic_year=academic_year)
+        context = {
+            'academic_year': academic_year, 
+            'student_validated': student_validated, 
+            'semesters': semesters, 
+            'careers': careers,
+        }
+        return context
+    
+    def get(self, request, *args, **kwargs):
+        context = self.get_context_data(request)
+        return render(request, template_name=self.template_name, context=context)
+    
+    def unChecked(self, pk, *args, **kwargs):
+        student_career = get_object_or_404(StudentCareer, pk=pk)
+        student_career.is_registered = True
+        student_career.is_valid = False;
+        student_career.save()
+        return redirect('manager_dashboard:next_level')
+    
+    def post(self, request, *args, **kwargs):
+        semester_id = request.POST.get('semester')
+        career_id = request.POST.get('career')
+        
+        try:
+            career = Career.objects.get(pk=career_id)
+            semester = Semester.objects.get(pk=semester_id)
+        except (Career.DoesNotExist, Semester.DoesNotExist):
+            raise Http404("Selected semester or career does not exist.")
+        
+        context = self.get_context_data(request)
+        
+        academic_year = AcademicYear.objects.filter(status=True, school=self.request.user.school).first()
+        student_validated = StudentCareer.objects.filter(
+            semester__id=semester_id,
+            career__id=career_id,
+            is_valid=True, 
+            is_registered=True, 
+            is_next=False, 
+            academic_year=academic_year
+        )
+        context.update({
+            'career': career,
+            'semester': semester,
+            'student_validated':student_validated
+        })
+        return render(request, template_name=self.template_name, context=context)
+        return super().post(request, *args, **kwargs)
+
+
+class AddNextLevelView(View):
+    template_name = "manager_dashboard/statistique/ajouter_monter_niveau.html"
+    
+    def dispatch(self,request, *args, **kwargs):
+        if not request.user.is_authenticated:
+            return redirect('backend:login')
+        if request.user.is_admin:
+            return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
+        
+        return super().dispatch(request, *args, **kwargs)
+    
+    def get(self, request,pk, *args, **kwargs):
+        semesters = Semester.objects.filter(level__school=self.request.user.school)
+        context={'semesters':semesters}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, pk, *args, **kwargs):
+        student_career = StudentCareer.objects.get(pk=pk)
+        student_career.is_next = True
+        student_career.save()
+        next_student_career = StudentCareer.objects.create(
+            student=student_career.student,
+            career=student_career.career,
+            academic_year=student_career.academic_year,
+            semester=Semester.objects.get(id=request.POST['semester']),
+            is_registered=student_career.is_registered,
+            school=student_career.school
+        )
+        next_student_career.save()
+        
+        return redirect('manager_dashboard:next_level')

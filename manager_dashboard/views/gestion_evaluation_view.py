@@ -21,7 +21,7 @@ def calculate_results(semester_id, career_id, user):
         career = Career.objects.get(pk=career_id)
 
         evaluations = Assessment.objects.filter(semester=semester, career=career, academic_year=academic_year).order_by('-note')
-        student_career = StudentCareer.objects.filter(semester=semester, career=career, academic_year=academic_year)
+        student_career = StudentCareer.objects.filter(semester=semester, career=career, academic_year=academic_year, is_next=False)
     
         if evaluations.exists():
             results = []
@@ -101,7 +101,7 @@ def get_all_results(user):
     for semester in semesters:
         try:
             evaluations = Assessment.objects.filter(academic_year=academic_year, semester=semester).order_by('semester__title')
-            student_career = StudentCareer.objects.filter(academic_year=academic_year, is_valid=False, semester=semester)
+            student_career = StudentCareer.objects.filter(academic_year=academic_year, is_valid=False, semester=semester, is_next=False)
 
             if evaluations.exists():
                 controle_evaluations = evaluations.filter(type_evaluation__title='Contrôle')
@@ -515,4 +515,11 @@ class BulletinDetailView(View):
         pk = kwargs.get('pk')
         context = self.get_context_data(request, pk)
         return render(request, template_name=self.template_name, context=context)
+    
+    def check(self, pk, *args, **kwargs):
+        student_career = get_object_or_404(StudentCareer, pk=pk)
+        student_career.is_registered = True
+        student_career.is_valid = True;
+        student_career.save()
+        return redirect('manager_dashboard:academic_result')
 

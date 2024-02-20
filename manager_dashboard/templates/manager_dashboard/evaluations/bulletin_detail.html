@@ -16,6 +16,9 @@
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
+                            <a href='{% url "manager_dashboard:bulletin_valid" student_career.id %}' class='btn btn-success'><i class="fas fa-check"></i> Validé le bulletin</a>
+                        </div>
+                        <div class="page_date_button d-flex align-items-center">
                             <button id="generate-pdf-button" class='btn btn-primary'><i class="fas fa-download"></i> Générer le PDF</button>
                         </div>
                     </div>
