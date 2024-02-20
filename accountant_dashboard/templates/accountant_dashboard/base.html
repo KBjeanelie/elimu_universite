@@ -196,12 +196,19 @@
                                 </form>
                             </div>
                         </div> -->
+                        <h4 class='text-center text-primary'>{{user.school.name}}</h4>
                         <div class="header_right d-flex justify-content-between align-items-center">
 
                             <div class="header_notification_warp d-flex align-items-center">
                                 <li style="margin-right: 25px;">
-                                    Année academique : {% if not academic_year %} Aucune {% else %} <span class="badge rounded-pill bg-primary"> {{academic_year.label}} </span> {%endif%}
-                                    
+                                    Année academique : 
+                                    {% if request.session.academic_year %}
+                                        {% with academic_year=request.session.academic_year %}
+                                            <span class="badge rounded-pill bg-primary">{{request.session.academic_year}}</span>
+                                        {% endwith %}
+                                    {% else %}
+                                        <span class="badge rounded-pill bg-danger">Indisponible</span>
+                                    {%endif%}
                                 </li>
                                 {% comment %} <li>
                                     <a class="bell_notification_clicker" href="#"> <img src="{% static 'img/icon/bell.svg' %}" alt><span>2</span></a>

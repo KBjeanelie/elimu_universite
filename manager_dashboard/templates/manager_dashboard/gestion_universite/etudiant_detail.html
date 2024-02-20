@@ -65,9 +65,9 @@
                                 <li class="nav-item">
                                     <a class="nav-link active" id="info-tab" data-bs-toggle="tab" href="#info" role="tab" aria-controls="info" aria-selected="true">Information Personnelle</a>
                                 </li>
-                                <li class="nav-item">
+                                <!--<li class="nav-item">
                                     <a class="nav-link" id="parents-tab" data-bs-toggle="tab" href="#parents" role="tab" aria-controls="parents" aria-selected="false">Parents</a>
-                                </li>
+                                </li>-->
                                 <li class="nav-item">
                                     <a class="nav-link" id="schedule-tab" data-bs-toggle="tab" href="#schedule" role="tab" aria-controls="schedule" aria-selected="false">Emplois du temps</a>
                                 </li>
@@ -136,7 +136,7 @@
                                     </div>
                                 </div>
                             </div>
-                            <div class="tab-pane fade" id="parents" role="tabpanel" aria-labelledby="parents-tab">
+                            <!--<div class="tab-pane fade" id="parents" role="tabpanel" aria-labelledby="parents-tab">
                                 <div class="builder_select">
                                     <div class="row">
                                         <div class="col-md-6">
@@ -165,7 +165,7 @@
                                         </div>
                                     </div>
                                 </div>
-                            </div>
+                            </div>-->
                             <div class="tab-pane fade" id="schedule" role="tabpanel" aria-labelledby="schedule-tab">
                                 <div class="builder_select">
                                     <div class="row">
@@ -441,7 +441,6 @@
                                                             <th scope="col">Parcours</th>
                                                             <th scope="col">Montant</th>
                                                             <th scope="col">Date</th>
-                                                            <th scope="col">Reste</th>
                                                             <th scope="col">État</th>
                                                         </tr>
                                                     </thead>
@@ -450,10 +449,13 @@
                                                             <tr>
                                                                 <td><h6> {{invoice.invoice_number}} </h6></td>
                                                                 <td><h6>{{invoice.career.title}}</h6></td>
-                                                                <td><h6>30000</h6></td>
+                                                                <td><h6> {{invoice.amount}} </h6></td>
                                                                 <td><h6>{{invoice.invoice_date}}</h6></td>
-                                                                <td><h6>-</h6></td>
-                                                                <td><h6><span class="badge rounded-pill bg-success">Entièrement payé</span></h6></td>
+                                                                {% if invoice.invoice_status == 'Entièrement payé' %}
+                                                                    <td><h6><span class="badge rounded-pill bg-success">{{invoice.invoice_status}}</span></h6></td>
+                                                                {% else %}
+                                                                    <td><h6><span class="badge rounded-pill bg-danger"> {{invoice.invoice_status}} </span></h6></td>
+                                                                {% endif %}
                                                             </tr>
                                                         {% endfor %}
                                                     </tbody>

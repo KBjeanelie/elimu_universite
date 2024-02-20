@@ -18,7 +18,7 @@
                         <div class="page_title_right">
                             <div class="page_date_button d-flex align-items-center">
                                 <img src="img/icon/calender_icon.svg" alt>
-                                Mercredi, 22 Novembre 2023
+                                {% now "l, j F Y" %}
                             </div>
                         </div>
                     </div>
@@ -39,7 +39,7 @@
                                         <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                                     </div>
                                     <div class="crm_body">
-                                        <h4>25</h4>
+                                        <h4> {{count_teacher}} </h4>
                                         <p>Enseignants</p>
                                     </div>
                                 </div>
@@ -54,7 +54,7 @@
                                         <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                                     </div>
                                     <div class="crm_body">
-                                        <h4>200</h4>
+                                        <h4> {{total_student}} </h4>
                                         <p>Étudiants</p>
                                     </div>
                                 </div>
@@ -69,8 +69,8 @@
                                         <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                                     </div>
                                     <div class="crm_body">
-                                        <h4>2 300 000F CFA</h4>
-                                        <p>Frais académique impayé</p>
+                                        <h4>{{total_engagements}}F CFA</h4>
+                                        <p>Recètte académique</p>
                                     </div>
                                 </div>
                             </div>
@@ -84,7 +84,7 @@
                                         <i class="fas fa-ellipsis-h f_s_11 white_text"></i>
                                     </div>
                                     <div class="crm_body">
-                                        <h4>300</h4>
+                                        <h4>{{count_user}}</h4>
                                         <p>Utilisateurs</p>
                                     </div>
                                 </div>

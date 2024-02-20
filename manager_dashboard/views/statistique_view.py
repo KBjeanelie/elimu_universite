@@ -5,7 +5,6 @@ from backend.models.evaluations import ReportCard
 from manager_dashboard.views.gestion_evaluation_view import calculate_results, get_all_results
 from backend.models.gestion_ecole import AcademicYear, Career, Semester, StudentCareer
 from django.http import Http404, JsonResponse
-from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 class NotAcademicYearFound(View):
     template_name = "manager_dashboard/statistique/no_academique.html"
@@ -18,6 +17,7 @@ class CloseAcademicYear(View):
         year = AcademicYear.objects.get(status=True, school=request.user.school)
         year.status = False
         year.save()
+        del request.session['academic_year']
         return redirect('manager_dashboard:years')
 
 class ResultatAcademique(View):

@@ -102,6 +102,10 @@ class EditAcademicYearView(View):
         form = AcademicYearForm(mutable_data, instance=academique_year)
         
         if form.is_valid():
+            if form.cleaned_data['status']:
+                request.session['academic_year'] = form.cleaned_data['label']
+            else:
+                del request.session['academic_year']
             form.save()
             return redirect('manager_dashboard:years')
         
@@ -130,6 +134,15 @@ class AddAcademicYearView(View):
         data['school'] = request.user.school
         form = AcademicYearForm(data)
         if form.is_valid():
+            
+            if form.cleaned_data['status']:
+                request.session['academic_year'] = form.cleaned_data['label']
+                academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
+                academic_year.status = False
+                academic_year.save()
+            else:
+                del request.session['academic_year']
+                
             form.save()
             return redirect("manager_dashboard:years")
         form = AcademicYearForm()
@@ -156,6 +169,7 @@ class AcademicYearView(View):
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(AcademicYear, pk=pk)
         instance.delete()
+        del request.session['academic_year']
         academic_years = AcademicYear.objects.filter(school=request.user.school).order_by('-label')
         context = {'academic_years': academic_years}
         return render(request, template_name=self.template, context=context)
@@ -929,7 +943,7 @@ class StudentDetailView(View):
         student = get_object_or_404(Student, pk=pk)
         documents = StudentDocument.objects.filter(student=student, school=request.user.school)
         sanctions_student = SanctionAppreciation.objects.filter(student=student)
-        invoices_student = Invoice.objects.filter(student=student)
+        invoices_student = Invoice.objects.filter(student=student, academic_year=academic_year)
         controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         students_career = StudentCareer.objects.filter(student=student, school=request.user.school)

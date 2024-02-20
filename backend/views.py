@@ -3,6 +3,7 @@ from django.shortcuts import render, redirect
 from django.views import View
 
 from backend.forms.user_account_forms import LoginForm
+from backend.models.gestion_ecole import AcademicYear
 
 
 # Create your views here.
@@ -29,6 +30,14 @@ class LoginView(View):
         if user is None:
             return redirect(to='backend:login')
         login(request, user)
+        
+        years = AcademicYear.objects.filter(school=user.school)
+        
+        for academic_year in years:
+            if academic_year.status:
+                request.session['academic_year'] = academic_year.label
+                break
+
 
         if user.is_manager or user.is_admin:
             return redirect(to='manager_dashboard:index')
