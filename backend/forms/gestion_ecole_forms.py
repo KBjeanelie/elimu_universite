@@ -1,6 +1,102 @@
 from django import forms
 from backend.models.gestion_ecole import *
 
+class EtablishmentForm(forms.ModelForm):
+    class Meta:
+        model = Etablishment
+        fields = ['name', 'tel', 'address', 'social_address', 'email', 'bulletin_foot', 'currency', 'système', 'status_fees', 'subscription_fees', 'month', 're_registration_fees']
+        widgets = {
+            'name' : forms.TextInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'maxLength':'120',
+                    'required': True
+                }
+            ),
+            'tel' : forms.TextInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'maxLength':'120',
+                    'required': True
+                }
+            ),
+            'address' : forms.TextInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'maxLength':'120',
+                    'required': True
+                }
+            ),
+            'email' : forms.EmailInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'maxLength':'120',
+                    'required': True
+                }
+            ),
+            'social_address' : forms.TextInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'maxLength':'120',
+                }
+            ),
+            'currency' : forms.Select(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                }
+            ),
+            'bulletin_foot' : forms.TextInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                    'name': 'label',
+                    'maxLength':'120',
+                }
+            ),
+            'système' : forms.Select(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                }
+            ),
+            'status_fees' : forms.Select(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                }
+            ),
+            'subscription_fees' : forms.NumberInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                }
+            ),
+            're_registration_fees' : forms.NumberInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                }
+            ),
+            'month' : forms.NumberInput(
+                attrs={
+                    'id': 'label',
+                    'class': 'form-control',
+                }
+            ),
+            
+        }
+
 
 class StudentForm(forms.ModelForm):
     class Meta:

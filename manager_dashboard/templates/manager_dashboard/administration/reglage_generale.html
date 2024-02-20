@@ -36,77 +36,64 @@
                 <div class="col-xl-12">
                     <div class="white_card card_height_100 mb_30">
                         <div class="white_card_body">
-                            <form>
+                            <form method='post'>
+                                {% csrf_token %}
                                 <h5 class="text-primary mt-2">Informations générales</h5><hr>
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Nom de l'établissement</label>
-                                        <input type="text" class="form-control" placeholder="École Démo">
+                                        {{form.name}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Numéro de téléphoe</label>
-                                        <input type="text" class="form-control" placeholder="064838870">
+                                        {{form.tel}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Adresse de l'établissement</label>
-                                        <input type="text" class="form-control" placeholder="50 rue nkouma moungalie    ">
+                                        {{form.address}}
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Adresse du siège social</label>
-                                        <input type="text" class="form-control" placeholder="50 rue nkouma moungalie    ">
+                                        {{form.social_address}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Adresse email</label>
-                                        <input type="email" class="form-control" placeholder="ecoledemo@gmail.com">
+                                        {{form.email}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Pied de page bulletin</label>
-                                        <input type="text" class="form-control" placeholder="Copyright &copy; ecole-demo">
+                                        {{form.bulletin_foot}}
                                     </div>
                                 </div>
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Device</label>
-                                        <select id="level" class="form-control">
-                                            <option>F CFA</option>
-                                            <option>XAF</option>
-                                            <option value="">EUR</option>
-                                        </select>
+                                        {{form.currency}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Système scolaire</label>
-                                        <select id="level" class="form-control">
-                                            <option>Congolais</option>
-                                            <option>Français</option>
-                                        </select>
+                                        {{form.système}}
                                     </div>
                                     <div class="col-md-4">
-                                        <label class="form-label" for="level">Année scolaire en cours</label>
-                                        <select id="level" class="form-control">
-                                            <option selected>2023-2024</option>
-                                            <option>...</option>
-                                            <option>2022-2023</option>
-                                        </select>
+                                        <label class="form-label" for="level">Durée académique (nombre de mois)</label>
+                                        {{form.month}}
                                     </div>
                                 </div>
                                 <h5 class="text-primary mt-4">Frais d'admission</h5><hr>
                                 <div class="row mb-3">
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Frais d'admission</label>
-                                        <select id="level" class="form-control">
-                                            <option>Activé</option>
-                                            <option>Desactive</option>
-                                        </select>
+                                        {{form.status_fees}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Frais d'inscription</label>
-                                        <input type="number" class="form-control">
+                                        {{form.subscription_fees}}
                                     </div>
                                     <div class="col-md-4">
                                         <label class="form-label" for="level">Frais de réinscription</label>
-                                        <input type="number" class="form-control">
+                                        {{form.re_registration_fees}}
                                     </div>
                                 </div>
                                 <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Sauvegarder</button>

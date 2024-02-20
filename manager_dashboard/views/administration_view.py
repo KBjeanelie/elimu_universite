@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.evaluation_forms import TypeOfEvaluationForm
-from backend.forms.gestion_ecole_forms import DocumentTypeForm, SanctionAppreciationTypeForm
+from backend.forms.gestion_ecole_forms import DocumentTypeForm, EtablishmentForm, SanctionAppreciationTypeForm
 from backend.models.evaluations import TypeOfEvaluation
 from backend.models.gestion_ecole import DocumentType, SanctionAppreciationType
 from backend.forms.gestion_ecole_forms import ManagementProfilForm
@@ -181,7 +181,17 @@ class SettingAppView(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template_name)
+        context = {'form':EtablishmentForm(instance=request.user.school)}
+        return render(request, template_name=self.template_name, context=context)
+    
+    def post(self, request, *args, **kwargs):
+        form = EtablishmentForm(request.POST, instance=request.user.school)
+        if form.is_valid():
+            form.save()
+            redirect('manager_dashboard:reglage_general')
+        else:
+            print(form.errors)
+        return render(request, template_name=self.template_name, context={'form':form})
 
 class ProfileAppView(View):
     template_name = "manager_dashboard/administration/profil.html"
