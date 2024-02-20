@@ -516,7 +516,7 @@
                                                     <div class="icon-wrapper-bg bg-primary"></div>
                                                     <i class="ti-server" style="color: white;"></i>
                                                 </div>
-                                                <div><h4 style="color: white;">30000F CFA</h4></div>
+                                                <div><h4 style="color: white;">{{total_engagements}}F CFA</h4></div>
                                                 <div class="widget-subheading">Facturé cette année</div>
                                             </div>
                                         </div>
@@ -526,18 +526,18 @@
                                                     <div class="icon-wrapper-bg bg-primary"></div>
                                                     <i class="ti-server" style="color: white;"></i>
                                                 </div>
-                                                <div><h4 style="color: white;">200000F CFA</h4></div>
-                                                <div class="widget-subheading">Reste à payé</div>
+                                                <div><h4 style="color: white;">{{amount_payed}}F CFA</h4></div>
+                                                <div class="widget-subheading">Déjà Payé</div>
                                             </div>
                                         </div>
                                         <div class="col-md-3">
                                             <div class="card bg-danger mb-3 widget-chart">
                                                 <div class="icon-wrapper rounded-circle">
                                                     <div class="icon-wrapper-bg bg-primary"></div>
-                                                    <i class="ti-receipt" style="color: white;"></i>
+                                                    <i class="ti-server" style="color: white;"></i>
                                                 </div>
-                                                <div><h4 style="color: white;">1</h4></div>
-                                                <div class="widget-subheading">Factures payés</div>
+                                                <div><h4 style="color: white;"> {{not_payed}} </h4></div>
+                                                <div class="widget-subheading">Reste à payés</div>
                                             </div>
                                         </div>
 
@@ -547,8 +547,8 @@
                                                     <div class="icon-wrapper-bg bg-primary"></div>
                                                     <i class="ti-receipt" style="color: white;"></i>
                                                 </div>
-                                                <div><h4 style="color: white;">8</h4></div>
-                                                <div class="widget-subheading">Factures non payés</div>
+                                                <div><h4 style="color: white;"> {{count_invoices}} </h4></div>
+                                                <div class="widget-subheading">Factures payés</div>
                                             </div>
                                         </div>
                                     </div>

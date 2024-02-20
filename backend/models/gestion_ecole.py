@@ -294,6 +294,7 @@ class StudentDocument(models.Model):
     document_type = models.ForeignKey(DocumentType, on_delete=models.SET_NULL, blank=True, null=True)
     student = models.ForeignKey(Student, on_delete=models.SET_NULL, blank=True, null=True)
     file = models.FileField(upload_to='student_documents')
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
     def __str__(self):
@@ -311,6 +312,7 @@ class TeacherDocument(models.Model):
     title = models.CharField(max_length=50)
     document_type = models.ForeignKey(DocumentType, on_delete=models.SET_NULL, blank=True, null=True)
     teacher = models.ForeignKey(Teacher, on_delete=models.SET_NULL, blank=True, null=True)
+    school = models.ForeignKey(Etablishment, on_delete=models.CASCADE, null=True)
     file = models.FileField(upload_to='teacher_documents')
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)

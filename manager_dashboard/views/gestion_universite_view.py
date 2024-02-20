@@ -4,7 +4,8 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from manager_dashboard.views.gestion_evaluation_view import calculate_results
 from backend.models.evaluations import Assessment
-from backend.models.facturation import Invoice
+from django.db.models import Sum
+from backend.models.facturation import FinancialCommitment, Invoice
 from backend.forms.gestion_ecole_forms import (
     AcademicYearForm,
     CareerForm, 
@@ -771,7 +772,7 @@ class TeacherDetailView(View):
         teacher = get_object_or_404(Teacher, pk=pk)
         subjects_taught_by_teacher = Subject.objects.filter(teacher_in_charge=teacher)
         schedules_for_subject = Schedule.objects.filter(subject__in=subjects_taught_by_teacher)
-        documents = TeacherDocument.objects.filter(teacher=teacher)
+        documents = TeacherDocument.objects.filter(teacher=teacher, school=request.user.school)
         #account = get_object_or_404(User, teacher=teacher)
         form = TeacherDocumentForm()
         context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject, 'form':form, 'documents':documents}
@@ -782,6 +783,7 @@ class TeacherDetailView(View):
         mutable_data = request.POST.copy()
         mutable_file = request.FILES.copy()
         mutable_data['teacher'] = teacher
+        mutable_data['school'] = request.user.school
         form = TeacherDocumentForm(mutable_data, mutable_file)
         if form.is_valid():
             form.save()
@@ -909,6 +911,7 @@ class StudentsView(View):
             # Exécuter du code alternatif si l'objet AcademicYear n'existe pas
            return render(request, template_name=self.template)
 
+
 class StudentDetailView(View):
     template = "manager_dashboard/gestion_universite/etudiant_detail.html"
     
@@ -924,7 +927,7 @@ class StudentDetailView(View):
     def get(self, request, pk, *args, **kwargs):
         academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
         student = get_object_or_404(Student, pk=pk)
-        documents = StudentDocument.objects.filter(student=student)
+        documents = StudentDocument.objects.filter(student=student, school=request.user.school)
         sanctions_student = SanctionAppreciation.objects.filter(student=student)
         invoices_student = Invoice.objects.filter(student=student)
         controle_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Contrôle')
@@ -947,7 +950,25 @@ class StudentDetailView(View):
                     results.append(r)
 
         form = StudentDocumentForm()
+        
+        invoices = Invoice.objects.filter(student=student_career.student, academic_year=academic_year, invoice_status='Entièrement payé', is_repayment=False)
+
+        #recuperer le nombre total de facture payé
+        count_invoices = Invoice.objects.filter(student=student_career.student, academic_year=academic_year, invoice_status='Entièrement payé', is_repayment=False).count()
+        
+        # Somme des montants des factures payées
+        amount_payed = invoices.aggregate(total_montant=Sum('amount'))['total_montant'] or 0
+
+        # Récupérer tous les engagements financiers
+        engagements = FinancialCommitment.objects.get(student=student_career.student, academic_year=academic_year)
+        total_engagements = engagements.school_fees
+         # Calcul du montant impayé
+        not_payed = total_engagements - amount_payed
         context = {
+            'not_payed':not_payed,
+            'total_engagements':total_engagements,
+            'count_invoices':count_invoices,
+            'amount_payed':amount_payed,
             'student':student,
             'students_career':students_career,
             'student_career':student_career,
@@ -973,6 +994,7 @@ class StudentDetailView(View):
         mutable_data = request.POST.copy()
         mutable_file = request.FILES.copy()
         mutable_data['student'] = student
+        mutable_data['school'] = request.user.school
         form = StudentDocumentForm(mutable_data, mutable_file)
         if form.is_valid():
             form.save()
@@ -986,6 +1008,8 @@ class StudentDetailView(View):
         partiel_evaluations = Assessment.objects.filter(student=student, academic_year=academic_year, type_evaluation__title='Partiel')
         student_carreer = get_object_or_404(StudentCareer, student=student)
         form = StudentDocumentForm()
+        
+        
         context = {
             'student':student,
             'student_career':student_carreer,

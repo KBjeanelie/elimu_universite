@@ -758,7 +758,7 @@ class SanctionAppreciationForm(forms.ModelForm):
 class StudentDocumentForm(forms.ModelForm):
     class Meta:
         model = StudentDocument
-        fields = ['title', 'document_type', 'file', 'student', ]
+        fields = ['title', 'document_type', 'file', 'student', 'school']
         widgets = {
             'title' : forms.TextInput(
                 attrs={
@@ -794,7 +794,7 @@ class StudentDocumentForm(forms.ModelForm):
 class TeacherDocumentForm(forms.ModelForm):
     class Meta:
         model = TeacherDocument
-        fields = ['title', 'document_type', 'file', 'teacher', ]
+        fields = ['title', 'document_type', 'file', 'teacher', 'school']
         widgets = {
             'title' : forms.TextInput(
                 attrs={
