@@ -34,7 +34,7 @@
                                         <div class="search_inner">
                                             <form Active="#">
                                                 <div class="search_field">
-                                                    <input type="text" placeholder="rechercher une matière....">
+                                                    <input type="text" id="searchInput" placeholder="rechercher un....">
                                                 </div>
                                                 <button type="submit"> <i class="ti-search"></i> </button>
                                             </form>
@@ -46,7 +46,7 @@
                                 </div>
                             </div>
                             <div class="QA_table mb_30">
-                                <table class="table lms_table_active ">
+                                <table id="dataTable" class="table lms_table_active ">
                                     <thead>
                                         <tr>
                                             <th scope="col">N° Facture</th>
@@ -215,6 +215,23 @@
         // Vous pouvez également ajouter un gestionnaire pour le clic sur le bouton Enregistrer les modifications ici
         $("#saveChanges").click(function() {
             // Récupérez les données du formulaire et utilisez Ajax pour les enregistrer sur le serveur
+        });
+    });
+</script>
+
+
+<script>
+    $(document).ready(function(){
+        $('#searchInput').keyup(function(){
+            var searchText = $(this).val().toLowerCase();
+            $('#dataTable tbody tr').each(function(){
+                var currentRowText = $(this).text().toLowerCase();
+                if(currentRowText.indexOf(searchText) !== -1){
+                    $(this).show();
+                } else {
+                    $(this).hide();
+                }
+            });
         });
     });
 </script>
