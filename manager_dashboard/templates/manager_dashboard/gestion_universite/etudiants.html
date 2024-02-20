@@ -29,8 +29,26 @@
             <div class="col-lg-12">
                 <div class="card QA_section border-0">
                     <div class="card-body QA_table ">
+                        <div class="white_box_tittle list_header">
+                            <h4>Liste des étudiants</h4>
+                            <div class="box_right d-flex lms_block">
+                                <div class="serach_field_2">
+                                    <div class="search_inner">
+                                        <form Active="#">
+                                            <div class="search_field">
+                                                <input type="text" id="searchInput" placeholder="rechercher un....">
+                                            </div>
+                                            <button type="submit"> <i class="ti-search"></i> </button>
+                                        </form>
+                                    </div>
+                                </div>
+                                <div class="add_button ms-2">
+                                    <a href="#" data-toggle="modal" data-target="#addcategory" class="btn_1">search</a>
+                                </div>
+                            </div>
+                        </div>
                         <div class="table-responsive shopping-cart ">
-                            <table class="table mb-0">
+                            <table id="dataTable" class="table lms_table_active ">
                                 <thead>
                                     <tr>
                                         <th class="border-top-0">Photo</th>

@@ -284,7 +284,13 @@
                                         {% else %}
                                             <p>GESTIONNAIRE</p>
                                         {% endif %}
-                                        <h5> {{user.username | capfirst}} </h5>
+                                        <h6 class='text-white'>
+                                            {% if user.management_profil %}
+                                            {{user.management_profil.firstname|capfirst}} {{user.management_profil.lastname|upper}}
+                                            {% else %}
+                                                {{user.username | capfirst}}
+                                            {% endif %}
+                                        </h6>
                                 </div>
                                 <div class="profile_info_details">
                                     <a href='{% url "manager_dashboard:user_profile" %}'>Mon Profile </a>
@@ -320,6 +326,22 @@
     <div id="back-top" style="display: none;">
         <a title="Go to Top" href="#"><i class="ti-angle-up"></i></a>
     </div>
+
+    <script>
+        $(document).ready(function(){
+            $('#searchInput').keyup(function(){
+                var searchText = $(this).val().toLowerCase();
+                $('#dataTable tbody tr').each(function(){
+                    var currentRowText = $(this).text().toLowerCase();
+                    if(currentRowText.indexOf(searchText) !== -1){
+                        $(this).show();
+                    } else {
+                        $(this).hide();
+                    }
+                });
+            });
+        });
+    </script>
 
     <script src="{% static 'js/jquery1-3.4.1.min.js' %}"></script>
 

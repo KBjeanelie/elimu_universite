@@ -27,8 +27,12 @@ class ManagerIndexView(View):
         academic_year = AcademicYear.objects.filter(status=True, school=self.request.user.school).first()
         total_student = StudentCareer.objects.filter(academic_year=academic_year, is_next=False).count()
         # Récupérer tous les engagements financiers
-        engagements = FinancialCommitment.objects.filter(academic_year=academic_year)
-        total_engagements = engagements.aggregate(total=Sum('school_fees'))['total'] or 0
+        if academic_year is None:
+            total_engagements = 0
+        else:
+            engagements = FinancialCommitment.objects.filter(academic_year=academic_year)
+            total_engagements = engagements.aggregate(total=Sum('school_fees'))['total'] or 0
+        
         count_user = User.objects.filter(school=request.user.school).count()
         count_teacher = Teacher.objects.filter(school=request.user.school).count()
         context = {
