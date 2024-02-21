@@ -222,8 +222,8 @@ class EditStudentAccountView(View):
             user.is_student = True
             user.school = request.user.school
             user.save()
-            return redirect('manager_dashboard:students_account')  # Redirigez vers la page appropriée après la mise à jour réussie
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+            return redirect('manager_dashboard:students_account') 
+        
         context = {'form': form, 'user': user}
         return render(request, template_name=self.template, context=context)
 
