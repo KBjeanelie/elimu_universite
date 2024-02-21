@@ -10,15 +10,15 @@
             <div class="col-12">
                 <div class="page_title_box d-flex flex-wrap align-items-center justify-content-between">
                     <div class="page_title_left d-flex align-items-center">
-                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Établissements</h3>
+                        <h3 class="f_s_25 f_w_700 dark_text mr_30">Admin établissements</h3>
                         <ol class="breadcrumb page_bradcam mb-0">
                             <li class="breadcrumb-item"><a class='text-primary' href='{% url "administration:index" %}'> Accueil</a></li>
-                            <li class="breadcrumb-item"><a>Établissements</a></li>
+                            <li class="breadcrumb-item"><a>Admin établissements</a></li>
                         </ol>
                     </div>
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
-                            <a href='{% url "administration:add_school" %}' class="white_btn3">Ajouter un établissement</a>
+                            <a href='{% url "administration:add_user_school" %}' class="white_btn3">Ajouter un admin</a>
                         </div>
                     </div>
                 </div>
@@ -60,20 +60,20 @@
                                 <table id="dataTable" class="table lms_table_active ">
                                     <thead>
                                         <tr>
-                                            <th scope="col">Nom</th>
-                                            <th scope="col">Téléphone</th>
-                                            <th scope="col">Adresse</th>
+                                            <th scope="col">Nom d'utilisateur</th>
+                                            <th scope="col">Mot de passe</th>
+                                            <th scope="col">Établissement</th>
                                         </tr>
                                     </thead>
                                     <tbody id="elementList">
-                                        {% for school in schools %}
-                                            <tr data-id="{{ school.id }}">
-                                                <td><h6> {{ school.name }} </h6></td>
-                                                <td><h6> {{ school.tel }} </h6></td>
-                                                <td><h6> {{ school.address }} </h6></td>
+                                        {% for user in users %}
+                                            <tr data-id="{{ user.id }}">
+                                                <td><h6> {{ user.username }} </h6></td>
+                                                <td><h6> ************ </h6></td>
+                                                <td><h6> {{ user.school.name }} </h6></td>
                                                 <td>
                                                     <div class="action_btns d-flex">
-                                                        <a href="#" onclick="deleteSchool({{ school.id }})" class="action_btn"> <i class="fas fa-trash"></i> </a>
+                                                        <a href="#" onclick="deleteUser({{ user.id }})" class="action_btn"> <i class="fas fa-trash"></i> </a>
                                                     </div>
                                                 </td>
                                             </tr>
@@ -109,7 +109,7 @@
     });
 
     // Supprimer un élément
-    function deleteSchool(item_id) {
+    function deleteUser(item_id) {
         var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
         $.ajax({
             url: `${item_id}/delete/`,

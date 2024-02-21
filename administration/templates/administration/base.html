@@ -58,7 +58,7 @@
         <ul id="sidebar_menu">
 
             <li class>
-                <a href='{% url "accountant_dashboard:index" %}' aria-expanded="false">
+                <a href='{% url "administration:index" %}' aria-expanded="false">
                     <div class="nav_icon_small">
                     <img src="{% static 'img/menu-icon/dashboard.svg' %}" alt>
                     </div>
@@ -79,7 +79,7 @@
                 </a>
                 <ul>
                     <li><a href='{% url "administration:schools" %}'>Établissements</a></li>
-                    <li><a href=''>Admin Établissement</a></li>
+                    <li><a href='{% url "administration:user_school" %}'>Admin Établissement</a></li>
                 </ul>
             </li>
         </ul>
