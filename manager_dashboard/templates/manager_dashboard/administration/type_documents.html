@@ -34,12 +34,20 @@
                                     <thead>
                                         <tr>
                                             <th scope="col">Type de docment</th>
+                                            <th scope="col">Requiseà l'inscription ?</th>
                                         </tr>
                                     </thead>
                                     <tbody id="elementList">
                                         {% for type_document in type_documents %}
                                             <tr data-id="{{ type_document.id }}">
                                                 <td> <h6>{{ type_document.title }}</h6> </td>
+                                                <td> 
+                                                    {% if type_document.status %}
+                                                        <a  class="badge rounded-pill bg-primary">Oui</a>
+                                                    {% else %}
+                                                        <a class="badge rounded-pill bg-danger">Non</a>
+                                                    {% endif %}
+                                                </td>
                                                 {% if not user.is_admin %}
                                                 <td>
                                                     <div class="action_btns d-flex">
@@ -74,6 +82,12 @@
                             <div class="mb-3">
                                 <label class="form-label" for="libelle">Type de document</label>
                                 <input type="text" id="title" class='form-control' name="title", placeholder="Acte de naissance..." maxLength="50" required>
+                            </div>
+                            <div>
+                                <div class="form-check">
+                                    {{ form.status}}
+                                    <label class="form-label form-check-label" for="gridCheck">Requise à l'inscription ?</label>
+                                </div>
                             </div>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>

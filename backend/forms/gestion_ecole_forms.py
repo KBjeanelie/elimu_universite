@@ -494,7 +494,7 @@ class ProgramForm(forms.ModelForm):
 class DocumentTypeForm(forms.ModelForm):
     class Meta:
         model = DocumentType
-        fields = ['title', 'school']
+        fields = ['title', 'school', 'status']
         labels = {'title': 'Titre'}
         widgets = {
             'title' : forms.TextInput(
@@ -504,6 +504,11 @@ class DocumentTypeForm(forms.ModelForm):
                     'name': 'title',
                     'placeholder': 'cv',
                     'required': True
+                }
+            ),
+            'status':forms.CheckboxInput(
+                attrs={
+                    'class': 'form-check-input',
                 }
             )
         }
