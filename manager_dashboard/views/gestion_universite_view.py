@@ -1,4 +1,5 @@
 import datetime
+from django.contrib import messages
 from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
@@ -23,7 +24,8 @@ from backend.forms.gestion_ecole_forms import (
 )
 from backend.models.gestion_ecole import (
     AcademicYear, 
-    Career, 
+    Career,
+    DocumentType, 
     GroupSubject, 
     Level, 
     Program, 
@@ -51,18 +53,6 @@ def convertir_en_hexadecimal(nombre):
     
     return nombre_hexadecimal
 
-def generer_nui_etudiant():
-    now = datetime.datetime.now()
-    annee = now.year
-
-    # Utilisation du cache pour stocker le compteur
-    with transaction.atomic():
-        student_counter = cache.get('student_counter') or 0
-        student_counter += 1
-        cache.set('student_counter', student_counter)
-
-    identifiant_hexadecimal = convertir_en_hexadecimal(student_counter)
-    return f"ELM-{annee}-STD-{identifiant_hexadecimal.upper()}"
 
 
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
@@ -872,37 +862,48 @@ class AddStudentView(View):
 
     def get(self, request, *args, **kwargs):
         careers = Career.objects.filter(sector__school=self.request.user.school)
-        levels = Level.objects.filter(school=self.request.user.school)
-        context = {'form': StudentForm(), 'careers':careers, 'levels':levels}
+        semesters = Semester.objects.filter(level__school=self.request.user.school)
+        type_documents = DocumentType.objects.filter(status=True, school=request.user.school)
+        context = {'careers':careers, 'semesters':semesters, 'type_documents':type_documents,}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
-        form = StudentForm(request.POST)
-        if form.is_valid():
-            registration_number = generer_nui_etudiant()
-            lastname = form.data['lastname']
-            firstname = form.data['firstname']
-            bithday = form.data['bithday']
-            tel = form.data['tel']
-            sex = form.data['sex']
-            new_student = Student(
-                registration_number=registration_number,
-                lastname=lastname,
-                firstname=firstname,
-                bithday=bithday,
-                tel=tel,
-                sex=sex
-            )
-            if 'status' in request.POST:
-                new_student.status = True
-                
-            new_student.save()
-            return redirect('manager_dashboard:students')
-        else:
-            print(form.errors)
-        
-        context = {'form':form}
-        return render(request, template_name=self.template, context=context)
+        new_student = Student(
+            lastname=request.POST['lastname'],
+            firstname=request.POST['firstname'],
+            bithday=request.POST['birthday'],
+            tel=request.POST['tel'],
+            sex=request.POST['sex'],
+            picture=request.FILES['picture']
+        )
+        new_student.save()
+
+        career = get_object_or_404(Career, id=request.POST['career'])
+        semester = get_object_or_404(Semester, id=request.POST['semester'])
+        academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
+
+        student_career = StudentCareer.objects.create(
+            career=career,
+            semester=semester,
+            academic_year=academic_year,
+            school=request.user.school,
+            student=new_student
+        )
+
+        type_documents = DocumentType.objects.filter(status=True, school=request.user.school)
+        for doc in type_documents:
+            if doc.title in request.FILES:
+                doc_student = StudentDocument(
+                    title=doc.title,
+                    student=new_student,
+                    document_type=doc,
+                    file=request.FILES[doc.title],
+                    school=request.user.school
+                )
+                doc_student.save()
+
+        messages.success(request, "Demande d'inscription enregistré avec succès !")
+        return redirect('manager_dashboard:students')
 
 class StudentsView(View):
 

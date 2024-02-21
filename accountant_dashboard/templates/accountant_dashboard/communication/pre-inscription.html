@@ -64,7 +64,7 @@
                                                     <img src="{% static 'img/staf/student.png' %}" alt height="52">
                                                 {% endif %}
                                             </td>
-                                            <td><h6> {{student_career.student.registration_number}} </h6></td>
+                                            <td><h6> {{student_career.student.registration_number|upper}} </h6></td>
                                             <td><h6> {{student_career.student.lastname}} </h6></td>
                                             <td><h6> {{student_career.student.firstname}} </h6></td>
                                             <td><h6> {{student_career.student.bithday}} </h6></td>

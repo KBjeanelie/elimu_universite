@@ -2,7 +2,7 @@ import os
 from django.db import models
 from elimu_universite import settings
 from elimu_universite.constant import days_of_the_weeks, hours_of_the_day, currencies, systemes, statues
-
+import uuid
 
 class Etablishment(models.Model):
     name = models.CharField(max_length=120)
@@ -53,9 +53,31 @@ sexes = (
 #=============================================================================================================================
 #=================================== CE SONT LES MODEL REPRÉSENTANT CHAQUE PROFIL UTILISATEUR DE L'APP =======================
 # Represent an objet of Student and his profil info
+
+import hashlib
+
+class ShortUUID4Field(models.CharField):
+    def __init__(self, *args, **kwargs):
+        kwargs.setdefault('max_length', 20)
+        kwargs.setdefault('unique', True)
+        kwargs.setdefault('editable', False)
+        super().__init__(*args, **kwargs)
+
+    def generate_short_uuid(self):
+        full_uuid = uuid.uuid4().hex
+        short_uuid = hashlib.sha1(full_uuid.encode('utf-8')).hexdigest()[:20]
+        return short_uuid
+
+    def pre_save(self, model_instance, add):
+        value = getattr(model_instance, self.attname, None)
+        if not value:
+            value = self.generate_short_uuid()
+            setattr(model_instance, self.attname, value)
+        return value
+        
 class Student(models.Model):
     
-    registration_number = models.CharField(max_length=255, unique=True)
+    registration_number = ShortUUID4Field()
     
     lastname = models.CharField(max_length=50, null=True, blank=True)
     

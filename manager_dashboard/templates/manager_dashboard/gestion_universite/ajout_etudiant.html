@@ -30,7 +30,7 @@
                         </div>
                     </div>
                     <div class="white_card_body">
-                        <form method='post'>
+                        <form method='post' enctype="multipart/form-data">
                             {% csrf_token %}
                             <div class='row'>
                                 <div class="col-md-6 mb-3">
@@ -67,10 +67,10 @@
                                     <input type='file' class='form-control' name='picture' id="picture" required>
                                 </div>
                                 <div class="mb-3 col-md-4">
-                                    <label class="form-label" for="libelle">Niveau</label>
-                                    <select name="level" class="form-control" required id="level">
-                                        {% for level in levels %}
-                                            <option value="{{level.id}}"> {{level.label}} </option>
+                                    <label class="form-label" for="libelle">Semestre</label>
+                                    <select name="semester" class="form-control" required id="semester">
+                                        {% for semester in semesters %}
+                                            <option value="{{semester.id}}"> {{semester.title}} </option>
                                         {% endfor %}
                                     </select>
                                 </div>
@@ -85,18 +85,12 @@
                                 </div>
                             </div>
                             <div class='row'>
+                                {% for type_document in type_documents %}
                                 <div class=" col-md-4 mb-3">
-                                    <label class="form-label" for="libelle">Attestation de réussite</label>
-                                    <input type='file' class='form-control' name='attestation' id="attestation" required>
+                                    <label class="form-label" for="libelle"> {{type_document.title}} </label>
+                                    <input type='file' class='form-control' name='{{type_document.title}}' id="{{type_document.title}}" required>
                                 </div>
-                                <div class=" col-md-4 mb-3">
-                                    <label class="form-label" for="libelle">Rélévés de notes Bac</label>
-                                    <input type='file' class='form-control' name='note' id="note" required>
-                                </div>
-                                <div class=" col-md-4 mb-3">
-                                    <label class="form-label" for="libelle">Certificat médical</label>
-                                    <input type='file' class='form-control' name='certifica' id="certificat" required>
-                                </div>
+                                {% endfor %}
                             </div>
                             
                             <a href='{% url "manager_dashboard:students" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
