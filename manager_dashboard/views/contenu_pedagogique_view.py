@@ -2,7 +2,7 @@ from django.http import JsonResponse
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.contenue_pedagogique_forms import eBookForm
-
+from django.contrib import messages
 from backend.models.contenue_pedagogique import  eBook
 
 class AddeBook(View):
@@ -28,6 +28,7 @@ class AddeBook(View):
         form = eBookForm(request.user, data, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, f"Le eBook {form.cleaned_data['title']} a été enregistré avec succèss !")
             return redirect('manager_dashboard:ebooks')
         context_object = {'form': form}
         return render(request, template_name=self.template, context=context_object)
@@ -66,6 +67,7 @@ class EditEbook(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "eBook modifier avec succèss !")
             return redirect('manager_dashboard:ebooks')
         
         context = {'form':form, 'ebook':ebook}
@@ -85,6 +87,7 @@ class eBookView(View):
     
     def get(self, request, *args, **kwargs):
         ebooks = eBook.objects.filter(school=request.user.school)
+        
         context_object = {'ebooks': ebooks}
         return render(request, template_name=self.template, context=context_object)
     
