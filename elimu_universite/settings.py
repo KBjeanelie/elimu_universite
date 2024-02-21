@@ -44,6 +44,7 @@ INSTALLED_APPS = [
     'api',
     'manager_dashboard',
     'accountant_dashboard',
+    'administration',
     #------------ app for restframework and others
     'corsheaders',
     'rest_framework',
