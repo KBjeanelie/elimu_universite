@@ -138,8 +138,8 @@
                     </div>
                 </a>
                 <ul>
-                    {% comment %} <li><a href="communication/messages.html">Messages</a></li> {% endcomment %}
-                    <!-- <li><a href="communication/notifications.html">Notifications</a></li> -->
+                    <!-- <li><a href="communication/messages.html">Messages</a></li>
+                    <li><a href="communication/notifications.html">Notifications</a></li> -->
                     <li><a href='{% url "manager_dashboard:informations" %}'>Informations</a></li>
                     <li><a href='{% url "manager_dashboard:events" %}'>Évenements</a></li>
                     <li><a href='{% url "manager_dashboard:discussion_group" %}'>Groupes de discussions</a></li>
@@ -194,7 +194,7 @@
                     {% if user.is_admin %}
                         <li><a href='{% url "manager_dashboard:directors" %}'>Équipe de direction</a></li>
                     {% else %}
-                        <li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>
+                        <!-- <li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>-->
                         <li><a href="{% url 'manager_dashboard:students_account' %}"">Comptes étudiants</a></li>
                     {% endif %}
                 </ul>
@@ -251,7 +251,7 @@
                                     {%endif%}
                                     
                                 </li>
-                                <li>
+                                <!--<li>
                                     <a class="bell_notification_clicker" href="#"> <img src="{% static 'img/icon/bell.svg' %}" alt><span>2</span></a>
                                     <div class="Menu_NOtification_Wrap">
                                         <div class="notification_Header"><h4>Notifications</h4></div>
@@ -272,7 +272,7 @@
                                             </div>
                                         </div>
                                     </div>
-                                </li>
+                                </li>-->
                             </div>
 
                             <div class="profile_info">

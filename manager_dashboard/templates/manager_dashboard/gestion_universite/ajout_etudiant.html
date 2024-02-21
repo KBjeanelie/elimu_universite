@@ -20,7 +20,7 @@
         </div>
 
         <div class="row">
-            <div class="col-md-8 col-sm-12">
+            <div class="col-md-12 col-sm-12">
                 <div class="white_card card_height_100 mb_30">
                     <div class="white_card_header">
                         <div class="box_header m-0">
@@ -32,32 +32,73 @@
                     <div class="white_card_body">
                         <form method='post'>
                             {% csrf_token %}
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Nom</label>
-                                {{form.lastname}}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Prénom</label>
-                                {{form.firstname}}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Date de naissance</label>
-                                {{form.bithday}}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Téléphone</label>
-                                {{form.tel}}
-                            </div>
-                            <div class="mb-3">
-                                <label class="form-label" for="libelle">Sexe</label>
-                                {{form.sex}}
-                            </div>
-                            <div>
-                                <div class="form-check">
-                                    {{form.status}}
-                                    <label class="form-label form-check-label" for="gridCheck"> Accès en ligne ?</label>
+                            <div class='row'>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="libelle">Nom</label>
+                                    <input type='text' class='form-control' name='lastname' id="lastname" placeholder="Nom" required>
+                                </div>
+                                <div class="col-md-6 mb-3">
+                                    <label class="form-label" for="libelle">Prénom</label>
+                                    <input type='text' class='form-control' name='firstname' id="firstname" placeholder="Prenom" required>
                                 </div>
                             </div>
+                            <div class='row'>
+                                <div class=" col-md-4 mb-3">
+                                    <label class="form-label" for="libelle">Date de naissance</label>
+                                    <input type='date' class='form-control' name='birthday' id="birthday" required>
+                                </div>
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label" for="libelle">Téléphone</label>
+                                    <input type='tel' class='form-control' name='tel' id="tel" placeholder="ex: 06 863 8870" required>
+                                </div>
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label" for="libelle">Sexe</label>
+                                    <select name="sex" class="form-control" required id="sex">
+                                        <option value="masculin">Masculin</option>
+                                    
+                                        <option value="feminin">Féminin</option>
+                                    
+                                    </select>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class=" col-md-4 mb-3">
+                                    <label class="form-label" for="libelle">Photo d'identité</label>
+                                    <input type='file' class='form-control' name='picture' id="picture" required>
+                                </div>
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label" for="libelle">Niveau</label>
+                                    <select name="level" class="form-control" required id="level">
+                                        {% for level in levels %}
+                                            <option value="{{level.id}}"> {{level.label}} </option>
+                                        {% endfor %}
+                                    </select>
+                                </div>
+                                <div class="mb-3 col-md-4">
+                                    <label class="form-label" for="libelle">Parcour</label>
+                                    <select name="career" class="form-control" required id="career">
+                                        {% for career in careers %}
+                                            <option value="{{career.id}}"> {{career.title}} </option>
+                                        {% endfor %}
+                                    
+                                    </select>
+                                </div>
+                            </div>
+                            <div class='row'>
+                                <div class=" col-md-4 mb-3">
+                                    <label class="form-label" for="libelle">Attestation de réussite</label>
+                                    <input type='file' class='form-control' name='attestation' id="attestation" required>
+                                </div>
+                                <div class=" col-md-4 mb-3">
+                                    <label class="form-label" for="libelle">Rélévés de notes Bac</label>
+                                    <input type='file' class='form-control' name='note' id="note" required>
+                                </div>
+                                <div class=" col-md-4 mb-3">
+                                    <label class="form-label" for="libelle">Certificat médical</label>
+                                    <input type='file' class='form-control' name='certifica' id="certificat" required>
+                                </div>
+                            </div>
+                            
                             <a href='{% url "manager_dashboard:students" %}' class="btn btn-danger"> <i class="ti-close"></i> Annuler</a>
                             <button type="submit" class="btn btn-success"> <i class="ti-save"></i> Enregistrer</button>
                         </form>

@@ -871,7 +871,9 @@ class AddStudentView(View):
         return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
-        context = {'form': StudentForm()}
+        careers = Career.objects.filter(sector__school=self.request.user.school)
+        levels = Level.objects.filter(school=self.request.user.school)
+        context = {'form': StudentForm(), 'careers':careers, 'levels':levels}
         return render(request, template_name=self.template, context=context)
     
     def post(self, request, *args, **kwargs):
