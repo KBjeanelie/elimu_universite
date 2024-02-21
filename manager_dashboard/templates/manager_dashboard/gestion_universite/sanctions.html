@@ -62,11 +62,11 @@
                                     <tbody id="elementList">
                                         {% for sanction in sanctions %}
                                             <tr data-id="{{ sanction.id }}">
-                                                <td> {{ sanction.student.fullname }} </td>
-                                                <td> {{sanction.subject.label }} </td>
-                                                <td> {{ sanction.sanction_date }} </td>
-                                                <td> {{ sanction.type.title }} </td>
-                                                <td> {{ sanction.comment }} </td>
+                                                <td> <h6> {{ sanction.student.fullname }} </h6> </td>
+                                                <td> <h6> {{sanction.subject.label }} </h6> </td>
+                                                <td> <h6> {{ sanction.sanction_date }} </h6> </td>
+                                                <td> <h6> {{ sanction.type.title }} </h6> </td>
+                                                <td> <h6> {{ sanction.comment }} </h6> </td>
                                                 {% if not user.is_admin %}
                                                 <td>
                                                     <div class="action_btns d-flex">
