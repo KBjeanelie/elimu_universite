@@ -11,12 +11,12 @@ class Etablishment(models.Model):
     social_address = models.CharField(max_length=100, blank=True, null=True)
     email = models.EmailField(max_length=200, blank=True, null=True)
     bulletin_foot = models.CharField(max_length=50, blank=True, null=True)
-    currency = models.CharField(max_length=50, choices=currencies)
-    système = models.CharField(max_length=50, choices=systemes)
-    status_fees = models.CharField(max_length=50, choices=statues)
-    subscription_fees = models.FloatField(default=1000)
-    month = models.IntegerField(default=9)
-    re_registration_fees = models.FloatField(default=800)
+    currency = models.CharField(max_length=50, choices=currencies, blank=True, null=True)
+    système = models.CharField(max_length=50, choices=systemes, blank=True, null=True)
+    status_fees = models.CharField(max_length=50, choices=statues, blank=True, null=True)
+    subscription_fees = models.IntegerField(default=1000, blank=True, null=True)
+    month = models.IntegerField(default=9, blank=True, null=True)
+    re_registration_fees = models.IntegerField(default=800, blank=True, null=True)
     
     def __str__(self):
         return f"Etablissement: {self.name}"
