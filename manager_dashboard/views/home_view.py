@@ -34,6 +34,7 @@ class ManagerIndexView(View):
             total_engagements = engagements.aggregate(total=Sum('school_fees'))['total'] or 0
         
         count_user = User.objects.filter(school=request.user.school).count()
+        
         count_teacher = Teacher.objects.filter(school=request.user.school).count()
         context = {
             'total_student':total_student,
