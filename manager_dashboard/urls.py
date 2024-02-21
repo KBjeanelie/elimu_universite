@@ -73,6 +73,7 @@ urlpatterns = [
     #====================== THIS ROUTE IS FOR GESTION DU TEMPS MODULE =============================
     path(route='gestion_temps/emplois-du-temps/', view=ScheduleView.as_view(), name='times'),
     path(route='gestion_temps/emplois-du-temps/ajouter/', view=AddScheduleView.as_view(), name='add_time'),
+    path(route='gestion_temps/emplois-du-temps/<int:pk>/delete/', view=ScheduleView.as_view(), name='delete_time'),
     
     #=================== THIS ROUTE IS FOR Communication MODULE ========================
     path(route='communication/group-discussions/', view=GroupDiscussionView.as_view(), name='discussion_group'),

@@ -66,15 +66,19 @@
                                         </div>
                                         <div><h4 style="color: white;"> {{ monday_schedule.0.day|capfirst }}</h4></div>
                                         <div class="widget-subheading mt-2">
-                                            <ol>
+                                            <ol id='elementList'>
                                                 {% for schedule in monday_schedule %}
                                                     {% if schedule.start_hours == '13h' %}
                                                         <li>Pause : <br> 12 - 13h</li>
                                                         <hr>
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% else %}
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% endif %}
                                                 {% endfor %}
@@ -93,15 +97,19 @@
                                         </div>
                                         <div><h4 style="color: white;"> {{ tueday_schedule.0.day|capfirst }}</h4></div>
                                         <div class="widget-subheading mt-2">
-                                            <ol>
+                                            <ol id='elementList'>
                                                 {% for schedule in tueday_schedule %}
                                                     {% if schedule.start_hours == '13h' %}
                                                         <li>Pause : <br> 12 - 13h</li>
                                                         <hr>
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% else %}
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% endif %}
                                                 {% endfor %}
@@ -120,15 +128,19 @@
                                         </div>
                                         <div><h4 style="color: white;"> {{ wednesday_schedule.0.day|capfirst }}</h4></div>
                                         <div class="widget-subheading mt-2">
-                                            <ol>
+                                            <ol id='elementList'>
                                                 {% for schedule in wednesday_schedule %}
                                                     {% if schedule.start_hours == '13h' %}
                                                         <li>Pause : <br> 12 - 13h</li>
                                                         <hr>
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% else %}
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% endif %}
                                                 {% endfor %}
@@ -147,15 +159,19 @@
                                         </div>
                                         <div><h4 style="color: white;"> {{ thursday_schedule.0.day|capfirst }}</h4></div>
                                         <div class="widget-subheading mt-2">
-                                            <ol>
+                                            <ol id='elementList'>
                                                 {% for schedule in thursday_schedule %}
                                                     {% if schedule.start_hours == '13h' %}
                                                         <li>Pause : <br> 12 - 13h</li>
                                                         <hr>
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% else %}
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% endif %}
                                                 {% endfor %}
@@ -174,15 +190,19 @@
                                         </div>
                                         <div><h4 style="color: white;"> {{ friday_schedule.0.day|capfirst }}</h4></div>
                                         <div class="widget-subheading mt-2">
-                                            <ol>
+                                            <ol id='elementList'>
                                                 {% for schedule in friday_schedule %}
                                                     {% if schedule.start_hours == '13h' %}
                                                         <li>Pause : <br> 12 - 13h</li>
                                                         <hr>
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% else %}
-                                                        <li>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}</li>
+                                                        <li data-id='{{schedule.id}}'>{{ schedule.subject.label }} : <br> {{ schedule.start_hours }} - {{ schedule.end_hours }}
+                                                            <a href="#" onclick='deleteSchedule({{schedule.id}})' class="text-danger"> <i class="ti-trash"></i> </a>
+                                                        </li>
                                                         <hr>
                                                     {% endif %}
                                                 {% endfor %}
@@ -201,7 +221,7 @@
                                         </div>
                                         <div><h4 style="color: white;"> {{ saturday_schedule.0.day|capfirst }}</h4></div>
                                         <div class="widget-subheading mt-2">
-                                            <ol>
+                                            <ol id='elementList'>
                                                 {% for schedule in saturday_schedule %}
                                                     {% if schedule.start_hours == '13h' %}
                                                     <li>Pause : <br> 12 - 13h</li>
@@ -228,4 +248,43 @@
         </div>
     </div>
 </div>
+
+<script>
+
+    // Supprimer un élément
+    function deleteSchedule(id) {
+        var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
+        $.ajax({
+            url: `${id}/delete/`,
+            type: 'DELETE',
+            beforeSend: function(xhr) {
+                xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
+            },
+            success: function(response) {
+                $('#elementList').find(`li[data-id="${id}"]`).remove();
+                console.log('Élément supprimé avec succès');
+            },
+            error: function(error) {
+                console.error('Erreur lors de la suppression de l\'élément', error);
+            }
+        });
+    }
+    
+    // Fonction pour récupérer le jeton CSRF depuis le cookie
+    function getCookie(name) {
+        var cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            var cookies = document.cookie.split(';');
+            for (var i = 0; i < cookies.length; i++) {
+                var cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+    
+    </script>
 {% endblock content %}

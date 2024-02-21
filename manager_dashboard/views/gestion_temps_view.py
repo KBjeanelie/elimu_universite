@@ -1,4 +1,5 @@
-from django.shortcuts import redirect, render
+from django.http import JsonResponse
+from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.gestion_ecole_forms import ScheduleForm
 from backend.models.gestion_ecole import AcademicYear, Career, Schedule, Semester
@@ -56,6 +57,11 @@ class ScheduleView(View):
         }
         return render(request, template_name=self.template, context=context)
     
+    def delete(self, request, pk, *args, **kwargs):
+        instance = get_object_or_404(Schedule, pk=pk)
+        instance.delete()
+        return JsonResponse({'message': 'Élément supprimé avec succès'})
+    
     def post(self, request, *args, **kwargs):
         #semester_id = request.POST['semester']
         career_id = request.POST['career']
@@ -83,3 +89,5 @@ class ScheduleView(View):
             'career':career
         }
         return render(request, template_name=self.template, context=context)
+    
+    
