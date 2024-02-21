@@ -105,14 +105,14 @@
     function deleteYear(year_id) {
         var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
         $.ajax({
-            url: `/gestion_universite/année-academiques/${year_id}/delete/`,
+            url: `${year_id}/delete/`,
             type: 'DELETE',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête
             },
             success: function(response) {
                 $('#elementList').find(`tr[data-id="${year_id}"]`).remove();
-                console.log('Élément supprimé avec succès');
+                alert('Élément supprimé avec succès');
             },
             error: function(error) {
                 console.error('Erreur lors de la suppression de l\'élément', error);

@@ -16,7 +16,7 @@ from rest_framework_simplejwt.views import (
 urlpatterns = [
     
     path('', include('administration.urls')),
-    path('manager_dashboard', include('manager_dashboard.urls')),
+    path('manager_dashboard/', include('manager_dashboard.urls')),
     path('accountnant-dashboard/', include('accountant_dashboard.urls')),
     path('authentication/', include('backend.urls')),
     

@@ -174,7 +174,7 @@
                 </a>
                 <ul>
                     <li><a href='{% url "manager_dashboard:academic_result" %}'>Résultat academique</a></li>
-                    {% if not user.is_admin %}
+                    {% if not user.is_admin_school_school %}
                         <li><a href='{% url "manager_dashboard:next_level" %}'>Monté en niveau</a></li>
                     {% endif %}
                     <!--<li><a href=''>Statistique anterieur</a></li> -->
@@ -192,7 +192,7 @@
                     </div>
                 </a>
                 <ul>
-                    {% if user.is_admin %}
+                    {% if user.is_admin_school %}
                         <li><a href='{% url "manager_dashboard:directors" %}'>Équipe de direction</a></li>
                     {% else %}
                         <!-- <li><a href="{% url 'manager_dashboard:teachers_account' %}">Comptes enseignants</a></li>-->
@@ -217,7 +217,7 @@
                     <li><a href="{% url 'manager_dashboard:type_sanctions' %}">Types de sanctions</a></li>
                     {% comment %} <li><a href="administration/type_comptes.html">Type de comptes</a></li> {% endcomment %}
                     <!-- <li><a href="administration/types_conges.html">Type de congé</a></li> -->
-                    {% if user.is_admin %}
+                    {% if user.is_admin_school %}
                     <li><a href="{% url 'manager_dashboard:reglage_general' %}">Réglages généraux</a></li>
                     {% endif %}
                     
@@ -237,10 +237,13 @@
                         <div class="line_icon open_miniSide d-none d-lg-block">
                             <img src="{% static 'img/line_img.png' %}" alt>
                         </div>
-                        <h4 class='text-center text-primary'>{{user.school.name}}</h4>
+                        
                         <div class="header_right d-flex justify-content-between align-items-center">
 
                             <div class="header_notification_warp d-flex align-items-center">
+                                <li style="margin-right: 25px;">
+                                    Établissement: <span class="badge rounded-pill bg-warning">{{user.school.name}}</span>
+                                </li>
                                 <li style="margin-right: 25px;">
                                     Année academique :
                                     {% if request.session.academic_year %}
@@ -280,7 +283,7 @@
                                 <img src="{% static 'img/membre.jpg' %}" width="50" height="50" alt="#">
                                 <div class="profile_info_iner">
                                     <div class="profile_author_name">
-                                        {% if user.is_admin %}
+                                        {% if user.is_admin_school %}
                                             <p>ADMINISTRATEUR</p>
                                         {% else %}
                                             <p>GESTIONNAIRE</p>

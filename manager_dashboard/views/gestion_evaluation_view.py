@@ -176,7 +176,10 @@ class EditAssessmentView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, pk, *args, **kwargs):
         evaluation = get_object_or_404(Assessment, pk=pk)
@@ -209,7 +212,10 @@ class AddAssessmentView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = AssessmentForm(request.user)
@@ -240,7 +246,10 @@ class AssessmentView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         year = AcademicYear.objects.get(status=True, school=request.user.school)
@@ -285,7 +294,10 @@ class NoteTableView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         semesters = Semester.objects.filter(level__school=request.user.school)
@@ -356,7 +368,10 @@ class AverageTableView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         semesters = Semester.objects.filter(level__school=request.user.school)
@@ -450,7 +465,10 @@ class BulletinDetailView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get_context_data(self, request, pk, *args, **kwargs):
         academic_year = AcademicYear.objects.get(status=True, school=request.user.school)

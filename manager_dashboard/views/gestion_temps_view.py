@@ -16,7 +16,10 @@ class AddScheduleView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         form = ScheduleForm(request.user)
@@ -46,7 +49,10 @@ class ScheduleView(View):
         except AcademicYear.DoesNotExist:
             return redirect('manager_dashboard:no_year')
         
-        return super().dispatch(request, *args, **kwargs)
+        if request.user.is_manager or request.user.is_admin_school:
+            return super().dispatch(request, *args, **kwargs)
+        
+        return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
         semesters = Semester.objects.filter(level__school=request.user.school)
