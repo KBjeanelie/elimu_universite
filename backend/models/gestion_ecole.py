@@ -58,14 +58,14 @@ import hashlib
 
 class ShortUUID4Field(models.CharField):
     def __init__(self, *args, **kwargs):
-        kwargs.setdefault('max_length', 20)
+        kwargs.setdefault('max_length', 15)
         kwargs.setdefault('unique', True)
         kwargs.setdefault('editable', False)
         super().__init__(*args, **kwargs)
 
     def generate_short_uuid(self):
         full_uuid = uuid.uuid4().hex
-        short_uuid = hashlib.sha1(full_uuid.encode('utf-8')).hexdigest()[:20]
+        short_uuid = hashlib.sha1(full_uuid.encode('utf-8')).hexdigest()[:15]
         return short_uuid
 
     def pre_save(self, model_instance, add):

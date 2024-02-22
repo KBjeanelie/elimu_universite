@@ -90,6 +90,7 @@ class PreRegistrationDetailView(View):
         
         if student_career.student:
             student_career.student.is_valid = True
+            student_career.student.status = True
             student_career.student.save()
             
             #enregistrer un engagement financiers

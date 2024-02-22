@@ -29,7 +29,7 @@ def collision_probability(space_size, num_objects):
     probability = 1 - math.exp((-num_objects * (num_objects - 1)) / (2 * space_size))
     return probability
 
-space_size = 16**20  # Nombre total d'identifiants possibles avec 20 caractères hexadécimaux
+space_size = 16**15  # Nombre total d'identifiants possibles avec 20 caractères hexadécimaux
 num_objects = 365 * 200  # Supposons une création quotidienne d'objets pendant 200 ans
 
 probability = collision_probability(space_size, num_objects)
