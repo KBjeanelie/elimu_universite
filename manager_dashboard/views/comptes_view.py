@@ -14,7 +14,7 @@ class EditDirectionAccountView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_admin_school:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -48,7 +48,7 @@ class AddDirectionAccount(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_admin_school:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -87,7 +87,7 @@ class ListAllDirectionAccount(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_admin_school:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -115,7 +115,7 @@ class EditTeacherAccountView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -150,7 +150,7 @@ class AddTeacherAccount(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -177,7 +177,7 @@ class ListAllTeacherAccount(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -201,7 +201,7 @@ class EditStudentAccountView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -236,7 +236,7 @@ class AddStudentAccount(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -263,7 +263,7 @@ class ListAllStudentAccount(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')

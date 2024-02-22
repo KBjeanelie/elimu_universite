@@ -14,7 +14,7 @@
                             <li class="breadcrumb-item"><a href="">Année académique</a></li>
                         </ol>
                     </div>
-                    {% if not user.is_admin %}
+                    {% if not user.is_admin_school %}
                     <div class="page_title_right">
                         <div class="page_date_button d-flex align-items-center">
                             <a href='{% url "manager_dashboard:add_year" %}' class="white_btn3"><i class="fas fa-plus-square"></i> Ajouter une année académique</a>
@@ -79,7 +79,7 @@
                                                 {% else %}
                                                     <td><h6> <a class="status_Btn">Clôturé</a></h6></td>
                                                 {% endif %}
-                                                {% if not user.is_admin %}
+                                                {% if not user.is_admin_school %}
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         <a href='{% url "manager_dashboard:edit_year" year.id %}' class="action_btn mr_10"> <i class="far fa-edit"></i> </a>

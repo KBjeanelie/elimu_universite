@@ -63,7 +63,7 @@ class EditAcademicYearView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -111,7 +111,7 @@ class AddAcademicYearView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -357,7 +357,7 @@ class EditSubjectView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -387,7 +387,7 @@ class AddSubjectView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -458,7 +458,7 @@ class EditProgramView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -502,7 +502,7 @@ class AddProgramView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')

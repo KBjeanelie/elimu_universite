@@ -39,7 +39,7 @@
                                             <tr data-id="{{ career.id }}">
                                                 <td> <h6> {{career.title }} <h6></td>
                                                 <td> <h6> {{career.sector.title }} <h6> </td>
-                                                {% if not user.is_admin %}
+                                                {% if not user.is_admin_school %}
                                                 <td>
                                                     <div class="action_btns d-flex">
                                                         {% comment %} <a href="#" class="action_btn mr_10"> <i class="far fa-edit"></i> </a> {% endcomment %}
@@ -56,7 +56,7 @@
                     </div>
                 </div>
             </div>
-            {% if not user.is_admin %}
+            {% if not user.is_admin_school %}
             <div class="col-6">
                 <div class="white_card card_height_100 mb_30">
                     <div class="white_card_header">

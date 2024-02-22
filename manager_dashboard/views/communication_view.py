@@ -124,7 +124,7 @@ class AddEventView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
@@ -139,7 +139,7 @@ class EditEventView(View):
         if not request.user.is_authenticated:
             return redirect('backend:login')
         
-        if request.user.is_manager or request.user.is_admin_school:
+        if request.user.is_manager:
             return super().dispatch(request, *args, **kwargs)
         
         return redirect('backend:logout')
