@@ -97,8 +97,10 @@ class EditAcademicYearView(View):
             else:
                 del request.session['academic_year']
             form.save()
+            messages.success(request, "Année académique modifier avec succès !")
             return redirect('manager_dashboard:years')
         
+        messages.error(request, "ERREUR: Imposssible de modifier l'année académique")
         context = {'form':form, 'academique_year':academique_year}
         return render(request, template_name=self.template, context=context)
     
@@ -126,8 +128,10 @@ class AddAcademicYearView(View):
         if form.is_valid():
             request.session['academic_year'] = form.cleaned_data['label']
             form.save()
+            messages.success(request, "Année académique ajouter avec succès !")
             return redirect("manager_dashboard:years")
-        form = AcademicYearForm()
+        
+        messages.error(request, "ERREUR: Impossible d'ajouter une année académique")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -369,9 +373,10 @@ class EditSubjectView(View):
         form = SubjectForm(request.user, request.POST, instance=subject)
         if form.is_valid():
             form.save()
-            return redirect('manager_dashboard:subjects')  # Redirigez vers la page appropriée après la mise à jour réussie
+            messages.success(request, "Matière modifier avec succès !")
+            return redirect('manager_dashboard:subjects')
         
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        messages.error(request, "ERREUR: Impossible de modifier une matière")
         context = {'form': form, 'subject': subject}
         return render(request, template_name=self.template, context=context)
     
@@ -396,8 +401,10 @@ class AddSubjectView(View):
         form = SubjectForm(request.user, request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Matière enregistré avec succès !")
             return redirect("manager_dashboard:subjects")
         
+        messages.error(request, "ERREUR: Impossible d'ajouter une matière")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -481,8 +488,10 @@ class EditProgramView(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "Programme modifier avec succès !")
             return redirect('manager_dashboard:programs')  
         
+        messages.error(request, "ERREUR: Impossible de modifier un programme")
         context = {'form':form, 'program':program}
         return render(request, template_name=self.template, context=context)
 
@@ -509,8 +518,10 @@ class AddProgramView(View):
         form = ProgramForm(request.user, data)
         if form.is_valid():
             form.save()
+            messages.success(request, "Programme enregistré avec succès !")
             return redirect("manager_dashboard:programs")
         
+        messages.error(request, "ERREUR: Impossible d'ajouter un programme")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -722,8 +733,10 @@ class AddTeacherView(View):
         print(form)
         if form.is_valid():
             form.save()
+            messages.success(request, "Enseignant enregistré avec succès !")
             return redirect("manager_dashboard:teachers")
         
+        messages.error(request, "ERREUR: Impossible d'enregistré :(")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
