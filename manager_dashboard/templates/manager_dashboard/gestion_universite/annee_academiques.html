@@ -112,7 +112,7 @@
             },
             success: function(response) {
                 $('#elementList').find(`tr[data-id="${year_id}"]`).remove();
-                alert('Élément supprimé avec succès');
+                console.log('Élément supprimé avec succès');
             },
             error: function(error) {
                 console.error('Erreur lors de la suppression de l\'élément', error);

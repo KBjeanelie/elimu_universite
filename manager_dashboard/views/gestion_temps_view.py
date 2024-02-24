@@ -3,6 +3,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.gestion_ecole_forms import ScheduleForm
 from backend.models.gestion_ecole import AcademicYear, Career, Schedule, Semester
+from django.contrib import messages
 
 class AddScheduleView(View):
     template = 'manager_dashboard/gestion_temps/ajout_emplois_temps.html'
@@ -31,8 +32,10 @@ class AddScheduleView(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "Cours a été enregistré avec succès")
             return redirect('manager_dashboard:times')
         
+        messages.error(request, "ERREUR: Impossible d'enregistré le cours")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 

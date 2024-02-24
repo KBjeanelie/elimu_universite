@@ -560,6 +560,7 @@ class SubjectForm(forms.ModelForm):
         super(SubjectForm, self).__init__(*args, **kwargs)
         # Filtrer les niveaux en fonction de l'utilisateur connecté
         self.fields['sector'].queryset = Sector.objects.filter(school=user.school)
+        self.fields['teacher_in_charge'].queryset = Teacher.objects.filter(school=user.school)
         self.fields['level'].queryset = Level.objects.filter(school=user.school)
         self.fields['subject_group'].queryset = GroupSubject.objects.filter(school=user.school)
         
@@ -761,6 +762,12 @@ class SanctionAppreciationForm(forms.ModelForm):
         }
 
 class StudentDocumentForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(StudentDocumentForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['document_type'].queryset = DocumentType.objects.filter(school=user.school)
+        
     class Meta:
         model = StudentDocument
         fields = ['title', 'document_type', 'file', 'student', 'school']
@@ -797,6 +804,12 @@ class StudentDocumentForm(forms.ModelForm):
         }
 
 class TeacherDocumentForm(forms.ModelForm):
+    
+    def __init__(self, user, *args, **kwargs):
+        super(TeacherDocumentForm, self).__init__(*args, **kwargs)
+        # Filtrer les niveaux en fonction de l'utilisateur connecté
+        self.fields['document_type'].queryset = DocumentType.objects.filter(school=user.school)
+        
     class Meta:
         model = TeacherDocument
         fields = ['title', 'document_type', 'file', 'teacher', 'school']

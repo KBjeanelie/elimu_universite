@@ -2,6 +2,7 @@ from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
 from backend.forms.communication_forms import EventForm, GroupForm, InformationForm
 from backend.models.communication import Event, Group, Information
+from django.contrib import messages
 
 class EditInformationView(View):
     template = "manager_dashboard/communication/editer_information.html"
@@ -39,8 +40,10 @@ class EditInformationView(View):
         
         if form.is_valid():
             form.save()
-            return redirect('manager_dashboard:informations')  # Redirigez vers la page appropriée après la mise à jour réussie
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+            messages.success(request, "Information a été modifier avec succès")
+            return redirect('manager_dashboard:informations')
+        
+        messages.error(request, "ERREUR: Impossible de modifier l'information")
         context = {'form': form, 'info': info}
         return render(request, template_name=self.template, context=context)
 
@@ -84,8 +87,10 @@ class InformationView(View):
         form = InformationForm(data, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Information a été enregistré avec succès")
             return redirect('manager_dashboard:informations')
         
+        messages.error(request, "ERREUR: Impossible d'ajouter l'information")
         context = {'informations': Information.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
     
@@ -174,8 +179,10 @@ class EditEventView(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "Evenement a été modifier avec succès")
             return redirect('manager_dashboard:events')
         
+        messages.error(request, "ERREUR: Impossible de modifier l'évemement")
         context = {'form':form, 'event':event}
         return render(request, template_name=self.template, context=context)
 
@@ -201,8 +208,10 @@ class EventView(View):
         form = EventForm(data, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Évenement a été enregistré avec succès")
             return redirect('manager_dashboard:events')
         
+        messages.error(request, "ERREUR: Impossible d'ajouter l'evenement")
         context = {'events': Event.objects.filter(school=request.user.school).order_by('-created_at')}
         return render(request, template_name=self.template, context=context)
     

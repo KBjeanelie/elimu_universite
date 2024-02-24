@@ -114,7 +114,7 @@
     function deleteInformation(info_id) {
         var csrftoken = getCookie('csrftoken'); // Récupérer le jeton CSRF
         $.ajax({
-            url: `/communication/informations/${info_id}/delete/`,
+            url: `${info_id}/delete/`,
             type: 'DELETE',
             beforeSend: function(xhr) {
                 xhr.setRequestHeader('X-CSRFToken', csrftoken); // Ajouter le jeton CSRF à l'en-tête de la requête

@@ -5,6 +5,7 @@ from backend.models.evaluations import ReportCard
 from manager_dashboard.views.gestion_evaluation_view import calculate_results, get_all_results
 from backend.models.gestion_ecole import AcademicYear, Career, Semester, StudentCareer
 from django.http import Http404, JsonResponse
+from django.contrib import messages
 
 class NotAcademicYearFound(View):
     template_name = "manager_dashboard/statistique/no_academique.html"
@@ -121,8 +122,10 @@ class EditReportCardView(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "Bulletin modifier avec succès")
             return redirect('manager_dashboard:bulletins')
         
+        messages.error(request, "ERREUR: Impossible de modifier un bulletins")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -155,8 +158,10 @@ class AddReportCardView(View):
         form = ReportCardForm(request.user, mutable_data, request.FILES)
         if form.is_valid():
             form.save()
+            messages.success(request, "Bulletin enregister avec succès")
             return redirect('manager_dashboard:bulletins')
-        print(form.errors)
+        
+        messages.error(request, "ERREUR: Impossible d'ajouter un bulletins")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     
@@ -327,5 +332,5 @@ class AddNextLevelView(View):
             school=student_career.school
         )
         next_student_career.save()
-        
+        messages.success(request, "Imformation a été modifier avec succès")
         return redirect('manager_dashboard:next_level')

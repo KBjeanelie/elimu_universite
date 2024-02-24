@@ -7,7 +7,7 @@ from backend.models.evaluations import Assessment
 from backend.models.gestion_ecole import AcademicYear, Career, Semester, StudentCareer, Subject
 from django.db.models import Sum
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
-
+from django.contrib import messages
 from elimu_universite.constant import generate_qr_code_and_save
 
 def calculate_results(semester_id, career_id, user):
@@ -195,8 +195,9 @@ class EditAssessmentView(View):
         form = AssessmentForm(request.user, mutable_data, instance=evaluation)
         if form.is_valid():
             form.save()
+            messages.success(request, "Evaluation a été modifier avec succès")
             return redirect('manager_dashboard:evaluations')
-        
+        messages.error(request, "ERREUR: Impossible de modifier l'évaluation")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -229,8 +230,10 @@ class AddAssessmentView(View):
         form = AssessmentForm(request.user, mutable_data)
         if form.is_valid():
             form.save()
+            messages.success(request, "Évaluation a été enregistré avec succès")
             return redirect('manager_dashboard:evaluations')
         
+        messages.error(request, "ERREUR: Impossible d'enregistré l'évaluarion")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
     

@@ -30,6 +30,8 @@ class AddeBook(View):
             form.save()
             messages.success(request, f"Le eBook {form.cleaned_data['title']} a été enregistré avec succèss !")
             return redirect('manager_dashboard:ebooks')
+        
+        messages.error(request, "ERREUR: Impossible d'ajouter un ebook")
         context_object = {'form': form}
         return render(request, template_name=self.template, context=context_object)
 
@@ -70,6 +72,7 @@ class EditEbook(View):
             messages.success(request, "eBook modifier avec succèss !")
             return redirect('manager_dashboard:ebooks')
         
+        messages.error(request, "ERREUR: Impossible de modifier un ebook")
         context = {'form':form, 'ebook':ebook}
         return render(request, template_name=self.template, context=context)
 

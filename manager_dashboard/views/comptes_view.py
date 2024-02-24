@@ -229,8 +229,6 @@ class EditStudentAccountView(View):
 
 class AddStudentAccount(View):
     template = "manager_dashboard/comptes/ajout_compte_etudiant.html"
-    form = UserStudentForm()
-    context_object = {'form': form}
     
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
@@ -242,10 +240,12 @@ class AddStudentAccount(View):
         return redirect('backend:logout')
     
     def get(self, request, *args, **kwargs):
-        return render(request, template_name=self.template, context=self.context_object)
+        form = UserStudentForm(request.user)
+        context_object = {'form': form}
+        return render(request, template_name=self.template, context=context_object)
     
     def post(self, request, *args, **kwargs):
-        form = UserStudentForm(request.POST)
+        form = UserStudentForm(request.user, request.POST)
         if form.is_valid():
             new_user = User.objects.create_student_user(
                 form.cleaned_data['username'],
@@ -254,6 +254,7 @@ class AddStudentAccount(View):
             )
             new_user.school = request.user.school
             new_user.save()
+            
         return redirect('manager_dashboard:students_account')
 
 class ListAllStudentAccount(View):

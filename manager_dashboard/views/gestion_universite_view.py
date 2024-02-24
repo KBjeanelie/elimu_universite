@@ -22,26 +22,7 @@ from backend.forms.gestion_ecole_forms import (
     StudentForm, 
     TeacherForm
 )
-from backend.models.gestion_ecole import (
-    AcademicYear, 
-    Career,
-    DocumentType, 
-    GroupSubject, 
-    Level, 
-    Program, 
-    SanctionAppreciation, 
-    Schedule, 
-    Sector, 
-    Semester, 
-    StudentCareer, 
-    StudentDocument, 
-    Subject, 
-    TeacherDocument, 
-    Student, 
-    Teacher
-)
-from django.core.cache import cache
-from django.db import transaction
+from backend.models.gestion_ecole import *
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 
 def convertir_en_hexadecimal(nombre):
@@ -52,7 +33,6 @@ def convertir_en_hexadecimal(nombre):
     nombre_hexadecimal = nombre_hexadecimal[2:]
     
     return nombre_hexadecimal
-
 
 
 #=============================== PARTIE CONCERNANT LES Année academique ==========================
@@ -126,8 +106,16 @@ class AddAcademicYearView(View):
         data['school'] = request.user.school
         form = AcademicYearForm(data)
         if form.is_valid():
+            try:
+                active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+                active_year.status =  False
+                active_year.save()
+            except:
+                request.session['academic_year'] = form.cleaned_data['label']
+                
             request.session['academic_year'] = form.cleaned_data['label']
             form.save()
+            
             messages.success(request, "Année académique ajouter avec succès !")
             return redirect("manager_dashboard:years")
         
@@ -155,10 +143,9 @@ class AcademicYearView(View):
     def delete(self, request, pk, *args, **kwargs):
         instance = get_object_or_404(AcademicYear, pk=pk)
         instance.delete()
+        
         del request.session['academic_year']
-        academic_years = AcademicYear.objects.filter(school=request.user.school).order_by('-label')
-        context = {'academic_years': academic_years}
-        return render(request, template_name=self.template, context=context)
+        return JsonResponse({'message': 'Élément supprimé avec succès'})
 #===END
 
 #=============================== PARTIE CONCERNANT LES NIVEAUX ==========================
@@ -583,9 +570,10 @@ class EditSanctionView(View):
         
         if form.is_valid():
             form.save()
-            return redirect('manager_dashboard:sanction_appreciations')  # Redirigez vers la page appropriée après la mise à jour réussie
+            messages.success(request, "Sanction modifier avec succès")
+            return redirect('manager_dashboard:sanction_appreciations') 
         
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+        messages.error(request, "ERREUR: Impossible de modifier une sanction")
         context = {'form':form, 'sanction':sanction}
         return render(request, template_name=self.template, context=context)
     
@@ -613,8 +601,9 @@ class AddSanctionView(View):
         form = SanctionAppreciationForm(request.user, data)
         if form.is_valid():
             form.save()
+            messages.success(request, "Sanction ajouter avec succès")
             return redirect("manager_dashboard:sanction_appreciations")
-        
+        messages.error(request, "ERREUR: Impossible d'enregistré une sanction/apréciation")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -656,7 +645,8 @@ class TrombinoscopeView(View):
         return redirect('backend:logout')
 
     def get(self, request, *args, **kwargs):
-        students = Student.objects.all()
+        academic_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        students = StudentCareer.objects.filter(academic_year=academic_year, is_registered=True, is_valid=False).order_by('-created_at')
         teachers = Teacher.objects.filter(school=request.user.school)
         context = {'students': students, 'teachers':teachers}
         return render(request, template_name=self.template, context=context)
@@ -705,8 +695,10 @@ class EditTeacherView(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "Enseignant modifier avec succès")
             return redirect('manager_dashboard:teachers')
         
+        messages.error(request, "ERREUR: Impossible de modifier")
         context = {'form':form, 'teacher': teacher}
         return render(request, template_name=self.template, context=context)
     
@@ -783,7 +775,7 @@ class TeacherDetailView(View):
         schedules_for_subject = Schedule.objects.filter(subject__in=subjects_taught_by_teacher)
         documents = TeacherDocument.objects.filter(teacher=teacher, school=request.user.school)
         #account = get_object_or_404(User, teacher=teacher)
-        form = TeacherDocumentForm()
+        form = TeacherDocumentForm(request.user)
         context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject, 'form':form, 'documents':documents}
         return render(request, template_name=self.template, context=context)
     
@@ -793,15 +785,14 @@ class TeacherDetailView(View):
         mutable_file = request.FILES.copy()
         mutable_data['teacher'] = teacher
         mutable_data['school'] = request.user.school
-        form = TeacherDocumentForm(mutable_data, mutable_file)
+        form = TeacherDocumentForm(request.user, mutable_data, mutable_file)
         if form.is_valid():
             form.save()
         
         subjects_taught_by_teacher = Subject.objects.filter(teacher_in_charge=teacher)
         schedules_for_subject = Schedule.objects.filter(subject__in=subjects_taught_by_teacher)
-        documents = TeacherDocument.objects.filter(teacher=teacher)
+        documents = TeacherDocument.objects.filter(school=request.user.school, teacher=teacher)
         #account = get_object_or_404(User, teacher=teacher)
-        form = TeacherDocumentForm()
         context = {'teacher':teacher, 'schedules_for_subject':schedules_for_subject, 'form':form, 'documents':documents}
         return render(request, template_name=self.template, context=context)
     
@@ -847,8 +838,10 @@ class EditStudentView(View):
         
         if form.is_valid():
             form.save()
+            messages.success(request, "Etudiant modifié avec succès !")
             return redirect('manager_dashboard:students')
         
+        messages.success(request, "ERREUR: Impossible de modifier l'étudiant")
         context = {'form':form, 'student': student}
         return render(request, template_name=self.template, context=context)
 
@@ -859,6 +852,11 @@ class AddStudentView(View):
     def dispatch(self,request, *args, **kwargs):
         if not request.user.is_authenticated:
             return redirect('backend:login')
+        
+        try:
+            active_year = AcademicYear.objects.get(status=True, school=request.user.school)
+        except AcademicYear.DoesNotExist:
+            return redirect('manager_dashboard:no_year')
         
         if request.user.is_manager or request.user.is_admin_school:
             return super().dispatch(request, *args, **kwargs)
@@ -971,7 +969,7 @@ class StudentDetailView(View):
                 if r['nui'] == student_career.student.registration_number:
                     results.append(r)
 
-        form = StudentDocumentForm()
+        form = StudentDocumentForm(request.user)
         
         invoices = Invoice.objects.filter(student=student_career.student, academic_year=academic_year, invoice_status='Entièrement payé', is_repayment=False)
 

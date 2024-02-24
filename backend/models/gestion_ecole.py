@@ -228,11 +228,6 @@ class ManagementProfil(models.Model):
 #===END
 
 
-
-
-
-
-
 # Class representing Academic Year
 class AcademicYear(models.Model):
     label = models.CharField(max_length=50)
