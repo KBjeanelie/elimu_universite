@@ -6,6 +6,7 @@ from backend.forms.facturation_forms import InvoiceForm, RepaymentForm, SpendFor
 from backend.models.facturation import FinancialCommitment, Invoice, Repayment, Spend
 from django.core.cache import cache
 from django.db.models import Sum
+from django.contrib import messages
 from backend.models.gestion_ecole import AcademicYear
 
 def generate_payment_number():
@@ -56,6 +57,7 @@ class FinancialCommitmentView(View):
         engagement.send_date = now()
         engagement.is_send = True
         engagement.save()
+        #messages.success(request, "Engagement financier envoyé avec succès !")
         return redirect('accountant_dashboard:financials')
         
 
@@ -106,8 +108,10 @@ class InvoiceView(View):
                 academic_year=academic_year
             )
             invoice.save()
+            messages.success(request, "La facture a été enregistré avec succès !")
             return redirect("accountant_dashboard:invoices")
         
+        messages.error(request, "ERREUR : Impossible d'ajouter la facture !")
         return redirect("accountant_dashboard:invoices")
     
     def delete(self, request, pk, *args, **kwargs):
@@ -167,8 +171,10 @@ class EditInvoiceView(View):
         form = InvoiceForm(request.user, request.POST, instance=invoice)
         if form.is_valid():
             form.save()
+            messages.success(request, "La facture a été modifier avec succès !")
             return redirect("accountant_dashboard:invoices")
-
+        
+        messages.error(request, "ERREUR : Impossible de modifier la facture !")
         context = {'invoice':invoice, 'form':form}
         return render(request, template_name=self.template_name, context=context)
 
@@ -207,9 +213,10 @@ class EditRepaymentView(View):
         form = RepaymentForm(request.user, data, instance=repayment)
         if form.is_valid():
             form.save()
+            messages.success(request, "Remousement a été modifier avec succès !")
             return redirect('accountant_dashboard:repayments')
-        else:
-            print(form.errors)
+        
+        messages.error(request, "ERROR: Something went wrong, please try again !")
         context = {'form': form, 'repayment': repayment}
         return render(request, template_name=self.template, context=context)
     
@@ -245,8 +252,10 @@ class AddRepaymentView(View):
             form.save()
             invoice.is_repayment = True
             invoice.save()
+            messages.success(request, "La facture a été remboursé avec succès !")
             return redirect("accountant_dashboard:repayments")
         
+        messages.error(request, "ERREUR: Impossible de remboursé la facture :(")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -345,8 +354,10 @@ class AddDepenseView(View):
         form = SpendForm(request.user, data)
         if form.is_valid():
             form.save()
+            messages.success(request, "Dépense a été enregistré avec succès !")
             return redirect("accountant_dashboard:spend")
         
+        messages.error(request, "ERREUR: Impossible d'ajouter une dépense !")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 
@@ -380,8 +391,10 @@ class EditDepenseView(View):
         form = SpendForm(request.user, data, instance=spend)
         if form.is_valid():
             form.save()
+            messages.success(request, "Dépense a été modifier avec succès !")
             return redirect("accountant_dashboard:spend")
         
+        messages.error(request, "ERREUR: Impossible de modifier une dépense !")
         context = {'form':form}
         return render(request, template_name=self.template, context=context)
 

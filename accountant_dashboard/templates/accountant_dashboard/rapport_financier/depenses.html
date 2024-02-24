@@ -25,6 +25,15 @@
             </div>
         </div>
 
+        {% if messages %}
+            {% for message in messages %}
+                <div {% if message.tags %} class="alert text-white bg-{{ message.tags }} d-flex align-items-center justify-content-between" {% endif %} role="alert">
+                    <div class="alert-text">{{ message }}</div>
+                    <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><i class="ti-close text-white f_s_14"></i></button>
+                </div>
+            {% endfor %}
+        {% endif %}
+
         <div class="row">
             <div class="col-lg-12">
                 <div class="white_card card_height_100 mb_30 pt-4">
@@ -58,7 +67,7 @@
                                     </thead>
                                     <tbody id="elementList">
                                         {% for spend in spends %}
-                                            <tr data-id="{{ spend }}">
+                                            <tr data-id="{{ spend.id }}">
                                                 <td><h6> {{ spend.item.name}}</h6></td>
                                                 <td><h6> {{ spend.amount }} XAF </h6></td>
                                                 <td><h6> {{ spend.comment }} </h6></td>

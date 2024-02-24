@@ -1,6 +1,6 @@
 from django.shortcuts import get_object_or_404, redirect, render
 from django.views import View
-
+from django.contrib import messages
 from backend.forms.facturation_forms import ItemForm
 from backend.forms.gestion_ecole_forms import ManagementProfilForm
 from backend.models.facturation import Item
@@ -21,8 +21,10 @@ class EditItemView(View):
         form = ItemForm(data, instance=item)
         if form.is_valid():
             form.save()
-            return redirect('accountant_dashboard:items')  # Redirigez vers la page appropriée après la mise à jour réussie
-        # Si le formulaire n'est pas valide, réaffichez le formulaire avec les erreurs
+            messages.success(request, "Article modifier avec succès !")
+            return redirect('accountant_dashboard:items')
+        
+        messages.error(request, "ERREUR: Impossible de modifier l'article")
         context = {'form': form, 'item': item}
         return render(request, template_name=self.template, context=context)
     
@@ -39,9 +41,11 @@ class AddItemView(View):
         form = ItemForm(data)
         if form.is_valid():
             form.save()
-            return redirect("accountant_dashboard:items")
+            messages.success(request, "Article enregistré avec succès !")
+            return redirect('accountant_dashboard:items')
         
-        context = {'form':form}
+        messages.error(request, "ERREUR: Impossible d'ajouter un article")
+        context = {'form': form}
         return render(request, template_name=self.template, context=context)
 
 class ItemView(View):
@@ -110,5 +114,5 @@ class EditProfileView(View):
         form = ManagementProfilForm(request.POST, instance=management_profil_instance)
         if form.is_valid():
             form.save()
-            print('ok')
+            messages.success(request, "Votre profil a été modifier avec succès !")
         return redirect('accountant_dashboard:user_profile')

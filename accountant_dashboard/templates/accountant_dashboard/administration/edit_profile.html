@@ -18,6 +18,15 @@
                 </div>
             </div>
 
+            {% if messages %}
+                {% for message in messages %}
+                    <div {% if message.tags %} class="alert text-white bg-{{ message.tags }} d-flex align-items-center justify-content-between" {% endif %} role="alert">
+                        <div class="alert-text">{{ message }}</div>
+                        <button type="button" class="close" data-bs-dismiss="alert" aria-label="Close"><i class="ti-close text-white f_s_14"></i></button>
+                    </div>
+                {% endfor %}
+            {% endif %}
+
             <div class="row ">
 
                 <div class="col-xl-12">
